@@ -13,6 +13,10 @@ class AbstractDatabaseBusinessController:
         pass
 
     @abstractmethod
+    def SelectById(self, id):
+        pass
+
+    @abstractmethod
     def Insert(self, info):
         pass
 

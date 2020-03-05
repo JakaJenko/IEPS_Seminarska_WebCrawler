@@ -19,7 +19,7 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         return page_infos
 
 
-    def Select(self, id):
+    def SelectById(self, id):
         page_info = None
 
         cur = self.conn.cursor()
@@ -38,7 +38,16 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         cur.execute("INSERT INTO crawldb.page VALUES (%s, %s, %s, %s, %s, %s, %s)",
                     (page_info.id, page_info.site_id, page_info.page_type_code, page_info.url, page_info.html_content,
                      page_info.http_status_code, page_info.accessed_time))
+        cur.close()
+
         return True
+
 
     def Update(self, page_info):
         pass
+
+    def UpdateLinks(self, page_info):
+        cur = self.conn.cursor()
+        cur.execute("INSERT INTO crawldb.link VALUES (%s, %s)",
+                    (page_info1.id, page_info2.id))
+        cur.close()
