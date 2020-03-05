@@ -10,7 +10,7 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         page_infos = []
 
         cur = self.conn.cursor()
-        cur.execute("SELECT * FROM crawldb.page")
+        cur.execute("SELECT id, site_id, page_type_code, url, html_content, http_status_code, accessed_time FROM crawldb.page")
 
         for id, site_id, page_type_code, url, html_content, http_status_code, accessed_time in cur.fetchall():
             page_infos.append(PageInfo(id, site_id, page_type_code, url, html_content, http_status_code, accessed_time))
@@ -23,7 +23,7 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         page_info = None
 
         cur = self.conn.cursor()
-        cur.execute("SELECT * FROM crawldb.page WHERE id=%s", (id,))
+        cur.execute("SELECT id, site_id, page_type_code, url, html_content, http_status_code, accessed_time FROM crawldb.page WHERE id=%s", (id,))
 
         value = cur.fetchone()[0]
         page_info = PageInfo(value.id, value.site_id, value.page_type_code, value.url, value.html_content,
@@ -35,8 +35,8 @@ class PageBusinessController(AbstractDatabaseBusinessController):
 
     def Insert(self, page_info):
         cur = self.conn.cursor()
-        cur.execute("INSERT INTO crawldb.page VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (page_info.id, page_info.site_id, page_info.page_type_code, page_info.url, page_info.html_content,
+        cur.execute("INSERT INTO crawldb.page (site_id, page_type_code, url, html_content, http_status_code, accessed_time) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    (page_info.site_id, page_info.page_type_code, page_info.url, page_info.html_content,
                      page_info.http_status_code, page_info.accessed_time))
         return True
 
