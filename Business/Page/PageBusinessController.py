@@ -41,4 +41,13 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         return True
 
     def Update(self, page_info):
-        pass
+        try:
+            cur = self.conn.cursor()
+            cur.execute("""UPDATE crawldb.page
+                            SET site_id = %s, page_type_code=%s, url=%s, html_content=%s,http_status_code=%s, accessed_time=%s
+                            WHERE id = %s""",
+                        (page_info.site_id, page_info.page_type_code, page_info.url, page_info.html_content, page_info.http_status_code, page_info.accessed_time, page_info.id))
+            cur.close()
+            return True
+        except:
+            return False
