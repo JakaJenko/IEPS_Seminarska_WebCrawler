@@ -1,5 +1,5 @@
 class PageInfo():
-    def __init__(self, id, site_id, page_type_code, url, html_content, http_status_code, accessed_time):
+    def __init__(self, id, site_id, page_type_code, url, html_content, http_status_code, accessed_time, links=[]):
         self.id = id
         self.site_id = site_id
         self.page_type_code = page_type_code
@@ -7,3 +7,4 @@ class PageInfo():
         self.html_content = html_content
         self.http_status_code = http_status_code
         self.accessed_time = accessed_time
+        self.links = links
