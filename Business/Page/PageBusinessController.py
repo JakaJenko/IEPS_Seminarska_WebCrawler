@@ -19,7 +19,7 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         return page_infos
 
 
-    def Select(self, id):
+    def SelectById(self, id):
         page_info = None
 
         cur = self.conn.cursor()
