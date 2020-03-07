@@ -9,11 +9,12 @@ from Controller.LinkController import LinkController
 
 THREADS = 5
 TIMEOUT = 5
+MAX_DEPTH = 3
 
-SEEDs = ["http://gov.si",
-         "http://evem.gov.si",
-         "http://e-uprava.gov.si",
-         "http://e-prostor.gov.si"]
+SEEDs = [("http://gov.si", 1),
+         ("http://evem.gov.si", 1),
+         ("http://e-uprava.gov.si", 1),
+         ("http://e-prostor.gov.si", 1)]
 
 frontier = []
 
@@ -46,15 +47,16 @@ def main():
             future = []
 
             for _ in range(THREADS):
-                address = ""
+                address, depth = None, None
 
                 with lock:
                     if len(frontier) != 0:
-                        address = frontier.pop()
+                        address, depth = frontier.pop()
                         history.add(address)
 
-                if address != "":
-                    future.append(executor.submit(GetPageData, driver, address))
+                if address is not None:
+                    if depth < MAX_DEPTH:
+                        future.append(executor.submit(GetPageData, driver, address, depth))
 
             # WAIT
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
@@ -62,14 +64,14 @@ def main():
             # remove duplicates from frontier
             frontier = list(dict.fromkeys(frontier))
 
-            # remove histroy from list
-            frontier = [i for i in frontier if i not in history]
+            # remove history from list
+            frontier = [(address, depth) for address, depth in frontier if address not in history]
 
             # WAIT
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
 
-def GetPageData(driver, address):
+def GetPageData(driver, address, depth):
     global frontier
 
     print("Started:", address)
@@ -80,7 +82,8 @@ def GetPageData(driver, address):
 
     print("Finished:", address)
 
-    frontier.extend(linkCtrl.GetAllLinks(driver))
+    links = [(link, depth+1) for link in linkCtrl.GetAllLinks(driver)]
+    frontier.extend(links)
 
 
 if __name__ == "__main__":
