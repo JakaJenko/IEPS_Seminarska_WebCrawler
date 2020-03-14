@@ -6,9 +6,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from Business.Page.PageBusinessController import PageBusinessController
 from Controller.LinkController import LinkController
+from sys import platform
+
 
 THREADS = 5
-TIMEOUT = 5
+TIMEOUT = 1 #5
 MAX_DEPTH = 3
 
 SEEDs = [("http://gov.si", 1),
@@ -31,6 +33,10 @@ def main():
 
     pathHere = pathlib.Path().absolute()
     WEB_DRIVER_LOCATION = str(pathHere) + "\..\chromedriver.exe"
+
+    # ChromeDriver for mac users
+    if platform == "darwin":
+        WEB_DRIVER_LOCATION = str(pathHere) + "/../chromedriver"
 
     chrome_options = Options()
     # If you comment the following line, a browser will show ...
