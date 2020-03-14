@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from Business.Page.PageBusinessController import PageBusinessController
 from Controller.LinkController import LinkController
 from sys import platform
+import requests
 
 
 THREADS = 5
@@ -82,11 +83,13 @@ def GetPageData(driver, address, depth):
 
     print("Started:", address)
     driver.get(address)
+    r = requests.get(address)
+
 
     # Timeout needed for Web page to render (read more about it)
     time.sleep(TIMEOUT)
 
-    print("Finished:", address)
+    print("Finished:", address, r.status_code)
 
     links = [(link, depth+1) for link in linkCtrl.GetAllLinks(driver)]
     frontier.extend(links)
