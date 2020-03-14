@@ -45,3 +45,13 @@ class LinkController:
         link = urlencode(link)
 
         return link
+
+    def GetImageSources(self, driver):
+        sources = []
+
+        # Gets [img src] links
+        elems = driver.find_elements_by_xpath("//img[@src]")
+        for elem in elems:
+            sources.append(elem.get_attribute("src"), driver)
+
+        return sources
