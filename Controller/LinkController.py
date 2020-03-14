@@ -30,19 +30,19 @@ class LinkController:
             link = base_url[:-1] + link
 
         # Removes # fragments
-        link = urldefrag(link)
+        link, frag = urldefrag(link)
 
         #remove port number
-        re.sub(":.*?/", "", link)
+        re.sub(":80/", "", link)
 
         #remove index.html
-        re.sub("index\.html", "", link)
+        re.sub("index\.html$", "", link)
 
         #decode encoded characters
         link = unescape(link)
 
         #encode neccesery characters (spaces)
-        link = urlencode(link)
+        link = link.replace(" ", "%20")
 
         return link
 
@@ -52,6 +52,6 @@ class LinkController:
         # Gets [img src] links
         elems = driver.find_elements_by_xpath("//img[@src]")
         for elem in elems:
-            sources.append(elem.get_attribute("src"), driver)
+            sources.append(elem.get_attribute("src"))
 
         return sources

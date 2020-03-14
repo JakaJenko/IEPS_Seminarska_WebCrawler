@@ -10,13 +10,13 @@ from sys import platform
 
 
 THREADS = 5
-TIMEOUT = 1 #5
+TIMEOUT = 3 #5
 MAX_DEPTH = 3
 
-SEEDs = [("http://gov.si", 1),
-         ("http://evem.gov.si", 1),
-         ("http://e-uprava.gov.si", 1),
-         ("http://e-prostor.gov.si", 1)]
+SEEDs = [("http://gov.si/", 1),
+         ("http://evem.gov.si/", 1),
+         ("http://e-uprava.gov.si/", 1),
+         ("http://e-prostor.gov.si/", 1)]
 
 frontier = []
 
@@ -89,8 +89,11 @@ def GetPageData(driver, address, depth):
     print("Finished:", address)
 
     links = [(link, depth+1) for link in linkCtrl.GetAllLinks(driver)]
-    images = [source for source in linkCtrl.GetImageSources(driver)]
     frontier.extend(links)
+
+    # Get images
+    images = [source for source in linkCtrl.GetImageSources(driver)]
+
 
 
 if __name__ == "__main__":
