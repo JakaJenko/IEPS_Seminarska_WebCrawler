@@ -2,20 +2,22 @@ import concurrent.futures
 import threading
 import pathlib
 import time
-import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from Business.Page.PageBusinessController import PageBusinessController
 from Controller.LinkController import LinkController
+from sys import platform
+import requests
+
 
 THREADS = 5
-TIMEOUT = 5
-MAX_DEPTH = 2
+TIMEOUT = 3 #5
+MAX_DEPTH = 3
 
-SEEDs = [("http://gov.si", 2),
-         ("http://evem.gov.si", 1),
-         ("http://e-uprava.gov.si", 2),
-         ("http://e-prostor.gov.si", 2)]
+SEEDs = [("http://gov.si/", 1),
+         ("http://evem.gov.si/", 1),
+         ("http://e-uprava.gov.si/", 1),
+         ("http://e-prostor.gov.si/", 1)]
 
 frontier = []
 
@@ -32,6 +34,10 @@ def main():
 
     pathHere = pathlib.Path().absolute()
     WEB_DRIVER_LOCATION = str(pathHere) + "\..\chromedriver.exe"
+
+    # ChromeDriver for mac users
+    if platform == "darwin":
+        WEB_DRIVER_LOCATION = str(pathHere) + "/../chromedriver"
 
     chrome_options = Options()
     # If you comment the following line, a browser will show ...
@@ -59,7 +65,6 @@ def main():
                     if depth < MAX_DEPTH:
                         future.append(executor.submit(GetPageData, driver, address, depth))
 
-
             # WAIT
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
@@ -77,18 +82,21 @@ def GetPageData(driver, address, depth):
     global frontier
 
     print("Started:", address)
-    head = requests.head(address)
-    print(head.headers, head.history, head.is_redirect)
-
     driver.get(address)
+    r = requests.get(address)
+
 
     # Timeout needed for Web page to render (read more about it)
     time.sleep(TIMEOUT)
 
-    print("Finished:", address)
+    print("Finished:", address, r.status_code)
 
     links = [(link, depth+1) for link in linkCtrl.GetAllLinks(driver)]
     frontier.extend(links)
+
+    # Get images
+    images = [source for source in linkCtrl.GetImageSources(driver)]
+
 
 
 if __name__ == "__main__":
