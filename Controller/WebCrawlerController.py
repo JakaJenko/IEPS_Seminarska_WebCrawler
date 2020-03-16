@@ -8,6 +8,10 @@ from Business.Page.PageBusinessController import PageBusinessController
 from Controller.LinkController import LinkController
 from sys import platform
 import requests
+import urllib.robotparser
+from urllib.parse import urlparse
+
+linkCtrl = LinkController()
 
 
 THREADS = 5
@@ -16,20 +20,21 @@ MAX_DEPTH = 3
 
 SEEDs = [("http://gov.si/", 1),
          ("http://evem.gov.si/", 1),
-         ("http://e-uprava.gov.si/", 1),
-         ("http://e-prostor.gov.si/", 1)]
+         ("http://e-uprava.gov.si/", 3),
+         ("http://e-prostor.gov.si/", 3)]
 
 frontier = []
 
-linkCtrl = LinkController()
+history = set()
 
 
 def main():
     lock = threading.Lock()
 
     global frontier
+    global history
+
     frontier = SEEDs
-    history = set()
 
 
     pathHere = pathlib.Path().absolute()
@@ -57,9 +62,15 @@ def main():
                 address, depth = None, None
 
                 with lock:
-                    if len(frontier) != 0:
-                        address, depth = frontier.pop()
-                        history.add(address)
+                    while address is None:
+                        if len(frontier) != 0:
+                            address, depth = frontier.pop()
+                            history.add(address)
+
+                            if not checkIfRobotsAllow(address):
+                                print(address, "Tto pa ne!")
+                                address, depth = None, None
+
 
                 if address is not None:
                     if depth < MAX_DEPTH:
@@ -80,23 +91,42 @@ def main():
 
 def GetPageData(driver, address, depth):
     global frontier
+    global history
 
     print("Started:", address)
     driver.get(address)
-    r = requests.get(address)
-
+    requestOriginal = requests.get(address)
 
     # Timeout needed for Web page to render (read more about it)
     time.sleep(TIMEOUT)
 
-    print("Finished:", address, r.status_code)
+    requestFinal = requests.get(driver.current_url)
 
-    links = [(link, depth+1) for link in linkCtrl.GetAllLinks(driver)]
-    frontier.extend(links)
+    # Če je že v history pomeni da je do tega prišlo po kakem drugem redirectu
+    if driver.current_url not in history:
+        history.add(driver.current_url)
 
-    # Get images
-    images = [source for source in linkCtrl.GetImageSources(driver)]
+        links = [(link, depth+1) for link in linkCtrl.GetAllLinks(driver)]
+        frontier.extend(links)
 
+        # Get images
+        images = [source for source in linkCtrl.GetImageSources(driver)]
+
+
+
+    print("Finished:", address, requestOriginal.status_code, " --> ", driver.current_url, requestFinal.status_code)
+
+
+def checkIfRobotsAllow(url):
+    rp = urllib.robotparser.RobotFileParser()
+
+    parsed_uri = urlparse(url)
+    result = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+
+    rp.set_url(result + "/robots.txt")
+    rp.read()
+
+    return rp.can_fetch("*", url)
 
 
 if __name__ == "__main__":

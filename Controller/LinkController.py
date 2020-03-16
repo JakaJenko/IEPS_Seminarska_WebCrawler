@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import re
-from  urllib.parse import urlparse, urldefrag, urljoin, urlencode
+from urllib.parse import urlparse, urldefrag, urljoin, urlencode
 from html import unescape
 
 
