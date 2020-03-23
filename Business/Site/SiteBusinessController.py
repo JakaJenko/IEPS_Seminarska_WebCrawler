@@ -2,21 +2,21 @@ from Business.AbstractDatabaseBusinessController import AbstractDatabaseBusiness
 from Business.Site.SiteInfo import SiteInfo
 
 
-class PageBusinessController(AbstractDatabaseBusinessController):
+class SiteBusinessController(AbstractDatabaseBusinessController):
     def __init__(self):
         super().__init__()
 
     def Select(self):
-        page_infos = []
+        site_infos = []
 
         cur = self.conn.cursor()
         cur.execute("SELECT id, domain, robots_content, sitemap_content FROM crawldb.site")
 
         for id, domain, robots_content, sitemap_content in cur.fetchall():
-            page_infos.append(SiteInfo(id, domain, robots_content, sitemap_content))
+            site_infos.append(SiteInfo(id, domain, robots_content, sitemap_content))
 
         cur.close()
-        return page_infos
+        return site_infos
 
 
     def SelectById(self, id):
@@ -26,19 +26,22 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         cur.execute("SELECT id, domain, robots_content, sitemap_content FROM crawldb.site WHERE id=%s", (id,))
 
         value = cur.fetchone()[0]
-        page_info = SiteInfo(value.id, value.domain, value.robots_content, value.sitemap_content)
+        site_info = SiteInfo(value.id, value.domain, value.robots_content, value.sitemap_content)
 
         cur.close()
-        return page_info
+        return site_info
 
 
     def Insert(self, site_info):
         cur = self.conn.cursor()
-        cur.execute("INSERT INTO crawldb.site (domain, robots_content, sitemap_content) VALUES (%s, %s, %s)",
+        cur.execute("INSERT INTO crawldb.site (domain, robots_content, sitemap_content) VALUES (%s, %s, %s) RETURNING id",
                     (site_info.domain, site_info.robots_content, site_info.sitemap_content))
-        cur.close()
 
-        return True
+        value = cur.fetchone()[0]
+        site_info.id = value
+
+        cur.close()
+        return site_info
 
     def Update(self, site_info):
         try:

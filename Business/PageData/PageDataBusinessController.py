@@ -7,16 +7,16 @@ class PageDataBusinessController(AbstractDatabaseBusinessController):
         super().__init__()
 
     def Select(self):
-        page_data = []
+        page_data_infos = []
 
         cur = self.conn.cursor()
         cur.execute("SELECT id, page_id, data_type_code, data FROM crawldb.page_data")
 
-        for id, page_id, data_type_code, data  in cur.fetchall():
-            page_data.append(PageDataInfo(id, page_id, data_type_code, data ))
+        for id, page_id, data_type_code, data in cur.fetchall():
+            page_data_infos.append(PageDataInfo(id, page_id, data_type_code, data ))
 
         cur.close()
-        return page_data
+        return page_data_infos
 
     def SelectById(self, id):
         cur = self.conn.cursor()

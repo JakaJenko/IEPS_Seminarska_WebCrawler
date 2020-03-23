@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from Business.AbstractDatabaseBusinessController import AbstractDatabaseBusinessController
 from Business.Page.PageInfo import PageInfo
 
@@ -43,13 +45,18 @@ class PageBusinessController(AbstractDatabaseBusinessController):
     def Insert(self, page_info):
         cur = self.conn.cursor()
         cur.execute("""INSERT INTO crawldb.page (site_id, page_type_code, url, html_content, http_status_code, accessed_time)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+                    VALUES (%s, %s, %s, %s, %s, %s) RETURNING id""",
                     (page_info.site_id, page_info.page_type_code, page_info.url, page_info.html_content,
                      page_info.http_status_code, page_info.accessed_time))
-        return True
+
+        value = cur.fetchone()[0]
+        page_info.id = value
+        cur.close()
+
+        return page_info
 
     def Update(self, page_info):
-        try:
+        #try:
             cur = self.conn.cursor()
             cur.execute("""UPDATE crawldb.page
                             SET site_id = %s, page_type_code=%s, url=%s, html_content=%s,http_status_code=%s, accessed_time=%s
@@ -61,8 +68,8 @@ class PageBusinessController(AbstractDatabaseBusinessController):
             self.__UpdateLinks(page_info)
 
             return True
-        except:
-            return False
+        #except ex:
+            #return False
 
 
     def __LoadLinks(self, page_info):

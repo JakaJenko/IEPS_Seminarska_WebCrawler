@@ -6,25 +6,42 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from Business.Page.PageBusinessController import PageBusinessController
 from Controller.LinkController import LinkController
+from Controller.RobotController import RobotController
+from Controller.SiteController import SiteController
+from Business.Site.SiteBusinessController import SiteBusinessController
+from Business.Page.PageBusinessController import PageBusinessController
+from Business.Site.SiteInfo import SiteInfo
 from sys import platform
+import sys
 import requests
 import urllib.robotparser
 from urllib.parse import urlparse
 
+siteBusinessCtrl = SiteBusinessController()
+pageBusinessCtrl = PageBusinessController()
+
 linkCtrl = LinkController()
+robotCtrl = RobotController()
 
 
 THREADS = 5
 TIMEOUT = 3 #5
 MAX_DEPTH = 3
 
-SEEDs = [("http://gov.si/", 1),
+SEEDs = [#("http://gov.si/", 1),
          ("http://evem.gov.si/", 1),
          ("http://e-uprava.gov.si/", 3),
          ("http://e-prostor.gov.si/", 3)]
 
-frontier = []
+sites = [SiteInfo(seed[0]) for seed in SEEDs]
 
+for site in sites:
+    site = siteBusinessCtrl.Insert(site)
+
+siteCtrl = SiteController(sites)
+
+# frontier = [(SiteInfo, depth), ...]
+frontier = []
 history = set()
 
 
@@ -33,8 +50,6 @@ def main():
 
     global frontier
     global history
-
-    frontier = SEEDs
 
 
     pathHere = pathlib.Path().absolute()
@@ -51,51 +66,62 @@ def main():
     # Adding a specific user agent
     chrome_options.add_argument("user-agent=fri-ieps-CoronaBojz123")
 
-    driver = webdriver.Chrome(WEB_DRIVER_LOCATION, options=chrome_options)
+    #driver = webdriver.Chrome(WEB_DRIVER_LOCATION, options=chrome_options)
 
+    drivers = []
+    for i in range(THREADS):
+        drivers.append(webdriver.Chrome(WEB_DRIVER_LOCATION, options=chrome_options))
+    #driver.set_page_load_timeout(TIMEOUT+5)
+
+    # Add first pages to frontier
+    frontier = InitFrontier(drivers[0], sites)
+
+    #sys.exit()
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=THREADS) as executor:
         while len(frontier) != 0:
             future = []
 
-            for _ in range(THREADS):
-                address, depth = None, None
+            for threadNumber in range(THREADS):
+                page, depth = None, None
 
                 with lock:
-                    while address is None:
+                    while page is None:
                         if len(frontier) != 0:
-                            address, depth = frontier.pop()
-                            history.add(address)
-
-                            if not checkIfRobotsAllow(address):
-                                print(address, "Tto pa ne!")
-                                address, depth = None, None
+                            page, depth = frontier.pop()
+                        else:
+                            break
 
 
-                if address is not None:
+                if page is not None:
                     if depth < MAX_DEPTH:
-                        future.append(executor.submit(GetPageData, driver, address, depth))
+                        future.append(executor.submit(GetPageData, drivers[threadNumber], page, depth))
 
             # WAIT
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
-
+            print("STEP - ALL DONE")
             # remove duplicates from frontier
-            frontier = list(dict.fromkeys(frontier))
+            frontier = RemoveDuplicates(frontier)
 
             # remove history from list
-            frontier = [(address, depth) for address, depth in frontier if address not in history]
+            frontier = [(page, depth) for page, depth in frontier if page.url not in history]
+
+            for i in range(len(frontier)):
+                if frontier[i][0].id is None:
+                    newTuple = (pageBusinessCtrl.Insert(frontier[i][0]), frontier[i][1])
+                    frontier[i] = newTuple
 
             # WAIT
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
 
-def GetPageData(driver, address, depth):
+def GetPageData(driver, page, depth):
     global frontier
     global history
 
-    print("Started:", address)
-    driver.get(address)
-    requestOriginal = requests.get(address)
+    print("Started:", page.url)
+    driver.get(page.url)
+    requestOriginal = requests.get(page.url)
 
     # Timeout needed for Web page to render (read more about it)
     time.sleep(TIMEOUT)
@@ -105,29 +131,59 @@ def GetPageData(driver, address, depth):
     # Če je že v history pomeni da je do tega prišlo po kakem drugem redirectu
     if driver.current_url not in history:
         history.add(driver.current_url)
+        page.BindData("HTML", "HTML CONTENT", 1)
+        pageBusinessCtrl.Update(page)
 
-        links = [(link, depth+1) for link in linkCtrl.GetAllLinks(driver)]
-        frontier.extend(links)
+        # Get links
+        links = linkCtrl.GetAllLinks(driver)
+
+        for link in links:
+            newPage = siteCtrl.CreateNewPage(link)
+
+            if newPage:
+                frontier.append((newPage, depth+1))
+
+
 
         # Get images
         images = [source for source in linkCtrl.GetImageSources(driver)]
 
+        #save to database
 
 
-    print("Finished:", address, requestOriginal.status_code, " --> ", driver.current_url, requestFinal.status_code)
+
+    print("Finished:", page.url, requestOriginal.status_code, " --> ", driver.current_url, requestFinal.status_code)
 
 
-def checkIfRobotsAllow(url):
-    rp = urllib.robotparser.RobotFileParser()
 
-    parsed_uri = urlparse(url)
-    result = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+def InitFrontier(driver, sites):
+    pageInfos = []
 
-    rp.set_url(result + "/robots.txt")
-    rp.read()
+    #najde prve strani, da se dajo v frontier
+    for site in sites:
+        print("Started:", site.domain)
+        driver.get(site.domain)
+        time.sleep(1)
+        requestFinal = requests.get(driver.current_url)
+        print(requestFinal.url)
 
-    return rp.can_fetch("*", url)
+        page = siteCtrl.CreateNewPage(requestFinal.url)
+        page = pageBusinessCtrl.Insert(page)
 
+        pageInfos.append((page, 1))
+
+    return pageInfos
+
+
+def RemoveDuplicates(frontier):
+    check_val = set()  # Check Flag
+    res = []
+    for i in frontier:
+        if i[0].url not in check_val:
+            res.append(i)
+            check_val.add(i[0].url)
+
+    return res
 
 if __name__ == "__main__":
     main()
