@@ -117,6 +117,22 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         cur.close()
         return page_info
 
+    def GetSimilar(self, page_id, similarity):
+        cur = self.conn.cursor()
+        cur.execute("""SELECT tmp.id, tmp.sim
+                        FROM (SELECT similarity(p1.html_content, p2.html_content) AS sim, p1.url, p2.url, p1.id
+                                FROM   crawldb.page p1
+                                JOIN   (SELECT page.html_content, page.url FROM crawldb.page WHERE page.id = %s) p2 ON p1.url <> p2.url
+                                WHERE  p1.html_content != 'None'
+                                ORDER  BY sim DESC) as tmp
+                        WHERE tmp.sim >= %s""", (page_id, similarity))
+        similar = []
+        for p in cur.fetchall():
+            similar.append(p.id)
+
+        cur.close()
+        return similar
+
 
     def __UpdateLinks(self, page_info):
         try:
