@@ -1,5 +1,6 @@
 import urllib.robotparser
 from urllib.parse import urlparse
+import requests as req
 
 
 class RobotController:
@@ -24,6 +25,7 @@ class RobotController:
 
     def GetRobotsContent(self, url):
         parsed_uri = urlparse(url)
-        result = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+        robots_url = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri) +'robots.txt'
+        robots = req.get(robots_url).text
 
-        return "TODO: Robots content"
+        return robots

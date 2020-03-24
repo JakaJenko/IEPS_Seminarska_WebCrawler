@@ -2,7 +2,8 @@ from bs4 import BeautifulSoup
 import re
 from urllib.parse import urlparse, urldefrag, urljoin, urlencode
 from html import unescape
-
+from url_normalize import url_normalize
+from  w3lib import url as w3url
 
 class LinkController:
     def GetAllLinks(self, driver):
@@ -24,33 +25,13 @@ class LinkController:
         return links
 
     def CleanLink(self, link, driver=None):
-        #change realtive links to absolute
-        if not link.startswith('http'):
-            base_url = urljoin(driver.current_url, '.')
-            link = base_url[:-1] + link
 
-        # Removes # fragments
-        link, frag = urldefrag(link)
+        normalized_url = url_normalize(link)
 
-        #remove port number
-        re.sub(":80/", "", link)
+        canonized_url = w3url.canonicalize_url(normalized_url)
 
-        #remove index.html
-        re.sub("index\.html$", "", link)
+        return canonized_url
 
-        #decode encoded characters
-        link = unescape(link)
-
-        #encode neccesery characters (spaces)
-        link = link.replace(" ", "%20")
-
-        if link[-1] != "/":
-            if link.count("/") == 2:
-                link = link + "/"
-            elif "." not in link.split("/")[-1]:
-                link = link + "/"
-
-        return link
 
     def GetImageSources(self, driver):
         sources = []

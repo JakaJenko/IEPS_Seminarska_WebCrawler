@@ -72,6 +72,10 @@ def main():
     # Adding a specific user agent
     chrome_options.add_argument("user-agent=fri-ieps-CoronaBojz123")
 
+    #disabling automatic downloads
+    profile = {"download.default_directory": "NUL", "download.prompt_for_download": False, }
+    chrome_options.add_experimental_option("prefs", profile)
+
     #driver = webdriver.Chrome(WEB_DRIVER_LOCATION, options=chrome_options)
 
     drivers = []
