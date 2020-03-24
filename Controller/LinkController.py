@@ -44,6 +44,12 @@ class LinkController:
         #encode neccesery characters (spaces)
         link = link.replace(" ", "%20")
 
+        if link[-1] != "/":
+            if link.count("/") == 2:
+                link = link + "/"
+            elif "." not in link.split("/")[-1]:
+                link = link + "/"
+
         return link
 
     def GetImageSources(self, driver):

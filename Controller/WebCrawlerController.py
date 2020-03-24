@@ -24,8 +24,8 @@ linkCtrl = LinkController()
 robotCtrl = RobotController()
 
 
-THREADS = 5
-TIMEOUT = 3 #5
+THREADS = 10
+TIMEOUT = 5
 MAX_DEPTH = 3
 
 SEEDs = [#("http://gov.si/", 1),
@@ -80,6 +80,7 @@ def main():
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=THREADS) as executor:
         while len(frontier) != 0:
+            print("Frontier length:", len(frontier))
             future = []
 
             for threadNumber in range(THREADS):
@@ -89,22 +90,27 @@ def main():
                     while page is None:
                         if len(frontier) != 0:
                             page, depth = frontier.pop()
+
+                            if depth >= MAX_DEPTH:
+                                history.add(page.url)
+                                page, depth = None, None
                         else:
                             break
 
-
-                if page is not None:
-                    if depth < MAX_DEPTH:
+                    if page is not None:
                         future.append(executor.submit(GetPageData, drivers[threadNumber], page, depth))
 
             # WAIT
+            print("WAIT!")
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
-            print("STEP - ALL DONE")
             # remove duplicates from frontier
+            print(len(frontier))
             frontier = RemoveDuplicates(frontier)
+            print(len(frontier))
 
             # remove history from list
             frontier = [(page, depth) for page, depth in frontier if page.url not in history]
+            print(len(frontier))
 
             for i in range(len(frontier)):
                 if frontier[i][0].id is None:
@@ -112,7 +118,7 @@ def main():
                     frontier[i] = newTuple
 
             # WAIT
-            concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
+            #concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
 
 def GetPageData(driver, page, depth):
@@ -120,17 +126,27 @@ def GetPageData(driver, page, depth):
     global history
 
     print("Started:", page.url)
-    driver.get(page.url)
-    requestOriginal = requests.get(page.url)
 
-    # Timeout needed for Web page to render (read more about it)
-    time.sleep(TIMEOUT)
+    try:
+        requestOriginal = requests.get(page.url)
+        driver.get(page.url)
 
-    requestFinal = requests.get(driver.current_url)
+        # Timeout needed for Web page to render (read more about it)
+        time.sleep(TIMEOUT)
+
+        requestFinal = requests.get(driver.current_url)
+    except:
+        history.add(page.url)
+        print("Finished:", page.url, "Page ERROR")
+        return
 
     # Če je že v history pomeni da je do tega prišlo po kakem drugem redirectu
     if driver.current_url not in history:
-        history.add(driver.current_url)
+        cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
+
+        history.add(page.url)
+        history.add(cleanedFinalUrl)
+
         page.BindData("HTML", "HTML CONTENT", 1)
         pageBusinessCtrl.Update(page)
 
@@ -143,17 +159,15 @@ def GetPageData(driver, page, depth):
             if newPage:
                 frontier.append((newPage, depth+1))
 
-
-
         # Get images
         images = [source for source in linkCtrl.GetImageSources(driver)]
 
         #save to database
 
+    else:
+        history.add(page.url)
 
-
-    print("Finished:", page.url, requestOriginal.status_code, " --> ", driver.current_url, requestFinal.status_code)
-
+    print("Finished:", page.url, requestOriginal.status_code, " --> ", cleanedFinalUrl, requestFinal.status_code)
 
 
 def InitFrontier(driver, sites):
@@ -167,7 +181,7 @@ def InitFrontier(driver, sites):
         requestFinal = requests.get(driver.current_url)
         print(requestFinal.url)
 
-        page = siteCtrl.CreateNewPage(requestFinal.url)
+        page = siteCtrl.CreateNewPage(linkCtrl.CleanLink(requestFinal.url))
         page = pageBusinessCtrl.Insert(page)
 
         pageInfos.append((page, 1))
@@ -178,12 +192,20 @@ def InitFrontier(driver, sites):
 def RemoveDuplicates(frontier):
     check_val = set()  # Check Flag
     res = []
+
+    for i in frontier:
+        if i[0].id is not None:
+            res.append(i)
+            check_val.add(i[0].url)
+
     for i in frontier:
         if i[0].url not in check_val:
             res.append(i)
             check_val.add(i[0].url)
 
     return res
+
+
 
 if __name__ == "__main__":
     main()
