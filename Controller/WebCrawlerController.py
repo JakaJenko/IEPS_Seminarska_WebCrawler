@@ -3,6 +3,7 @@ import threading
 import pathlib
 import time
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from Business.Page.PageBusinessController import PageBusinessController
 from Controller.LinkController import LinkController
@@ -10,15 +11,20 @@ from Controller.RobotController import RobotController
 from Controller.SiteController import SiteController
 from Business.Site.SiteBusinessController import SiteBusinessController
 from Business.Page.PageBusinessController import PageBusinessController
+from Business.Image.ImageBusinessController import ImageBusinessController
 from Business.Site.SiteInfo import SiteInfo
+from Business.Image.ImageInfo import ImageInfo
 from sys import platform
 import sys
 import requests
 import urllib.robotparser
 from urllib.parse import urlparse
 
+#https://e-uprava.gov.si/o-e-upravimailto:ekc@gov.si?view_mode=2
+
 siteBusinessCtrl = SiteBusinessController()
 pageBusinessCtrl = PageBusinessController()
+imageBusinessCtrl = ImageBusinessController()
 
 linkCtrl = LinkController()
 robotCtrl = RobotController()
@@ -26,14 +32,14 @@ robotCtrl = RobotController()
 
 THREADS = 10
 TIMEOUT = 5
-MAX_DEPTH = 3
+MAX_DEPTH = 5
 
-SEEDs = [#("http://gov.si/", 1),
-         ("http://evem.gov.si/", 1),
-         ("http://e-uprava.gov.si/", 3),
-         ("http://e-prostor.gov.si/", 3)]
+SEEDs = ["http://gov.si/",
+         "http://evem.gov.si/",
+         "http://e-uprava.gov.si/",
+         "http://e-prostor.gov.si/"]
 
-sites = [SiteInfo(seed[0]) for seed in SEEDs]
+sites = [SiteInfo(seed) for seed in SEEDs]
 
 for site in sites:
     site = siteBusinessCtrl.Insert(site)
@@ -70,8 +76,10 @@ def main():
 
     drivers = []
     for i in range(THREADS):
-        drivers.append(webdriver.Chrome(WEB_DRIVER_LOCATION, options=chrome_options))
-    #driver.set_page_load_timeout(TIMEOUT+5)
+        driver = webdriver.Chrome(WEB_DRIVER_LOCATION, options=chrome_options)
+        driver.set_page_load_timeout(TIMEOUT + 5)
+        drivers.append(driver)
+
 
     # Add first pages to frontier
     frontier = InitFrontier(drivers[0], sites)
@@ -157,12 +165,14 @@ def GetPageData(driver, page, depth):
             newPage = siteCtrl.CreateNewPage(link)
 
             if newPage:
+                newPage.AddConnectedPages([page])
                 frontier.append((newPage, depth+1))
 
         # Get images
-        images = [source for source in linkCtrl.GetImageSources(driver)]
+        images = [ImageInfo(page.id, source) for source in linkCtrl.GetImageSources(driver)]
 
-        #save to database
+        for image in images:
+            imageBusinessCtrl.Insert(image)
 
     else:
         history.add(page.url)
@@ -175,9 +185,14 @@ def InitFrontier(driver, sites):
 
     #najde prve strani, da se dajo v frontier
     for site in sites:
-        print("Started:", site.domain)
-        driver.get(site.domain)
-        time.sleep(1)
+        print("Started - initialize:", site.domain)
+        try:
+            driver.get(site.domain)
+            time.sleep(1)
+        except TimeoutException as ex:
+            print("Timeuted - initialize:", site.domain)
+            continue
+
         requestFinal = requests.get(driver.current_url)
         print(requestFinal.url)
 
@@ -185,6 +200,8 @@ def InitFrontier(driver, sites):
         page = pageBusinessCtrl.Insert(page)
 
         pageInfos.append((page, 1))
+        print("Finished - initialize:", site.domain)
+
 
     return pageInfos
 
