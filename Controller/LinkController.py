@@ -3,7 +3,7 @@ import re
 from urllib.parse import urlparse, urldefrag, urljoin, urlencode
 from html import unescape
 from url_normalize import url_normalize
-from  w3lib import url as w3url
+from w3lib import url as w3url
 
 class LinkController:
     def GetAllLinks(self, driver):

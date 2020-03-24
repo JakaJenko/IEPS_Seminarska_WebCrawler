@@ -24,6 +24,36 @@ class PageBusinessController(AbstractDatabaseBusinessController):
 
         return page_infos
 
+    def SelectFrontier(self):
+        page_infos = []
+
+        cur = self.conn.cursor()
+        cur.execute(
+            "SELECT id, site_id, page_type_code, url, html_content, http_status_code, accessed_time FROM crawldb.page WHERE page_type_code='FRONTIER'")
+
+        for id, site_id, page_type_code, url, html_content, http_status_code, accessed_time in cur.fetchall():
+            page_infos.append(PageInfo(site_id, url, id, page_type_code, html_content, http_status_code, accessed_time))
+
+        cur.close()
+
+        frontier = []
+        for page_info in page_infos:
+            frontier.append((page_info, int(page_info.html_content.split(';')[0])))
+
+        return frontier
+
+    def SelectHistory(self):
+        history = []
+
+        cur = self.conn.cursor()
+        cur.execute("SELECT url FROM crawldb.page WHERE page_type_code!='FRONTIER'")
+
+        for url in cur.fetchall():
+            history.append(url[0])
+
+        cur.close()
+
+        return history
 
     def SelectById(self, id):
         page_info = None
@@ -57,6 +87,10 @@ class PageBusinessController(AbstractDatabaseBusinessController):
             self.__UpdateLinksReverse(page_info)
 
         return page_info
+
+    def InsertWithDepth(self, page_info, depth):
+        page_info.html_content = str(depth) + ";" + page_info.html_content
+        return self.Insert(page_info)
 
     def Update(self, page_info):
         try:

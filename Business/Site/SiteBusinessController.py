@@ -13,7 +13,7 @@ class SiteBusinessController(AbstractDatabaseBusinessController):
         cur.execute("SELECT id, domain, robots_content, sitemap_content FROM crawldb.site")
 
         for id, domain, robots_content, sitemap_content in cur.fetchall():
-            site_infos.append(SiteInfo(id, domain, robots_content, sitemap_content))
+            site_infos.append(SiteInfo(domain, id, robots_content, sitemap_content))
 
         cur.close()
         return site_infos
@@ -26,7 +26,7 @@ class SiteBusinessController(AbstractDatabaseBusinessController):
         cur.execute("SELECT id, domain, robots_content, sitemap_content FROM crawldb.site WHERE id=%s", (id,))
 
         value = cur.fetchone()[0]
-        site_info = SiteInfo(value.id, value.domain, value.robots_content, value.sitemap_content)
+        site_info = SiteInfo(value.domain, value.id, value.robots_content, value.sitemap_content)
 
         cur.close()
         return site_info

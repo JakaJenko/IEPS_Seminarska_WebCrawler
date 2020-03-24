@@ -13,6 +13,7 @@ from Business.Site.SiteBusinessController import SiteBusinessController
 from Business.Page.PageBusinessController import PageBusinessController
 from Business.Image.ImageBusinessController import ImageBusinessController
 from Business.Site.SiteInfo import SiteInfo
+from Controller.StartController import StartController
 from Business.Image.ImageInfo import ImageInfo
 from sys import platform
 import sys
@@ -21,6 +22,8 @@ import urllib.robotparser
 from urllib.parse import urlparse
 
 #https://e-uprava.gov.si/o-e-upravimailto:ekc@gov.si?view_mode=2
+
+startCtrl = StartController()
 
 siteBusinessCtrl = SiteBusinessController()
 pageBusinessCtrl = PageBusinessController()
@@ -34,21 +37,11 @@ THREADS = 10
 TIMEOUT = 5
 MAX_DEPTH = 5
 
-SEEDs = ["http://gov.si/",
-         "http://evem.gov.si/",
-         "http://e-uprava.gov.si/",
-         "http://e-prostor.gov.si/"]
-
-sites = [SiteInfo(seed) for seed in SEEDs]
-
-for site in sites:
-    site = siteBusinessCtrl.Insert(site)
+# frontier = [(SiteInfo, depth), ...]
+#sites, frontier, history = startCtrl.FreshStart()
+sites, frontier, history = startCtrl.Continue()
 
 siteCtrl = SiteController(sites)
-
-# frontier = [(SiteInfo, depth), ...]
-frontier = []
-history = set()
 
 
 def main():
@@ -86,7 +79,8 @@ def main():
 
 
     # Add first pages to frontier
-    frontier = InitFrontier(drivers[0], sites)
+    if len(frontier) == 0:
+        frontier = InitFrontier(drivers[0], sites)
 
     #sys.exit()
 
@@ -126,7 +120,7 @@ def main():
 
             for i in range(len(frontier)):
                 if frontier[i][0].id is None:
-                    newTuple = (pageBusinessCtrl.Insert(frontier[i][0]), frontier[i][1])
+                    newTuple = (pageBusinessCtrl.InsertWithDepth(frontier[i][0], frontier[i][1]), frontier[i][1])
                     frontier[i] = newTuple
 
             # WAIT
@@ -178,10 +172,11 @@ def GetPageData(driver, page, depth):
         for image in images:
             imageBusinessCtrl.Insert(image)
 
+        print("Finished:", page.url, requestOriginal.status_code, " --> ", cleanedFinalUrl, requestFinal.status_code)
     else:
         history.add(page.url)
+        print("Finished:", page.url, "Page already visited")
 
-    print("Finished:", page.url, requestOriginal.status_code, " --> ", cleanedFinalUrl, requestFinal.status_code)
 
 
 def InitFrontier(driver, sites):
@@ -227,19 +222,15 @@ def RemoveDuplicates(frontier):
     return res
 
 
-
 if __name__ == "__main__":
     main()
 
-#Faza 1
-#iskanje linkov - href, , src, onclick, location.href, document.location - Julijan
-#urejanje linkov (je na slajdih kaj je treba) - Julijan
-#Mogoče lahko uporabima request.head za kaj (preusmeritve?...) - Jaka
-#Premakni History v GetPageData, tam poglej če je kam preusmeri (lahko si zapomnema samo končno stran, ne cele poti preusmeritev) - Jaka
-#Upoštevaj robots.txt - Edn ko ma cajt
+#Jaka
+#Iz baze v frontier
+#Linke page1 -> page2 in page3 -> page2
+#Link DUPLICATE -> HTML
 
-#Faza 2
-#V GetPageData poglej kake podatke dobiš - recimo če je večje kot 10MB je verjetno kak file
-
-#Faza 3
-#Shranjevanje v bazo
+#Julijan
+#Site map
+#Page data - data_type
+#Duplikate kk najt
