@@ -2,6 +2,7 @@ import concurrent.futures
 import threading
 import pathlib
 import time
+import keyboard
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
@@ -123,6 +124,10 @@ def main():
                     newTuple = (pageBusinessCtrl.InsertWithDepth(frontier[i][0], frontier[i][1]), frontier[i][1])
                     frontier[i] = newTuple
 
+            if keyboard.is_pressed('q'):  # if key 'q' is pressed
+                print('Stop!')
+                break
+
             # WAIT
             #concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
@@ -226,7 +231,6 @@ if __name__ == "__main__":
     main()
 
 #Jaka
-#Iz baze v frontier
 #Linke page1 -> page2 in page3 -> page2
 #Link DUPLICATE -> HTML
 
