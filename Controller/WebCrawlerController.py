@@ -19,6 +19,7 @@ from Business.Image.ImageInfo import ImageInfo
 from sys import platform
 import sys
 import requests
+import os
 import urllib.robotparser
 from urllib.parse import urlparse
 
@@ -127,9 +128,10 @@ def main():
                     newTuple = (pageBusinessCtrl.InsertWithDepth(frontier[i][0], frontier[i][1]), frontier[i][1])
                     frontier[i] = newTuple
 
-            if keyboard.is_pressed('q'):  # if key 'q' is pressed
-                print('Stop!')
-                sys.exit()
+            if os.name == "nt":
+                if keyboard.is_pressed('q'):  # if key 'q' is pressed
+                    print('Stop!')
+                    sys.exit()
 
             # WAIT
             #concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
