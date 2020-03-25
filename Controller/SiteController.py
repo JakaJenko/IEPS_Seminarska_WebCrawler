@@ -40,6 +40,6 @@ class SiteController:
     def GetIPFromSite(self, site):
         domena = site.domain
         uri = urlparse(domena)
-        domain_name = f"{uri.netloc}"
+        domain_name = "{uri.netloc}".format(uri=uri)
         ip = socket.gethostbyname(domain_name)
         return ip
