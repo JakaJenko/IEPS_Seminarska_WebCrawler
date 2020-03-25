@@ -273,6 +273,4 @@ if __name__ == "__main__":
 #Link DUPLICATE -> HTML
 
 #Julijan
-#Site map
 #Page data - data_type
-#Duplikate kk najt
