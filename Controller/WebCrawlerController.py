@@ -39,8 +39,8 @@ TIMEOUT = 5
 MAX_DEPTH = 5
 
 # frontier = [(SiteInfo, depth), ...]
-#sites, frontier, history = startCtrl.FreshStart()
-sites, frontier, history = startCtrl.Continue()
+sites, frontier, history = startCtrl.FreshStart()
+#sites, frontier, history = startCtrl.Continue()
 
 siteCtrl = SiteController(sites)
 
@@ -110,13 +110,16 @@ def main():
             # WAIT
             print("WAIT!")
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
-            # remove duplicates from frontier
+
             print(len(frontier))
+
+            # remove and save duplicate urls from frontier
             frontier = RemoveDuplicates(frontier)
             print(len(frontier))
 
-            # remove history from list
-            frontier = [(page, depth) for page, depth in frontier if page.url not in history]
+            # remove and save history from list
+            #frontier = [(page, depth) for page, depth in frontier if page.url not in history]
+            frontier = RemoveHistory(frontier, history)
             print(len(frontier))
 
             for i in range(len(frontier)):
@@ -126,7 +129,7 @@ def main():
 
             if keyboard.is_pressed('q'):  # if key 'q' is pressed
                 print('Stop!')
-                break
+                sys.exit()
 
             # WAIT
             #concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
@@ -158,7 +161,8 @@ def GetPageData(driver, page, depth):
         history.add(page.url)
         history.add(cleanedFinalUrl)
 
-        page.BindData("HTML", "HTML CONTENT", 1)
+        #Updates page type, HTML conttent, status code
+        page.BindData("HTML", "HTML CONTENT", requestFinal.status_code)
         pageBusinessCtrl.Update(page)
 
         # Get links
@@ -168,7 +172,7 @@ def GetPageData(driver, page, depth):
             newPage = siteCtrl.CreateNewPage(link)
 
             if newPage:
-                newPage.AddConnectedPages([page])
+                newPage.AddPagesFrom([page])
                 frontier.append((newPage, depth+1))
 
         # Get images
@@ -212,17 +216,49 @@ def InitFrontier(driver, sites):
 
 def RemoveDuplicates(frontier):
     check_val = set()  # Check Flag
+    alreadyInDB = set()
     res = []
 
     for i in frontier:
         if i[0].id is not None:
             res.append(i)
             check_val.add(i[0].url)
+            alreadyInDB.add(i[0].url)
+            frontier.remove(i)
 
+    duplicates = []
     for i in frontier:
-        if i[0].url not in check_val:
+        if i[0].url in alreadyInDB:
+            duplicates.append(i)
+        elif i[0].url not in check_val:
             res.append(i)
             check_val.add(i[0].url)
+
+
+    for duplicate in duplicates:
+        #load existing page by url
+        existingPage = pageBusinessCtrl.SelectByUrl(duplicate[0].url)
+        existingPage.AddLinksFrom(duplicate[0].linksFrom)
+        pageBusinessCtrl.Update(existingPage)
+
+    return res
+
+
+def RemoveHistory(frontier, history):
+    res = []
+    duplicates = []
+    for i in frontier:
+        if i[0].url not in history:
+            res.append(i)
+        else:
+            duplicates.append(i)
+
+    for duplicate in duplicates:
+        #load existing page by url
+        print(duplicate[0].url)
+        existingPage = pageBusinessCtrl.SelectByUrl(duplicate[0].url)
+        existingPage.AddLinksFrom(duplicate[0].linksFrom)
+        pageBusinessCtrl.Update(existingPage)
 
     return res
 

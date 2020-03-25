@@ -3,7 +3,7 @@ from datetime import datetime
 class PageInfo():
     id = None
 
-    def __init__(self, site_id, url, id=None, page_type_code=None, html_content=None, http_status_code=None, accessed_time=None, links=[]):
+    def __init__(self, site_id, url, id=None, page_type_code=None, html_content=None, http_status_code=None, accessed_time=None, linksTo=None, linksFrom=None):
         if id is not None:
             self.id = id
             self.site_id = site_id
@@ -12,7 +12,16 @@ class PageInfo():
             self.html_content = html_content
             self.http_status_code = http_status_code
             self.accessed_time = accessed_time
-            self.links = links
+
+            if linksTo is None:
+                self.linksTo = []
+            else:
+                self.linksTo = linksTo
+
+            if linksTo is None:
+                self.linksFrom = []
+            else:
+                self.linksFrom = linksFrom
         else:
             self.site_id = site_id
             self.url = url
@@ -20,7 +29,8 @@ class PageInfo():
             self.html_content = "None"
             self.http_status_code = 0
             self.accessed_time = datetime.now()
-            self.links = []
+            self.linksTo = []
+            self.linksFrom = []
 
     def BindData(self, page_type_code, html_content, http_status_code):
         self.page_type_code = page_type_code
@@ -28,6 +38,16 @@ class PageInfo():
         self.http_status_code = http_status_code
         self.accessed_time = datetime.now()
 
-    def AddConnectedPages(self, pages):
+    def AddPagesTo(self, pages):
         for page in pages:
-            self.links.append(page.id)
+            self.linksTo.append(page.id)
+
+    def AddPagesFrom(self, pages):
+        for page in pages:
+            self.linksFrom.append(page.id)
+
+    def AddLinksTo(self, links):
+        self.linksTo.extend(links)
+
+    def AddLinksFrom(self, links):
+        self.linksFrom.extend(links)

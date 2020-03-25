@@ -62,15 +62,28 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         cur.execute("""SELECT id, site_id, page_type_code, url, html_content, http_status_code, accessed_time
                         FROM crawldb.page WHERE id=%s""", (id,))
 
-        value = cur.fetchone()[0]
-        page_info = PageInfo(value.id, value.site_id, value.page_type_code, value.url, value.html_content,
-                             value.http_status_code, value.accessed_time)
+        id, site_id, page_type_code, url, html_content, http_status_code, accessed_time = cur.fetchone()
+        page_info = PageInfo(site_id, url, id, page_type_code, html_content, http_status_code, accessed_time)
 
         cur.close()
 
         page_info = self.__LoadLinks(page_info)
         return page_info
 
+    def SelectByUrl(self, url):
+        page_info = None
+
+        cur = self.conn.cursor()
+        cur.execute("""SELECT id, site_id, page_type_code, url, html_content, http_status_code, accessed_time
+                                FROM crawldb.page WHERE url=%s""", (url,))
+
+        id, site_id, page_type_code, url, html_content, http_status_code, accessed_time  = cur.fetchone()
+        page_info = PageInfo(site_id, url, id, page_type_code, html_content, http_status_code, accessed_time)
+
+        cur.close()
+
+        page_info = self.__LoadLinks(page_info)
+        return page_info
 
     def Insert(self, page_info):
         cur = self.conn.cursor()
@@ -83,8 +96,7 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         page_info.id = value
         cur.close()
 
-        if len(page_info.links) > 0:
-            self.__UpdateLinksReverse(page_info)
+        self.__UpdateLinks(page_info)
 
         return page_info
 
@@ -102,17 +114,25 @@ class PageBusinessController(AbstractDatabaseBusinessController):
                          page_info.http_status_code, page_info.accessed_time, page_info.id))
             cur.close()
 
+            self.__UpdateLinks(page_info)
+
             return True
         except:
             return False
 
 
-    def LoadLinks(self, page_info):
+    def __LoadLinks(self, page_info):
         cur = self.conn.cursor()
         cur.execute("SELECT to_page FROM crawldb.link WHERE from_page = %s", (page_info.id,))
 
         for to_page in cur.fetchall():
-            page_info.links.append(to_page)
+            page_info.AddLinksTo([to_page[0]])
+
+
+        cur.execute("SELECT from_page FROM crawldb.link WHERE to_page = %s", (page_info.id,))
+
+        for from_page in cur.fetchall():
+            page_info.AddLinksFrom([from_page[0]])
 
         cur.close()
         return page_info
@@ -138,22 +158,12 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         try:
             cur = self.conn.cursor()
             cur.execute("DELETE FROM crawldb.link WHERE from_page = %s", (page_info.id,))
+            cur.execute("DELETE FROM crawldb.link WHERE to_page = %s", (page_info.id,))
 
-            for to_page in page_info.links:
+            for to_page in page_info.linksTo:
                 cur.execute("INSERT INTO crawldb.link (from_page, to_page) VALUES (%s, %s)", (page_info.id, to_page))
 
-            cur.close()
-            return True
-        except:
-            return False
-
-
-    def __UpdateLinksReverse(self, page_info):
-        try:
-            cur = self.conn.cursor()
-            cur.execute("DELETE FROM crawldb.link WHERE from_page = %s", (page_info.id,))
-
-            for from_page in page_info.links:
+            for from_page in page_info.linksFrom:
                 cur.execute("INSERT INTO crawldb.link (from_page, to_page) VALUES (%s, %s)", (from_page, page_info.id))
 
             cur.close()
