@@ -20,6 +20,6 @@ class SiteInfo():
         if self.id is None:
             self.domain = domain
             self.robots_content = robotsCtrl.GetRobotsContent(domain)
-            self.sitemap_content = "Sitemap"
+            self.sitemap_content = robotsCtrl.GetSitemapContent(domain)
 
         self._robot = robotsCtrl.InitRobotForSite(domain)
