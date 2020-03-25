@@ -1,7 +1,6 @@
 import urllib.robotparser
 from urllib.parse import urlparse
 import requests as req
-from reppy.robots import Robots
 
 class RobotController:
     def InitRobotForSite(self, url):
@@ -33,9 +32,14 @@ class RobotController:
     def GetSitemapContent(self, url):
         parsed_uri = urlparse(url)
         robots_url = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri) +'robots.txt'
-        rp = Robots.fetch(robots_url)
+        robots = req.get(robots_url).text
 
-        sitemaps = rp.sitemaps
+        sitemaps = []
+        for line in robots.split("\n"):
+            splited = line.split(" ")
+            if splited[0]=="Sitemap:":
+                sitemaps.append(splited[1])
+
         if len(sitemaps) == 0:
             return ""
 
