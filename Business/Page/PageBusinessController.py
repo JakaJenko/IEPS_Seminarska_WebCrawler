@@ -148,7 +148,7 @@ class PageBusinessController(AbstractDatabaseBusinessController):
                         WHERE tmp.sim >= %s""", (page_id, similarity))
         similar = []
         for p in cur.fetchall():
-            similar.append(p.id)
+            similar.append(p[0])
 
         cur.close()
         return similar

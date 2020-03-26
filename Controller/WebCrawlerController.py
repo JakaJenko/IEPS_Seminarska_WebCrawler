@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from Business.Page.PageBusinessController import PageBusinessController
+from Business.PageData.PageDataBusinessController import PageDataBusinessController
 from Controller.LinkController import LinkController
 from Controller.RobotController import RobotController
 from Controller.SiteController import SiteController
@@ -30,6 +31,7 @@ startCtrl = StartController()
 siteBusinessCtrl = SiteBusinessController()
 pageBusinessCtrl = PageBusinessController()
 imageBusinessCtrl = ImageBusinessController()
+pageDataBusinessCtrl = PageDataBusinessController()
 
 linkCtrl = LinkController()
 robotCtrl = RobotController()
@@ -45,13 +47,14 @@ sites, frontier, history = startCtrl.FreshStart()
 
 siteCtrl = SiteController(sites)
 
+lastVisitedPages = []
 
 def main():
     lock = threading.Lock()
 
     global frontier
     global history
-
+    global lastVisitedPages
 
     pathHere = pathlib.Path().absolute()
     WEB_DRIVER_LOCATION = str(pathHere) + "\..\chromedriver.exe"
@@ -112,6 +115,10 @@ def main():
             print("WAIT!")
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
+            #Remove duplicates by HTML_content
+            frontier = CombineLastInsertedPages(frontier, lastVisitedPages)
+            lastVisitedPages = []
+
             print(len(frontier))
 
             # remove and save duplicate urls from frontier
@@ -140,6 +147,7 @@ def main():
 def GetPageData(driver, page, depth):
     global frontier
     global history
+    global lastVisitedPages
 
     print("Started:", page.url)
 
@@ -159,6 +167,7 @@ def GetPageData(driver, page, depth):
     # Če je že v history pomeni da je do tega prišlo po kakem drugem redirectu
     if driver.current_url not in history:
         cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
+        lastVisitedPages.append(page)
 
         history.add(page.url)
         history.add(cleanedFinalUrl)
@@ -264,6 +273,41 @@ def RemoveHistory(frontier, history):
 
     return res
 
+
+def CombineLastInsertedPages(frontier, lastVisitedPages):
+    newFrontier = []
+
+    #page v frontierju ki imajo from_page url removanega
+    pageIdsToRemove = []
+
+    #če jih je 10 novih, da jih ne primerja med sabo, ampak posamezno z tem kar je v bazi
+    excludeIds = [lastVisitedPage.id for lastVisitedPage in lastVisitedPages]
+
+    for lastVisitedPage in lastVisitedPages:
+        similarPageIds = pageBusinessCtrl.GetSimilar(lastVisitedPage.id, 0.95)
+        print("Similar page ids:", similarPageIds)
+
+        similarPageIds = list(set(similarPageIds)-set(excludeIds))
+
+        if len(similarPageIds) > 0:
+            pageIdsToRemove.append(lastVisitedPage.id)
+
+            lastVisitedPage.page_type_code = "DUPLICATE"
+            lastVisitedPage.html_content = None
+            lastVisitedPage.AddLinksTo(similarPageIds)
+            lastVisitedPage.linksFrom = []
+            pageBusinessCtrl.Update(lastVisitedPage)
+
+            imageBusinessCtrl.DeleteByPageId(lastVisitedPage.id)
+            pageDataBusinessCtrl.DeleteByPageId(lastVisitedPage.id)
+
+        excludeIds.remove(lastVisitedPage.id)
+
+    for page, depth in frontier:
+        if page.id not in pageIdsToRemove:
+            newFrontier.append((page, depth))
+
+    return newFrontier
 
 if __name__ == "__main__":
     main()

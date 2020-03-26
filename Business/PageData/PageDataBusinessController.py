@@ -44,3 +44,13 @@ class PageDataBusinessController(AbstractDatabaseBusinessController):
             return True
         except:
             return False
+
+    def DeleteByPageId(self, pageId):
+        try:
+            cur = self.conn.cursor()
+            cur.execute("""DELETE FROM crawldb.page_data
+                            WHERE page_id = %s""", (pageId,))
+            cur.close()
+            return True
+        except:
+            return False
