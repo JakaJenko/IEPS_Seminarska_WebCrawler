@@ -1,6 +1,9 @@
 import urllib.robotparser
 from urllib.parse import urlparse
 import requests as req
+import requests
+import tika
+from tika import parser, detector
 
 class RobotController:
     def InitRobotForSite(self, url):
@@ -48,3 +51,24 @@ class RobotController:
         sitemap = req.get(sitemap_url)
 
         return sitemap.text
+
+    def GetContentTypeFromRequest(self, r):
+        try:
+            if r.headers['Content-Type'].startswith("text/html"):
+                return ("HTML", 0)
+            else:
+                type = detector.from_buffer(r.raw.read(2048)).split("/")[1]
+                if type == "x-tika-msoffice":
+                    if r.url.endswith("doc"):
+                        type = "DOC"
+                    elif r.url.endswith("docx"):
+                        type = "DOCX"
+                    elif r.url.endswith("ppt"):
+                        type = "PPT"
+                    elif r.url.endswith("pptx"):
+                        type = "PPTX"
+                elif type == "pdf":
+                    type = "PDF"
+                return ("BINARY", type)
+        except:
+            return ("BINARY", 0)

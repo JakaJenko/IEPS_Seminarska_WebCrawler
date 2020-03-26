@@ -21,8 +21,8 @@ from sys import platform
 import sys
 import requests
 import os
-import urllib.robotparser
-from urllib.parse import urlparse
+from Business.PageData import PageDataInfo
+from Business.PageData.PageDataBusinessController import PageDataBusinessController
 
 #https://e-uprava.gov.si/o-e-upravimailto:ekc@gov.si?view_mode=2
 
@@ -68,7 +68,7 @@ def main():
     chrome_options.add_argument("--headless")
 
     # Adding a specific user agent
-    chrome_options.add_argument("user-agent=fri-ieps-CoronaBojz123")
+    chrome_options.add_argument("user-agent=fri-ieps-CoronaBojz1235")
 
     #disabling automatic downloads
     profile = {"download.default_directory": "NUL", "download.prompt_for_download": False, }
@@ -115,10 +115,6 @@ def main():
             print("WAIT!")
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
-            #Remove duplicates by HTML_content
-            frontier = CombineLastInsertedPages(frontier, lastVisitedPages)
-            lastVisitedPages = []
-
             print(len(frontier))
 
             # remove and save duplicate urls from frontier
@@ -147,18 +143,17 @@ def main():
 def GetPageData(driver, page, depth):
     global frontier
     global history
-    global lastVisitedPages
 
     print("Started:", page.url)
 
     try:
-        requestOriginal = requests.get(page.url)
+        requestOriginal = requests.get(page.url, timeout=TIMEOUT, stream=True)
         driver.get(page.url)
 
         # Timeout needed for Web page to render (read more about it)
         time.sleep(TIMEOUT)
 
-        requestFinal = requests.get(driver.current_url)
+        requestFinal = requests.get(driver.current_url, timeout=TIMEOUT, stream=True)
     except:
         history.add(page.url)
         print("Finished:", page.url, "Page ERROR")
@@ -172,8 +167,14 @@ def GetPageData(driver, page, depth):
         history.add(page.url)
         history.add(cleanedFinalUrl)
 
-        #Updates page type, HTML conttent, status code
-        page.BindData("HTML", "HTML CONTENT", requestFinal.status_code)
+        # Get data_type
+        page_type, data_type = robotCtrl.GetContentTypeFromRequest(requestFinal)
+
+        #Updates page type, HTML content, status code
+        if page_type == "BINARY":
+            page.BindData(page_type, "NULL", requestFinal.status_code)
+        else:
+            page.BindData(page_type, driver.page_source, requestFinal.status_code)
         pageBusinessCtrl.Update(page)
 
         # Get links
@@ -191,6 +192,11 @@ def GetPageData(driver, page, depth):
 
         for image in images:
             imageBusinessCtrl.Insert(image)
+
+        # Page Data Info
+        if page_type == "BINARY":
+            pdInfo = PageDataInfo(page.id, data_type)
+            pageDataBussinessCtrl.Insert(pdInfo)
 
         print("Finished:", page.url, requestOriginal.status_code, " --> ", cleanedFinalUrl, requestFinal.status_code)
     else:

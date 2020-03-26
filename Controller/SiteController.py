@@ -1,6 +1,7 @@
 from urllib.parse import urlparse
 from Business.Page.PageInfo import PageInfo
 from Controller.RobotController import RobotController
+import socket
 
 robotCtrl = RobotController()
 
@@ -35,3 +36,10 @@ class SiteController:
                 return site
 
         return False
+
+    def GetIPFromSite(self, site):
+        domena = site.domain
+        uri = urlparse(domena)
+        domain_name = "{uri.netloc}".format(uri=uri)
+        ip = socket.gethostbyname(domain_name)
+        return ip
