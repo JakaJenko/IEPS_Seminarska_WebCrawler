@@ -61,11 +61,12 @@ class RobotController:
                 if type == "x-tika-msoffice":
                     if r.url.endswith("doc"):
                         type = "DOC"
-                    elif r.url.endswith("docx"):
-                        type = "DOCX"
                     elif r.url.endswith("ppt"):
                         type = "PPT"
-                    elif r.url.endswith("pptx"):
+                elif type =='x-tika-ooxml':
+                    if r.url.endswith('docx'):
+                        type = "DOCX"
+                    elif r.url.endswith('pptx'):
                         type = "PPTX"
                 elif type == "pdf":
                     type = "PDF"
