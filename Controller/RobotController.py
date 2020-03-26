@@ -73,8 +73,3 @@ class RobotController:
                 return ("BINARY", type)
         except:
             return ("BINARY", 0)
-
-r = requests.get("https://file-examples.com/wp-content/uploads/2017/02/file-sample_1MB.docx", timeout=5, stream=True)
-
-rc = RobotController()
-print(rc.GetContentTypeFromRequest(r))
