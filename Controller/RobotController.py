@@ -61,14 +61,20 @@ class RobotController:
                 if type == "x-tika-msoffice":
                     if r.url.endswith("doc"):
                         type = "DOC"
-                    elif r.url.endswith("docx"):
-                        type = "DOCX"
                     elif r.url.endswith("ppt"):
                         type = "PPT"
-                    elif r.url.endswith("pptx"):
+                elif type =='x-tika-ooxml':
+                    if r.url.endswith('docx'):
+                        type = "DOCX"
+                    elif r.url.endswith('pptx'):
                         type = "PPTX"
                 elif type == "pdf":
                     type = "PDF"
                 return ("BINARY", type)
         except:
             return ("BINARY", 0)
+
+r = requests.get("https://file-examples.com/wp-content/uploads/2017/02/file-sample_1MB.docx", timeout=5, stream=True)
+
+rc = RobotController()
+print(rc.GetContentTypeFromRequest(r))
