@@ -39,7 +39,7 @@ robotCtrl = RobotController()
 pageCtrl = PageController()
 
 
-THREADS = 10
+THREADS = 5
 TIMEOUT = 5
 MAX_DEPTH = 5
 
@@ -196,18 +196,28 @@ def GetPageData(driver, page, depth):
 
         print("Added to hitroy:", page.url, "->", cleanedFinalUrl)
 
+        final_page_type, final_data_type = robotCtrl.GetContentTypeFromRequest(requestFinal)
+
         #shrani cleanedFinalUrl v bazo, če ni enak page.url. page.url -> REDIRECT -> cleanedFinalUrl
 
         #page.url -> REDIRECT -> cleanedFinalUrl
         if page.url != cleanedFinalUrl:
             lastRedirects.append((page, cleanedFinalUrl, requestFinal.status_code, depth))
 
-        # Get data_type
-        page_type, data_type = robotCtrl.GetContentTypeFromRequest(requestFinal)
+        # če je redirect iz html -> binary
+        if final_data_type == "BINARY":
+            page.BindData(final_page_type, "NULL", requestFinal.status_code)
+            pageBusinessCtrl.Update(page)
 
-        #Updates page type, HTML content, status code
-        page.BindData(page_type, driver.page_source, requestFinal.status_code)
-        pageBusinessCtrl.Update(page)
+            pdInfo = PageDataInfo(page.id, final_data_type)
+            pageDataBusinessCtrl.Insert(pdInfo)
+            print("Finished:", page.url, requestOriginal.status_code, " --> ", cleanedFinalUrl,
+                  requestFinal.status_code)
+            return
+        else: #če je redirect html -> html
+            # Updates page type, HTML content, status code
+            page.BindData(final_page_type, driver.page_source, requestFinal.status_code)
+            pageBusinessCtrl.Update(page)
 
         # Get links
         links = linkCtrl.GetAllLinks(driver)
