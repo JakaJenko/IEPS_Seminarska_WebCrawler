@@ -41,9 +41,13 @@ class PageDataBusinessController(AbstractDatabaseBusinessController):
 
     def Insert(self, page_data_info):
         cur = self.conn.cursor()
-        cur.execute("INSERT INTO crawldb.page_data (page_id, data_type_code, data) VALUES (%s, %s, %s)",
-                    (page_data_info.page_id, page_data_info.data_type_code, page_data_info.data))
-        return True
+        try:
+            cur.execute("""INSERT INTO crawldb.page_data (page_id, data_type_code) VALUES (%s, %s)""",
+                        (page_data_info.page_id, page_data_info.data_type_code))
+            cur.close()
+            return True
+        except:
+            return False
 
     def Update(self, page_data_info):
         try:

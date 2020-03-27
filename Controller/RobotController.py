@@ -70,6 +70,8 @@ class RobotController:
                         type = "PPTX"
                 elif type == "pdf":
                     type = "PDF"
+                else:
+                    type = "OTHER"
                 return ("BINARY", type)
         except:
             return ("BINARY", 0)
