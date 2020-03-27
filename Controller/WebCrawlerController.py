@@ -44,8 +44,8 @@ TIMEOUT = 5
 MAX_DEPTH = 5
 
 # frontier = [(SiteInfo, depth), ...]
-sites, frontier, history = startCtrl.FreshStart()
-#sites, frontier, history = startCtrl.Continue()
+#sites, frontier, history = startCtrl.FreshStart()
+sites, frontier, history = startCtrl.Continue()
 
 siteCtrl = SiteController(sites)
 
