@@ -13,7 +13,7 @@ class ImageBusinessController(AbstractDatabaseBusinessController):
         cur.execute("SELECT id, page_id, filename, content_type, data, accessed_time FROM crawldb.image")
 
         for id, page_id, filename, content_type, data, accessed_time  in cur.fetchall():
-            images.append(ImageInfo(id, page_id, filename, content_type, data, accessed_time ))
+            images.append(ImageInfo(page_id, None, id, filename, content_type, data, accessed_time))
 
         cur.close()
         return images
@@ -23,9 +23,21 @@ class ImageBusinessController(AbstractDatabaseBusinessController):
         cur.execute("SELECT id, page_id, filename, content_type, data, accessed_time FROM crawldb.image WHERE id=%s", (id,))
 
         value = cur.fetchone()[0]
-        image_info = ImageInfo(value.id, value.page_id, value.filename, value.content_type, value.data, value.accessed_time)
+        image_info = ImageInfo(value.page_id, None, value.id, value.filename, value.content_type, value.data, value.accessed_time)
         cur.close()
         return image_info
+
+    def SelectByPageId(self, page_id):
+        image_infos = []
+
+        cur = self.conn.cursor()
+        cur.execute("SELECT id, page_id, data_type_code, data FROM crawldb.page_data WHERE page_id=%s", (page_id,))
+
+        for id, page_id, filename, content_type, data, accessed_time  in cur.fetchall():
+            page_data_info = ImageInfo(page_id, None, id, filename, content_type, data, accessed_time)
+
+        cur.close()
+        return image_infos
 
     def Insert(self, image_info):
         cur = self.conn.cursor()

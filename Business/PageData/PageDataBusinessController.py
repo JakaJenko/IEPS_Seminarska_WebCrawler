@@ -13,7 +13,7 @@ class PageDataBusinessController(AbstractDatabaseBusinessController):
         cur.execute("SELECT id, page_id, data_type_code, data FROM crawldb.page_data")
 
         for id, page_id, data_type_code, data in cur.fetchall():
-            page_data_infos.append(PageDataInfo(id, page_id, data_type_code, data ))
+            page_data_infos.append(PageDataInfo(page_id, data_type_code, data, id))
 
         cur.close()
         return page_data_infos
@@ -23,9 +23,21 @@ class PageDataBusinessController(AbstractDatabaseBusinessController):
         cur.execute("SELECT id, page_id, data_type_code, data FROM crawldb.page_data WHERE id=%s", (id,))
 
         value = cur.fetchone()[0]
-        page_data_info = PageDataInfo(value.id, value.page_id, value.data_type_code, value.data)
+        page_data_info = PageDataInfo(value.page_id, value.data_type_code, value.data, value.id)
         cur.close()
         return page_data_info
+
+    def SelectByPageId(self, page_id):
+        page_data_infos = []
+
+        cur = self.conn.cursor()
+        cur.execute("SELECT id, page_id, data_type_code, data FROM crawldb.page_data WHERE page_id=%s", (page_id,))
+
+        for id, page_id, data_type_code, data in cur.fetchall():
+            page_data_infos.append(PageDataInfo(page_id, data_type_code, data, id))
+
+        cur.close()
+        return page_data_infos
 
     def Insert(self, page_data_info):
         cur = self.conn.cursor()

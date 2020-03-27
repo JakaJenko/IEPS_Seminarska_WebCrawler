@@ -9,6 +9,7 @@ from selenium.webdriver.chrome.options import Options
 from Business.Page.PageBusinessController import PageBusinessController
 from Business.PageData.PageDataBusinessController import PageDataBusinessController
 from Controller.LinkController import LinkController
+from Controller.PageController import PageController
 from Controller.RobotController import RobotController
 from Controller.SiteController import SiteController
 from Business.Site.SiteBusinessController import SiteBusinessController
@@ -21,7 +22,7 @@ from sys import platform
 import sys
 import requests
 import os
-from Business.PageData import PageDataInfo
+from Business.PageData.PageDataInfo import PageDataInfo
 from Business.PageData.PageDataBusinessController import PageDataBusinessController
 
 #https://e-uprava.gov.si/o-e-upravimailto:ekc@gov.si?view_mode=2
@@ -35,6 +36,7 @@ pageDataBusinessCtrl = PageDataBusinessController()
 
 linkCtrl = LinkController()
 robotCtrl = RobotController()
+pageCtrl = PageController()
 
 
 THREADS = 10
@@ -48,6 +50,7 @@ sites, frontier, history = startCtrl.FreshStart()
 siteCtrl = SiteController(sites)
 
 lastVisitedPages = []
+lastRedirects = []
 
 def main():
     lock = threading.Lock()
@@ -55,6 +58,7 @@ def main():
     global frontier
     global history
     global lastVisitedPages
+    global lastRedirects
 
     pathHere = pathlib.Path().absolute()
     WEB_DRIVER_LOCATION = str(pathHere) + "\..\chromedriver.exe"
@@ -91,6 +95,7 @@ def main():
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=THREADS) as executor:
         while len(frontier) != 0:
+            print("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||")
             print("Frontier length:", len(frontier))
             future = []
 
@@ -103,7 +108,7 @@ def main():
                             page, depth = frontier.pop()
 
                             if depth >= MAX_DEPTH:
-                                history.add(page.url)
+                                print("Depth max:", page.url)
                                 page, depth = None, None
                         else:
                             break
@@ -114,6 +119,11 @@ def main():
             # WAIT
             print("WAIT!")
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
+
+            if len(lastRedirects) > 0:
+                ManageRedirects(lastRedirects)
+
+            lastRedirects = []
 
             print(len(frontier))
 
@@ -128,6 +138,7 @@ def main():
 
             for i in range(len(frontier)):
                 if frontier[i][0].id is None:
+                    #print("Inserting in DB:", frontier[i][0].id, frontier[i][0].url, "From page id:", frontier[i][0].linksFrom)
                     newTuple = (pageBusinessCtrl.InsertWithDepth(frontier[i][0], frontier[i][1]), frontier[i][1])
                     frontier[i] = newTuple
 
@@ -143,11 +154,15 @@ def main():
 def GetPageData(driver, page, depth):
     global frontier
     global history
+    global lastVisitedPages
+    global lastRedirects
 
     print("Started:", page.url)
 
     try:
         requestOriginal = requests.get(page.url, timeout=TIMEOUT, stream=True)
+        start_page_type, start_data_type = robotCtrl.GetContentTypeFromRequest(requestOriginal)
+
         driver.get(page.url)
 
         # Timeout needed for Web page to render (read more about it)
@@ -155,26 +170,43 @@ def GetPageData(driver, page, depth):
 
         requestFinal = requests.get(driver.current_url, timeout=TIMEOUT, stream=True)
     except:
+        print("Added to hitroy:", page.url)
         history.add(page.url)
         print("Finished:", page.url, "Page ERROR")
         return
 
-    # Če je že v history pomeni da je do tega prišlo po kakem drugem redirectu
-    if driver.current_url not in history:
-        cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
-        lastVisitedPages.append(page)
+    cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
 
+    # Če je BINARY potem se gleda drugače
+    if start_page_type == "BINARY":  # and page.url not in history: (to tk al tk ne bi smelo bit)
+        print("Added to hitroy:", page.url, "BINARY")
         history.add(page.url)
-        history.add(cleanedFinalUrl)
+
+        page_type, data_type = robotCtrl.GetContentTypeFromRequest(requestOriginal)
+        page.BindData(page_type, "NULL", requestOriginal.status_code)
+        pageBusinessCtrl.Update(page)
+
+        pdInfo = PageDataInfo(page.id, data_type)
+        pageDataBusinessCtrl.Insert(pdInfo)
+
+    # Če je že v history pomeni da je do tega prišlo po kakem drugem redirectu
+    elif cleanedFinalUrl not in history:
+        lastVisitedPages.append(page)
+        history.add(page.url)
+
+        print("Added to hitroy:", page.url, "->", cleanedFinalUrl)
+
+        #shrani cleanedFinalUrl v bazo, če ni enak page.url. page.url -> REDIRECT -> cleanedFinalUrl
+
+        #page.url -> REDIRECT -> cleanedFinalUrl
+        if page.url != cleanedFinalUrl:
+            lastRedirects.append((page, cleanedFinalUrl, requestFinal.status_code, depth))
 
         # Get data_type
         page_type, data_type = robotCtrl.GetContentTypeFromRequest(requestFinal)
 
         #Updates page type, HTML content, status code
-        if page_type == "BINARY":
-            page.BindData(page_type, "NULL", requestFinal.status_code)
-        else:
-            page.BindData(page_type, driver.page_source, requestFinal.status_code)
+        page.BindData(page_type, driver.page_source, requestFinal.status_code)
         pageBusinessCtrl.Update(page)
 
         # Get links
@@ -193,15 +225,17 @@ def GetPageData(driver, page, depth):
         for image in images:
             imageBusinessCtrl.Insert(image)
 
-        # Page Data Info
-        if page_type == "BINARY":
-            pdInfo = PageDataInfo(page.id, data_type)
-            pageDataBussinessCtrl.Insert(pdInfo)
 
         print("Finished:", page.url, requestOriginal.status_code, " --> ", cleanedFinalUrl, requestFinal.status_code)
     else:
         history.add(page.url)
-        print("Finished:", page.url, "Page already visited")
+
+        finalVisitedPage = pageBusinessCtrl.SelectByUrl(cleanedFinalUrl)
+        page.AddLinksTo([finalVisitedPage.id])
+        pageBusinessCtrl.Update(page)
+
+        print("----")
+        print("Finished:", page.url, "redireted to -> ", driver.current_url, "already visited")
 
 
 
@@ -232,47 +266,75 @@ def InitFrontier(driver, sites):
 
 
 def RemoveDuplicates(frontier):
+    print("------------------------Removing duplicates from frontier------------------------")
     check_val = set()  # Check Flag
+
+    #Že vpisan v bazo
     alreadyInDB = set()
+
+    #Ustvarjen, ampak še ni v bazi
+    alreadyExists = set()
     res = []
 
     for i in frontier:
-        if i[0].id is not None:
-            res.append(i)
+        if i[0].url not in check_val and i[0].id is not None:
+            #print("Already in DB-0:", i[0].id, i[0].url)
+            #res.append(i)
             check_val.add(i[0].url)
             alreadyInDB.add(i[0].url)
-            frontier.remove(i)
+            #frontier.remove(i)
 
-    duplicates = []
+    for i in frontier:
+        if i[0].url not in check_val and pageBusinessCtrl.IsUrlInDB(i[0].url):
+            #print("Already in DB-1:", i[0].id, i[0].url)
+            #res.append(i)
+            check_val.add(i[0].url)
+            alreadyInDB.add(i[0].url)
+            #frontier.remove(i)
+
+
     for i in frontier:
         if i[0].url in alreadyInDB:
-            duplicates.append(i)
+            #print("Already in DB-2:", i[0].id, i[0].url)
+            #duplicates.append(i)
+
+            #print("Fixing duplicate:", i[0].id, i[0].url)
+            # load existing page by url
+            existingPage = pageBusinessCtrl.SelectByUrl(i[0].url)
+            existingPage.AddLinksFrom(i[0].linksFrom)
+            pageBusinessCtrl.Update(existingPage)
+            res.append((existingPage, i[1]))
+
         elif i[0].url not in check_val:
+            #print("Not duplicated:", i[0].id, i[0].url)
             res.append(i)
             check_val.add(i[0].url)
-
-
-    for duplicate in duplicates:
-        #load existing page by url
-        existingPage = pageBusinessCtrl.SelectByUrl(duplicate[0].url)
-        existingPage.AddLinksFrom(duplicate[0].linksFrom)
-        pageBusinessCtrl.Update(existingPage)
+        else:
+            #print("Duplicated:", i[0].id, i[0].url)
+            #Če je duplilikat najdi z kom je in mu dej LinksFrom
+            for j in res:
+                if j[0].url == i[0].url:
+                    j[0].AddLinksFrom(i[0].linksFrom)
+                    break
 
     return res
 
 
 def RemoveHistory(frontier, history):
+    print("------------------------Removing duplicates from history------------------------")
+
     res = []
     duplicates = []
     for i in frontier:
         if i[0].url not in history:
+            #print("Not in history:", i[0].id, i[0].url)
             res.append(i)
         else:
             duplicates.append(i)
 
     for duplicate in duplicates:
         #load existing page by url
-        print(duplicate[0].url)
+        #print("Duplicates in history:", duplicate[0].id, duplicate[0].url)
         existingPage = pageBusinessCtrl.SelectByUrl(duplicate[0].url)
         existingPage.AddLinksFrom(duplicate[0].linksFrom)
         pageBusinessCtrl.Update(existingPage)
@@ -291,7 +353,7 @@ def CombineLastInsertedPages(frontier, lastVisitedPages):
 
     for lastVisitedPage in lastVisitedPages:
         similarPageIds = pageBusinessCtrl.GetSimilar(lastVisitedPage.id, 0.95)
-        print("Similar page ids:", similarPageIds)
+        print("Similar to page:", lastVisitedPage.id, "similar ids:", similarPageIds)
 
         similarPageIds = list(set(similarPageIds)-set(excludeIds))
 
@@ -315,12 +377,63 @@ def CombineLastInsertedPages(frontier, lastVisitedPages):
 
     return newFrontier
 
+def ManageRedirects(redirects):
+    print("------------------------Manage redirects------------------------")
+
+    global history
+
+    addedFinalPages = []
+
+    for page, redirectedToUrl, statusCode, depth in redirects:
+        redirectedTo = None
+
+        for finalPage in addedFinalPages:
+            if finalPage.url == redirectedToUrl:
+                redirectedTo = finalPage
+
+        if redirectedTo is None:
+            #Mogoče že v bazi
+            redirectedTo = pageBusinessCtrl.SelectByUrl(redirectedToUrl)
+
+            if redirectedTo is None:
+                redirectedTo = siteCtrl.CreateNewPage(redirectedToUrl)
+
+                if redirectedTo:
+                    redirectedTo = pageBusinessCtrl.InsertWithDepth(redirectedTo, depth)
+                else:
+                    print("Cant make page: ", redirectedToUrl)
+
+        if not redirectedTo:  # strani ne smeš obiskat ali je izven domene
+            return
+        else:
+            history.add(redirectedTo.url)
+
+            redirectedTo.linksFrom = [page.id]
+            redirectedTo.linksTo = page.linksTo
+            redirectedTo.page_type_code = page.page_type_code
+
+            page.linksTo = [redirectedTo.id]
+
+            # preveri če je v bazo vstavljeno kot
+            page.html_content = str(depth) + ";" + "None"
+            page.page_type_code = "REDIRECT"
+            page.http_status_code = statusCode
+
+
+            addedFinalPages.append(redirectedTo)
+
+            pageBusinessCtrl.Update(redirectedTo)
+            pageBusinessCtrl.Update(page)
+
+            pageCtrl.ReplacePageInImagesAndPageDataBecauseOfRedirect(page, redirectedTo)
+
 if __name__ == "__main__":
     main()
 
 #Jaka
 #Linke page1 -> page2 in page3 -> page2
 #Link DUPLICATE -> HTML
+#preveri kako so LinksFrom pa LinksTo (ali dobi page oboje, ali se slučajno LinksFrom prepišejo kje na fg)
 
 #Julijan
 #Site map

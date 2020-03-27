@@ -77,8 +77,13 @@ class PageBusinessController(AbstractDatabaseBusinessController):
         cur.execute("""SELECT id, site_id, page_type_code, url, html_content, http_status_code, accessed_time
                                 FROM crawldb.page WHERE url=%s""", (url,))
 
-        id, site_id, page_type_code, url, html_content, http_status_code, accessed_time  = cur.fetchone()
-        page_info = PageInfo(site_id, url, id, page_type_code, html_content, http_status_code, accessed_time)
+        value = cur.fetchone()
+
+        if value is not None:
+            id, site_id, page_type_code, url, html_content, http_status_code, accessed_time = value
+            page_info = PageInfo(site_id, url, id, page_type_code, html_content, http_status_code, accessed_time)
+        else:
+            return None
 
         cur.close()
 
@@ -152,6 +157,12 @@ class PageBusinessController(AbstractDatabaseBusinessController):
 
         cur.close()
         return similar
+
+    def IsUrlInDB(self, url):
+        if self.SelectByUrl(url) is None:
+            return False
+
+        return True
 
 
     def __UpdateLinks(self, page_info):
