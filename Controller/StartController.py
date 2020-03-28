@@ -29,6 +29,10 @@ class StartController:
         siteBusinessCtrl = SiteBusinessController()
         sites = [SiteInfo(seed) for seed in self.SEEDs]
 
+        # Site for pages outside SEED sides
+        outsiteSide = SiteInfo("OUTSIDE")
+        sites.append(outsiteSide)
+
         for site in sites:
             site = siteBusinessCtrl.Insert(site)
 

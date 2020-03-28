@@ -44,8 +44,8 @@ TIMEOUT = 5
 MAX_DEPTH = 5
 
 # frontier = [(SiteInfo, depth), ...]
-#sites, frontier, history = startCtrl.FreshStart()
-sites, frontier, history = startCtrl.Continue()
+sites, frontier, history = startCtrl.FreshStart()
+#sites, frontier, history = startCtrl.Continue()
 
 siteCtrl = SiteController(sites)
 
@@ -159,6 +159,9 @@ def GetPageData(driver, page, depth):
 
     print("Started:", page.url)
 
+    #if page.url == "https://www.e-prostor.gov.si/":
+    #    a=2
+
     try:
         requestOriginal = requests.get(page.url, timeout=TIMEOUT, stream=True)
         start_page_type, start_data_type = robotCtrl.GetContentTypeFromRequest(requestOriginal)
@@ -177,7 +180,7 @@ def GetPageData(driver, page, depth):
 
     cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
 
-    # Če je BINARY potem se gleda drugače
+    # Če je BINARY potem se gleda drugače (binary tudi ne bo kam akj redirecto)
     if start_page_type == "BINARY":  # and page.url not in history: (to tk al tk ne bi smelo bit)
         print("Added to hitroy:", page.url, "BINARY")
         history.add(page.url)
@@ -198,12 +201,6 @@ def GetPageData(driver, page, depth):
 
         final_page_type, final_data_type = robotCtrl.GetContentTypeFromRequest(requestFinal)
 
-        #shrani cleanedFinalUrl v bazo, če ni enak page.url. page.url -> REDIRECT -> cleanedFinalUrl
-
-        #page.url -> REDIRECT -> cleanedFinalUrl
-        if page.url != cleanedFinalUrl:
-            lastRedirects.append((page, cleanedFinalUrl, requestFinal.status_code, depth))
-
         # če je redirect iz html -> binary
         if final_data_type == "BINARY":
             page.BindData(final_page_type, "NULL", requestFinal.status_code)
@@ -211,30 +208,31 @@ def GetPageData(driver, page, depth):
 
             pdInfo = PageDataInfo(page.id, final_data_type)
             pageDataBusinessCtrl.Insert(pdInfo)
-            print("Finished:", page.url, requestOriginal.status_code, " --> ", cleanedFinalUrl,
-                  requestFinal.status_code)
-            return
         else: #če je redirect html -> html
             # Updates page type, HTML content, status code
             page.BindData(final_page_type, driver.page_source, requestFinal.status_code)
             pageBusinessCtrl.Update(page)
 
-        # Get links
-        links = linkCtrl.GetAllLinks(driver)
+            # Get links
+            links = linkCtrl.GetAllLinks(driver)
 
-        for link in links:
-            newPage = siteCtrl.CreateNewPage(link)
+            for link in links:
+                newPage = siteCtrl.CreateNewPage(link)
 
-            if newPage:
-                newPage.AddPagesFrom([page])
-                frontier.append((newPage, depth+1))
+                if newPage:
+                    newPage.AddPagesFrom([page])
+                    frontier.append((newPage, depth+1))
 
-        # Get images
-        images = [ImageInfo(page.id, source) for source in linkCtrl.GetImageSources(driver)]
+            # Get images
+            images = [ImageInfo(page.id, source) for source in linkCtrl.GetImageSources(driver)]
 
-        for image in images:
-            imageBusinessCtrl.Insert(image)
+            for image in images:
+                imageBusinessCtrl.Insert(image)
 
+        # shrani cleanedFinalUrl v bazo, če ni enak page.url. page.url -> REDIRECT -> cleanedFinalUrl
+        # page.url -> REDIRECT -> cleanedFinalUrl
+        if page.url != cleanedFinalUrl:
+            lastRedirects.append((page, cleanedFinalUrl, requestFinal.status_code, depth))
 
         print("Finished:", page.url, requestOriginal.status_code, " --> ", cleanedFinalUrl, requestFinal.status_code)
     else:
@@ -244,7 +242,6 @@ def GetPageData(driver, page, depth):
         page.AddLinksTo([finalVisitedPage.id])
         pageBusinessCtrl.Update(page)
 
-        print("----")
         print("Finished:", page.url, "redireted to -> ", driver.current_url, "already visited")
 
 
@@ -252,8 +249,15 @@ def GetPageData(driver, page, depth):
 def InitFrontier(driver, sites):
     pageInfos = []
 
+    #TEST
+    sites = []
+    #TEST
+
     #najde prve strani, da se dajo v frontier
     for site in sites:
+        if site.domain == "OUTSIDE":
+            continue
+
         print("Started - initialize:", site.domain)
         try:
             driver.get(site.domain)
@@ -267,10 +271,16 @@ def InitFrontier(driver, sites):
 
         page = siteCtrl.CreateNewPage(linkCtrl.CleanLink(requestFinal.url))
         page = pageBusinessCtrl.Insert(page)
-
         pageInfos.append((page, 1))
+
         print("Finished - initialize:", site.domain)
 
+    #TEST
+    #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
+    page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/uploads/tx_printforms/0211Podelitev_pooblastila_za_procesna_dejanja_v_postopkih_VEM_0320__002_.docx"))
+    page = pageBusinessCtrl.Insert(page)
+    pageInfos.append((page, 1))
+    #TEST
 
     return pageInfos
 
@@ -406,14 +416,14 @@ def ManageRedirects(redirects):
             redirectedTo = pageBusinessCtrl.SelectByUrl(redirectedToUrl)
 
             if redirectedTo is None:
-                redirectedTo = siteCtrl.CreateNewPage(redirectedToUrl)
+                redirectedTo = siteCtrl.CreateNewPage(redirectedToUrl, True)
 
                 if redirectedTo:
                     redirectedTo = pageBusinessCtrl.InsertWithDepth(redirectedTo, depth)
                 else:
                     print("Cant make page: ", redirectedToUrl)
 
-        if not redirectedTo:  # strani ne smeš obiskat ali je izven domene
+        if not redirectedTo:  # strani ne smeš obiskat ali je izven domene (zdej načeloma lahk)
             return
         else:
             history.add(redirectedTo.url)

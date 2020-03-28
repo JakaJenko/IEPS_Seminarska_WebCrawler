@@ -22,8 +22,10 @@ class RobotController:
         parsed_uri = urlparse(url)
         result = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
 
-        return site._robot.can_fetch("*", result)
-
+        try:
+            return site._robot.can_fetch("*", result)
+        except:
+            return True
 
     def GetRobotsContent(self, url):
         parsed_uri = urlparse(url)

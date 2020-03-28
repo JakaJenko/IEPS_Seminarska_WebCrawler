@@ -15,6 +15,12 @@ class SiteInfo():
 
 
     def BindData(self, domain):
+        if domain == "OUTSIDE":
+            self.domain = domain
+            self.robots_content = "None"
+            self.sitemap_content = "None"
+            return
+
         robotsCtrl = RobotController()
 
         if self.id is None:
