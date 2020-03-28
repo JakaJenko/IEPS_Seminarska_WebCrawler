@@ -78,8 +78,6 @@ def main():
     profile = {"download.default_directory": "NUL", "download.prompt_for_download": False, }
     chrome_options.add_experimental_option("prefs", profile)
 
-    #driver = webdriver.Chrome(WEB_DRIVER_LOCATION, options=chrome_options)
-
     drivers = []
     for i in range(THREADS):
         driver = webdriver.Chrome(WEB_DRIVER_LOCATION, options=chrome_options)
@@ -171,14 +169,20 @@ def GetPageData(driver, page, depth):
         # Timeout needed for Web page to render (read more about it)
         time.sleep(TIMEOUT)
 
-        requestFinal = requests.get(driver.current_url, timeout=TIMEOUT, stream=True)
+        if start_page_type == "BINARY":
+            requestFinal = requestOriginal
+        else:
+            requestFinal = requests.get(driver.current_url, timeout=TIMEOUT, stream=True)
     except:
         print("Added to hitroy:", page.url)
         history.add(page.url)
         print("Finished:", page.url, "Page ERROR")
         return
 
-    cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
+    if start_page_type == "BINARY":
+        cleanedFinalUrl = linkCtrl.CleanLink(page.url)
+    else:
+        cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
 
     # Če je BINARY potem se gleda drugače (binary tudi ne bo kam akj redirecto)
     if start_page_type == "BINARY":  # and page.url not in history: (to tk al tk ne bi smelo bit)

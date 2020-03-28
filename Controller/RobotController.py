@@ -73,7 +73,7 @@ class RobotController:
                 elif type == "pdf":
                     type = "PDF"
                 else:
-                    type = "OTHER"
+                    type = r.url.split('.')[-1].upper()
                 return ("BINARY", type)
         except:
             return ("BINARY", 0)

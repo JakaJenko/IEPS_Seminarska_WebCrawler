@@ -40,14 +40,16 @@ class PageDataBusinessController(AbstractDatabaseBusinessController):
         return page_data_infos
 
     def Insert(self, page_data_info):
-        cur = self.conn.cursor()
         try:
-            cur.execute("""INSERT INTO crawldb.page_data (page_id, data_type_code) VALUES (%s, %s)""",
+            cur = self.conn.cursor()
+            cur.execute("""INSERT INTO crawldb.page_data (page_id, data_type_code) VALUES (%s, %s) RETURNING id""",
                         (page_data_info.page_id, page_data_info.data_type_code))
+            id = cur.fetchone()[0]
             cur.close()
-            return True
+            return id
         except:
-            return False
+            print("ERROR: page_data insert page_id="+page_data_info.page_id)
+            return 0
 
     def Update(self, page_data_info):
         try:
