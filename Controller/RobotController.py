@@ -55,25 +55,36 @@ class RobotController:
         return sitemap.text
 
     def GetContentTypeFromRequest(self, r):
+        contentType = r.headers['Content-Type']
+        if contentType.startswith("text/html"):
+            return ("HTML", 0)
+        elif contentType.startswith("application/vnd.openxmlformats-officedocument.wordprocessingml.document"):
+            return ("BINARY", "DOCX")
+        elif contentType.startswith("application/msword"):
+            return ("BINARY", "DOC")
+        elif contentType.startswith('application/pdf'):
+            return ("BINARY", "PDF")
+        elif contentType.startswith("application/vnd.ms-powerpoint"):
+            return ("BINARY", "PPT")
+        elif contentType.startswith("application/vnd.openxmlformats-officedocument.presentationml.presentation"):
+            return ("BINARY", "PPTX")
+        #if content type is not correct we use tika to try and detect
         try:
-            if r.headers['Content-Type'].startswith("text/html"):
-                return ("HTML", 0)
+            type = detector.from_buffer(r.raw.read(2048)).split("/")[1]
+            if type == "x-tika-msoffice":
+                if r.url.endswith("doc"):
+                    type = "DOC"
+                elif r.url.endswith("ppt"):
+                    type = "PPT"
+            elif type =='x-tika-ooxml':
+                if r.url.endswith('docx'):
+                    type = "DOCX"
+                elif r.url.endswith('pptx'):
+                    type = "PPTX"
+            elif type == "pdf":
+                type = "PDF"
             else:
-                type = detector.from_buffer(r.raw.read(2048)).split("/")[1]
-                if type == "x-tika-msoffice":
-                    if r.url.endswith("doc"):
-                        type = "DOC"
-                    elif r.url.endswith("ppt"):
-                        type = "PPT"
-                elif type =='x-tika-ooxml':
-                    if r.url.endswith('docx'):
-                        type = "DOCX"
-                    elif r.url.endswith('pptx'):
-                        type = "PPTX"
-                elif type == "pdf":
-                    type = "PDF"
-                else:
-                    type = r.url.split('.')[-1].upper()
-                return ("BINARY", type)
+                type = r.url.split('.')[-1].upper()
+            return ("BINARY", type)
         except:
             return ("BINARY", 0)
