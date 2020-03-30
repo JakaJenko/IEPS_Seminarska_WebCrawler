@@ -41,11 +41,11 @@ pageCtrl = PageController()
 
 THREADS = 5
 TIMEOUT = 5
-MAX_DEPTH = 5
+MAX_DEPTH = 14
 
 # frontier = [(SiteInfo, depth), ...]
-#sites, frontier, history = startCtrl.FreshStart()
-sites, frontier, history = startCtrl.Continue()
+sites, frontier, history = startCtrl.FreshStart()
+# sites, frontier, history = startCtrl.Continue()
 
 siteCtrl = SiteController(sites)
 
@@ -103,7 +103,7 @@ def main():
                 with lock:
                     while page is None:
                         if len(frontier) != 0:
-                            page, depth = frontier.pop()
+                            page, depth = frontier.pop(0)
 
                             if depth >= MAX_DEPTH:
                                 print("Depth max:", page.url)
@@ -197,11 +197,10 @@ def GetPageData(driver, page, depth):
         print("Added to hitroy:", page.url, "BINARY")
         history.add(page.url)
 
-        page_type, data_type = robotCtrl.GetContentTypeFromRequest(requestOriginal)
-        page.BindData(page_type, "NULL", requestOriginal.status_code)
+        page.BindData(start_page_type, "NULL", requestOriginal.status_code)
         pageBusinessCtrl.Update(page)
 
-        pdInfo = PageDataInfo(page.id, data_type)
+        pdInfo = PageDataInfo(page.id, start_data_type)
         pageDataBusinessCtrl.Insert(pdInfo)
 
     # Če je že v history pomeni da je do tega prišlo po kakem drugem redirectu
@@ -262,7 +261,7 @@ def InitFrontier(driver, sites):
     pageInfos = []
 
     #TEST
-    #sites = []
+    # sites = []
     #TEST
 
     #najde prve strani, da se dajo v frontier
@@ -288,10 +287,10 @@ def InitFrontier(driver, sites):
         print("Finished - initialize:", site.domain)
 
     #TEST
-    #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
-    #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/uploads/tx_printforms/0211Podelitev_pooblastila_za_procesna_dejanja_v_postopkih_VEM_0320__002_.docx"))
-    #page = pageBusinessCtrl.Insert(page)
-    #pageInfos.append((page, 1))
+    # #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
+    # page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("https://e-uprava.gov.si/.download/oglasna_deska/priponke/395185?disposition=atachment"))
+    # page = pageBusinessCtrl.Insert(page)
+    # pageInfos.append((page, 1))
     #TEST
 
     return pageInfos
