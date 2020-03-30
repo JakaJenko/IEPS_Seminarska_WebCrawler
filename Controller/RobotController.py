@@ -68,6 +68,12 @@ class RobotController:
             return ("BINARY", "PPT")
         elif contentType.startswith("application/vnd.openxmlformats-officedocument.presentationml.presentation"):
             return ("BINARY", "PPTX")
+        elif contentType.startswith("application/vnd.ms-excel"):
+            return ("BINARY", "XLS")
+        elif contentType.startswith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"):
+            return ("BINARY", "XLSX")
+        elif contentType.startswith("application/zip"):
+            return ("BINARY", "ZIP")
         #if content type is not correct we use tika to try and detect
         try:
             type = detector.from_buffer(r.raw.read(2048)).split("/")[1]
@@ -84,7 +90,7 @@ class RobotController:
             elif type == "pdf":
                 type = "PDF"
             else:
-                type = r.url.split('.')[-1].upper()
+                type = "UNKNOWN"
             return ("BINARY", type)
         except:
-            return ("BINARY", 0)
+            return ("BINARY", "UNKNOWN")
