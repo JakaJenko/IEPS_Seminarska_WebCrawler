@@ -51,6 +51,7 @@ siteCtrl = SiteController(sites)
 
 lastVisitedPages = []
 lastRedirects = []
+lastNewPages = []
 
 def main():
     lock = threading.Lock()
@@ -59,6 +60,7 @@ def main():
     global history
     global lastVisitedPages
     global lastRedirects
+    global lastNewPages
 
     pathHere = pathlib.Path().absolute()
     WEB_DRIVER_LOCATION = str(pathHere) + "\..\chromedriver.exe"
@@ -126,11 +128,13 @@ def main():
             print(len(frontier))
 
             # remove and save duplicate urls from frontier
-            frontier = RemoveDuplicates(frontier)
+            frontier = RemoveDuplicates(frontier, history, lastNewPages)
+            lastNewPages = []
             print(len(frontier))
 
             # remove and save history from list
             #frontier = [(page, depth) for page, depth in frontier if page.url not in history]
+            tmpF = RemoveHistory(tmpF, history)
             frontier = RemoveHistory(frontier, history)
             print(len(frontier))
 
@@ -162,6 +166,7 @@ def GetPageData(driver, page, depth):
     global history
     global lastVisitedPages
     global lastRedirects
+    global lastNewPages
 
     print("Started:", page.url)
 
@@ -184,6 +189,9 @@ def GetPageData(driver, page, depth):
     except:
         print("Added to hitroy:", page.url)
         history.add(page.url)
+
+        page.BindData("HTML", "NULL", 400)
+        pageBusinessCtrl.Update(page)
         print("Finished:", page.url, "Page ERROR")
         return
 
@@ -219,7 +227,7 @@ def GetPageData(driver, page, depth):
 
             pdInfo = PageDataInfo(page.id, final_data_type)
             pageDataBusinessCtrl.Insert(pdInfo)
-        else: #če je redirect html -> html
+        else: #če je ni redirecta ali je redirect html -> html
             # Updates page type, HTML content, status code
             page.BindData(final_page_type, driver.page_source, requestFinal.status_code)
             pageBusinessCtrl.Update(page)
@@ -232,7 +240,7 @@ def GetPageData(driver, page, depth):
 
                 if newPage:
                     newPage.AddPagesFrom([page])
-                    frontier.append((newPage, depth+1))
+                    lastNewPages.append((newPage, depth+1))
 
             # Get images
             images = [ImageInfo(page.id, source) for source in linkCtrl.GetImageSources(driver)]
@@ -251,6 +259,7 @@ def GetPageData(driver, page, depth):
 
         finalVisitedPage = pageBusinessCtrl.SelectByUrl(cleanedFinalUrl)
         page.AddLinksTo([finalVisitedPage.id])
+        page.page_type_code = "REDIRECT"
         pageBusinessCtrl.Update(page)
 
         print("Finished:", page.url, "redireted to -> ", driver.current_url, "already visited")
@@ -296,36 +305,58 @@ def InitFrontier(driver, sites):
     return pageInfos
 
 
-def RemoveDuplicates(frontier):
+def RemoveDuplicates(frontier, history, lastNewPages):
+    print("------------------------Removing duplicates from frontier------------------------")
+
+    combining = dict()
+
+    for newPage in lastNewPages:
+        if newPage[0].url not in combining.keys():
+            combining[newPage[0].url] = [newPage]
+        else:
+            combining[newPage[0].url].append(newPage)
+
+
+    lastNewPagesBrezPodvojitev = []
+
+    for key in combining.keys():
+        if len(combining[key]) == 1:
+            lastNewPagesBrezPodvojitev.append(combining[key][0])
+        else:
+            newWithDuplicates = combining[key][0]
+
+            for podvojitev in combining[key][1:]:
+                newWithDuplicates[0].AddLinksFrom(podvojitev[0].linksFrom)
+
+            lastNewPagesBrezPodvojitev.append(newWithDuplicates)
+
+
+    for newPage in lastNewPagesBrezPodvojitev:
+        if newPage[0].url in history:
+            existingPage = pageBusinessCtrl.SelectByUrl(newPage[0].url)
+            existingPage.AddLinksFrom(newPage[0].linksFrom)
+            pageBusinessCtrl.Update(existingPage)
+        else:
+            for i in frontier:
+                if i[0].url == newPage[0].url:
+                    i[0].AddLinksFrom(newPage[0].linksFrom)
+                    break
+            else:
+                frontier.append(newPage)
+
+
+    '''
+    for i in frontier:
+        for newPage in lastNewPagesBrezPodvojitev:
+
+
     print("------------------------Removing duplicates from frontier------------------------")
     check_val = set()  # Check Flag
 
-    #Že vpisan v bazo
-    alreadyInDB = set()
-
-    #Ustvarjen, ampak še ni v bazi
-    alreadyExists = set()
     res = []
 
     for i in frontier:
-        if i[0].url not in check_val and i[0].id is not None:
-            #print("Already in DB-0:", i[0].id, i[0].url)
-            #res.append(i)
-            check_val.add(i[0].url)
-            alreadyInDB.add(i[0].url)
-            #frontier.remove(i)
-
-    for i in frontier:
-        if i[0].url not in check_val and pageBusinessCtrl.IsUrlInDB(i[0].url):
-            #print("Already in DB-1:", i[0].id, i[0].url)
-            #res.append(i)
-            check_val.add(i[0].url)
-            alreadyInDB.add(i[0].url)
-            #frontier.remove(i)
-
-
-    for i in frontier:
-        if i[0].url in alreadyInDB:
+        if pageBusinessCtrl.IsUrlInDB(i[0].url): #alreadyInDB:
             #print("Already in DB-2:", i[0].id, i[0].url)
             #duplicates.append(i)
 
@@ -334,7 +365,9 @@ def RemoveDuplicates(frontier):
             existingPage = pageBusinessCtrl.SelectByUrl(i[0].url)
             existingPage.AddLinksFrom(i[0].linksFrom)
             pageBusinessCtrl.Update(existingPage)
-            res.append((existingPage, i[1]))
+
+            if existingPage.page_type_code == "FRONTIER":
+                res.append((existingPage, i[1]))
 
         elif i[0].url not in check_val:
             #print("Not duplicated:", i[0].id, i[0].url)
@@ -348,7 +381,8 @@ def RemoveDuplicates(frontier):
                     j[0].AddLinksFrom(i[0].linksFrom)
                     break
 
-    return res
+    '''
+    return frontier
 
 
 def RemoveHistory(frontier, history):
@@ -361,6 +395,7 @@ def RemoveHistory(frontier, history):
             #print("Not in history:", i[0].id, i[0].url)
             res.append(i)
         else:
+            print(i[0].url, i[0].id)
             duplicates.append(i)
 
     for duplicate in duplicates:
@@ -443,9 +478,12 @@ def ManageRedirects(redirects):
             redirectedTo.linksTo = page.linksTo
             redirectedTo.page_type_code = page.page_type_code
 
+            if redirectedTo.html_content is None:
+                redirectedTo.html_content = page.html_content
+
             page.linksTo = [redirectedTo.id]
 
-            # preveri če je v bazo vstavljeno kot
+            # preveri če je v bazo vstavljeno kot (no idea ka sm tu hoto)
             page.html_content = str(depth) + ";" + "None"
             page.page_type_code = "REDIRECT"
             page.http_status_code = statusCode

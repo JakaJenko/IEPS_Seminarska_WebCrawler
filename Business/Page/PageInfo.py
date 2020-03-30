@@ -41,13 +41,17 @@ class PageInfo():
     def AddPagesTo(self, pages):
         for page in pages:
             self.linksTo.append(page.id)
+            self.linksTo = list(set(self.linksTo))
 
     def AddPagesFrom(self, pages):
         for page in pages:
             self.linksFrom.append(page.id)
+            self.linksFrom = list(set(self.linksFrom))
 
     def AddLinksTo(self, links):
         self.linksTo.extend(links)
+        self.linksTo = list(set(self.linksTo))
 
     def AddLinksFrom(self, links):
         self.linksFrom.extend(links)
+        self.linksFrom = list(set(self.linksFrom))
