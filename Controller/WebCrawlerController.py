@@ -39,7 +39,7 @@ robotCtrl = RobotController()
 pageCtrl = PageController()
 
 
-THREADS = 5
+THREADS = 10
 TIMEOUT = 5
 MAX_DEPTH = 14
 
