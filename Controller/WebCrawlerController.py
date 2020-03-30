@@ -103,7 +103,7 @@ def main():
                 with lock:
                     while page is None:
                         if len(frontier) != 0:
-                            page, depth = frontier.pop()
+                            page, depth = frontier.pop(0)
 
                             if depth >= MAX_DEPTH:
                                 print("Depth max:", page.url)
