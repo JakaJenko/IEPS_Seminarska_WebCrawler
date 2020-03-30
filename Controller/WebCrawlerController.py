@@ -44,8 +44,8 @@ TIMEOUT = 5
 MAX_DEPTH = 5
 
 # frontier = [(SiteInfo, depth), ...]
-sites, frontier, history = startCtrl.FreshStart()
-#sites, frontier, history = startCtrl.Continue()
+#sites, frontier, history = startCtrl.FreshStart()
+sites, frontier, history = startCtrl.Continue()
 
 siteCtrl = SiteController(sites)
 
@@ -134,11 +134,19 @@ def main():
             frontier = RemoveHistory(frontier, history)
             print(len(frontier))
 
+            newFrontier = []
+
             for i in range(len(frontier)):
                 if frontier[i][0].id is None:
                     #print("Inserting in DB:", frontier[i][0].id, frontier[i][0].url, "From page id:", frontier[i][0].linksFrom)
                     newTuple = (pageBusinessCtrl.InsertWithDepth(frontier[i][0], frontier[i][1]), frontier[i][1])
-                    frontier[i] = newTuple
+
+                    if newTuple[1] < MAX_DEPTH:
+                        newFrontier.append(newTuple)
+                else:
+                    newFrontier.append(frontier[i])
+
+            frontier = newFrontier
 
             if os.name == "nt":
                 if keyboard.is_pressed('q'):  # if key 'q' is pressed
@@ -254,7 +262,7 @@ def InitFrontier(driver, sites):
     pageInfos = []
 
     #TEST
-    sites = []
+    #sites = []
     #TEST
 
     #najde prve strani, da se dajo v frontier
@@ -281,9 +289,9 @@ def InitFrontier(driver, sites):
 
     #TEST
     #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
-    page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/uploads/tx_printforms/0211Podelitev_pooblastila_za_procesna_dejanja_v_postopkih_VEM_0320__002_.docx"))
-    page = pageBusinessCtrl.Insert(page)
-    pageInfos.append((page, 1))
+    #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/uploads/tx_printforms/0211Podelitev_pooblastila_za_procesna_dejanja_v_postopkih_VEM_0320__002_.docx"))
+    #page = pageBusinessCtrl.Insert(page)
+    #pageInfos.append((page, 1))
     #TEST
 
     return pageInfos
