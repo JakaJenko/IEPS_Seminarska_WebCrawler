@@ -30,6 +30,10 @@ class LinkController:
 
         canonized_url = w3url.canonicalize_url(normalized_url)
 
+        if canonized_url[-1] != "/":
+            if "." not in canonized_url.split("/")[-1]:
+                canonized_url += "/"
+
         return canonized_url
 
 

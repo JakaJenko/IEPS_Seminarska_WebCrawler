@@ -4,9 +4,9 @@ from Business.Page.PageBusinessController import PageBusinessController
 
 
 class StartController:
-    SEEDs = ["http://gov.si/",
-             "http://evem.gov.si/",
-             "http://e-uprava.gov.si/",
+    SEEDs = [#"http://gov.si/",
+             #"http://evem.gov.si/",
+             #"http://e-uprava.gov.si/",
              "http://e-prostor.gov.si/"]
 
     def GetSitesFromDB(self):

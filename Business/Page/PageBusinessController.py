@@ -171,11 +171,20 @@ class PageBusinessController(AbstractDatabaseBusinessController):
             cur.execute("DELETE FROM crawldb.link WHERE from_page = %s", (page_info.id,))
             cur.execute("DELETE FROM crawldb.link WHERE to_page = %s", (page_info.id,))
 
+            dodajNazaj = False
+
+            if page_info.id in page_info.linksFrom and page_info.id in page_info.linksTo:
+                page_info.linksFrom.remove(page_info.id)
+                dodajNazaj = True
+
             for to_page in page_info.linksTo:
                 cur.execute("INSERT INTO crawldb.link (from_page, to_page) VALUES (%s, %s)", (page_info.id, to_page))
 
             for from_page in page_info.linksFrom:
                 cur.execute("INSERT INTO crawldb.link (from_page, to_page) VALUES (%s, %s)", (from_page, page_info.id))
+
+            if dodajNazaj:
+                page_info.linksFrom.append(page_info.id)
 
             cur.close()
             return True

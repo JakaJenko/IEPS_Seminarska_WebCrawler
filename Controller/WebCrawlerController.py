@@ -134,7 +134,6 @@ def main():
 
             # remove and save history from list
             #frontier = [(page, depth) for page, depth in frontier if page.url not in history]
-            tmpF = RemoveHistory(tmpF, history)
             frontier = RemoveHistory(frontier, history)
             print(len(frontier))
 
@@ -190,7 +189,7 @@ def GetPageData(driver, page, depth):
         print("Added to hitroy:", page.url)
         history.add(page.url)
 
-        page.BindData("HTML", "NULL", 400)
+        page.BindData("HTML", "Page ERROR", requestOriginal.status_code)
         pageBusinessCtrl.Update(page)
         print("Finished:", page.url, "Page ERROR")
         return
@@ -199,6 +198,9 @@ def GetPageData(driver, page, depth):
         cleanedFinalUrl = linkCtrl.CleanLink(page.url)
     else:
         cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
+
+    if page.url == 'https://www.e-prostor.gov.si/access-to-geodetic-data/':
+        a=2
 
     # Če je BINARY potem se gleda drugače (binary tudi ne bo kam akj redirecto)
     if start_page_type == "BINARY":  # and page.url not in history: (to tk al tk ne bi smelo bit)
@@ -258,8 +260,14 @@ def GetPageData(driver, page, depth):
         history.add(page.url)
 
         finalVisitedPage = pageBusinessCtrl.SelectByUrl(cleanedFinalUrl)
-        page.AddLinksTo([finalVisitedPage.id])
+        finalVisitedPage.AddLinksFrom([page.id])
+
+        page.linksTo = [finalVisitedPage.id]
+        page.html_content = "R1"
         page.page_type_code = "REDIRECT"
+        page.http_status_code = requestOriginal.status_code
+
+        pageBusinessCtrl.Update(finalVisitedPage)
         pageBusinessCtrl.Update(page)
 
         print("Finished:", page.url, "redireted to -> ", driver.current_url, "already visited")
@@ -270,7 +278,7 @@ def InitFrontier(driver, sites):
     pageInfos = []
 
     #TEST
-    # sites = []
+    #sites = []
     #TEST
 
     #najde prve strani, da se dajo v frontier
@@ -296,10 +304,10 @@ def InitFrontier(driver, sites):
         print("Finished - initialize:", site.domain)
 
     #TEST
-    # #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
-    # page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("https://e-uprava.gov.si/.download/oglasna_deska/priponke/395185?disposition=atachment"))
-    # page = pageBusinessCtrl.Insert(page)
-    # pageInfos.append((page, 1))
+    #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
+    #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/razmisljam/"))
+    #page = pageBusinessCtrl.Insert(page)
+    #pageInfos.append((page, 1))
     #TEST
 
     return pageInfos
@@ -332,14 +340,25 @@ def RemoveDuplicates(frontier, history, lastNewPages):
 
 
     for newPage in lastNewPagesBrezPodvojitev:
-        if newPage[0].url in history:
-            existingPage = pageBusinessCtrl.SelectByUrl(newPage[0].url)
+        if newPage[0].url == "https://www.e-prostor.gov.si/access-to-geodetic-data/ordering-data/":
+            a=2
+
+        if newPage[0].url in history:   #če je v history je bila obiskana in ne sme v frontier, se samo updata
+            existingPage = pageBusinessCtrl.SelectByUrl(newPage[0].url) #TODO preveri
             existingPage.AddLinksFrom(newPage[0].linksFrom)
             pageBusinessCtrl.Update(existingPage)
-        else:
-            for i in frontier:
-                if i[0].url == newPage[0].url:
-                    i[0].AddLinksFrom(newPage[0].linksFrom)
+        else:   #drugače preveri če je v frontieru in updataj tam in v bazi, else samo dodaj
+            for i in range(len(frontier)):
+                if frontier[i][0].url == newPage[0].url:
+                    pageFromDB = pageBusinessCtrl.SelectByUrl(frontier[i][0].url)
+
+                    if pageFromDB is not None:
+                        pageFromDB.AddLinksFrom(newPage[0].linksFrom)
+                        pageBusinessCtrl.Update(pageFromDB)
+                        newTuple = (pageFromDB, frontier[i][1])
+                        frontier[i] = newTuple
+                    else:
+                        frontier[i][0].AddLinksFrom(newPage[0].linksFrom)
                     break
             else:
                 frontier.append(newPage)
@@ -474,9 +493,9 @@ def ManageRedirects(redirects):
         else:
             history.add(redirectedTo.url)
 
-            redirectedTo.linksFrom = [page.id]
-            redirectedTo.linksTo = page.linksTo
-            redirectedTo.page_type_code = page.page_type_code
+            redirectedTo.AddLinksFrom([page.id])
+            redirectedTo.AddLinksTo(page.linksTo)
+            redirectedTo.page_type_code = page.page_type_code   #TODO: preveri, mogoč se se dam tu da da če je binary da bi kaj blo
 
             if redirectedTo.html_content is None:
                 redirectedTo.html_content = page.html_content
@@ -484,7 +503,7 @@ def ManageRedirects(redirects):
             page.linksTo = [redirectedTo.id]
 
             # preveri če je v bazo vstavljeno kot (no idea ka sm tu hoto)
-            page.html_content = str(depth) + ";" + "None"
+            page.html_content = None
             page.page_type_code = "REDIRECT"
             page.http_status_code = statusCode
 
