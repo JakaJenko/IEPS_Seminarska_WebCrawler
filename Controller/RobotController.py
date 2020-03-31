@@ -4,26 +4,24 @@ import requests as req
 import requests
 import tika
 from tika import parser, detector
+from robotexclusionrulesparser import RobotExclusionRulesParser
 
 class RobotController:
     def InitRobotForSite(self, url):
         rp = urllib.robotparser.RobotFileParser()
 
         parsed_uri = urlparse(url)
-        result = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+        robots_url = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri) + 'robots.txt'
 
-        rp.set_url(result + "/robots.txt")
-        rp.read()
+        rpe = RobotExclusionRulesParser()
+        rpe.fetch(robots_url)
 
-        return rp
+        return rpe
 
 
     def CheckIfSiteRobotsAllow(self, site, url):
-        parsed_uri = urlparse(url)
-        result = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-
         try:
-            return site._robot.can_fetch("*", result)
+            return site._robot.is_allowed("*", url)
         except:
             return True
 

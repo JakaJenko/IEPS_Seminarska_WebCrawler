@@ -199,9 +199,6 @@ def GetPageData(driver, page, depth):
     else:
         cleanedFinalUrl = linkCtrl.CleanLink(driver.current_url)
 
-    if page.url == 'https://www.e-prostor.gov.si/access-to-geodetic-data/':
-        a=2
-
     # Če je BINARY potem se gleda drugače (binary tudi ne bo kam akj redirecto)
     if start_page_type == "BINARY":  # and page.url not in history: (to tk al tk ne bi smelo bit)
         print("Added to hitroy:", page.url, "BINARY")
@@ -278,7 +275,7 @@ def InitFrontier(driver, sites):
     pageInfos = []
 
     #TEST
-    #sites = []
+    # sites = []
     #TEST
 
     #najde prve strani, da se dajo v frontier
@@ -304,10 +301,10 @@ def InitFrontier(driver, sites):
         print("Finished - initialize:", site.domain)
 
     #TEST
-    #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
-    #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/razmisljam/"))
-    #page = pageBusinessCtrl.Insert(page)
-    #pageInfos.append((page, 1))
+    # #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
+    # page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("https://e-uprava.gov.si/.download/oglasna_deska/priponke/395185?disposition=atachment"))
+    # page = pageBusinessCtrl.Insert(page)
+    # pageInfos.append((page, 1))
     #TEST
 
     return pageInfos
@@ -340,11 +337,8 @@ def RemoveDuplicates(frontier, history, lastNewPages):
 
 
     for newPage in lastNewPagesBrezPodvojitev:
-        if newPage[0].url == "https://www.e-prostor.gov.si/access-to-geodetic-data/ordering-data/":
-            a=2
-
-        if newPage[0].url in history:   #če je v history je bila obiskana in ne sme v frontier, se samo updata
-            existingPage = pageBusinessCtrl.SelectByUrl(newPage[0].url) #TODO preveri
+        if newPage[0].url in history:
+            existingPage = pageBusinessCtrl.SelectByUrl(newPage[0].url)
             existingPage.AddLinksFrom(newPage[0].linksFrom)
             pageBusinessCtrl.Update(existingPage)
         else:   #drugače preveri če je v frontieru in updataj tam in v bazi, else samo dodaj
