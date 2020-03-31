@@ -134,7 +134,7 @@ def main():
 
             # remove and save history from list
             #frontier = [(page, depth) for page, depth in frontier if page.url not in history]
-            tmpF = RemoveHistory(tmpF, history)
+            # tmpF = RemoveHistory(tmpF, history)
             frontier = RemoveHistory(frontier, history)
             print(len(frontier))
 
@@ -297,7 +297,7 @@ def InitFrontier(driver, sites):
 
     #TEST
     # #page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("http://evem.gov.si/info/vec-dogodkov/tiskani-obrazci/"))
-    # page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("https://e-uprava.gov.si/.download/oglasna_deska/priponke/395185?disposition=atachment"))
+    # page = siteCtrl.CreateNewPage(linkCtrl.CleanLink("https://www.gov.si/teme/koronavirus/element/65441/xlsx"))
     # page = pageBusinessCtrl.Insert(page)
     # pageInfos.append((page, 1))
     #TEST
