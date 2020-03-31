@@ -120,11 +120,6 @@ def main():
             print("WAIT!")
             concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
-            if len(lastRedirects) > 0:
-                ManageRedirects(lastRedirects)
-
-            lastRedirects = []
-
             print(len(frontier))
 
             # remove and save duplicate urls from frontier
@@ -132,10 +127,18 @@ def main():
             lastNewPages = []
             print(len(frontier))
 
+            if len(lastRedirects) > 0:
+                frontier = ManageRedirects(frontier, lastRedirects)
+                lastRedirects = []
+
             # remove and save history from list
             #frontier = [(page, depth) for page, depth in frontier if page.url not in history]
             frontier = RemoveHistory(frontier, history)
             print(len(frontier))
+
+            if len(lastRedirects) > 0:
+                frontier = ManageRedirects(frontier, lastRedirects)
+                lastRedirects = []
 
             newFrontier = []
 
@@ -150,6 +153,7 @@ def main():
                     newFrontier.append(frontier[i])
 
             frontier = newFrontier
+
 
             if os.name == "nt":
                 if keyboard.is_pressed('q'):  # if key 'q' is pressed
@@ -169,8 +173,8 @@ def GetPageData(driver, page, depth):
 
     print("Started:", page.url)
 
-    #if page.url == "https://www.e-prostor.gov.si/":
-    #    a=2
+    if page.url == "https://evem.gov.si/evem/cert/uporabnik/prijava.evem":
+        a=2
 
     try:
         requestOriginal = requests.get(page.url, timeout=TIMEOUT, stream=True)
@@ -420,7 +424,7 @@ def RemoveHistory(frontier, history):
 
     return res
 
-
+'''
 def CombineLastInsertedPages(frontier, lastVisitedPages):
     newFrontier = []
 
@@ -455,13 +459,15 @@ def CombineLastInsertedPages(frontier, lastVisitedPages):
             newFrontier.append((page, depth))
 
     return newFrontier
+'''
 
-def ManageRedirects(redirects):
+def ManageRedirects(frontier, redirects):
     print("------------------------Manage redirects------------------------")
 
     global history
 
     addedFinalPages = []
+
 
     for page, redirectedToUrl, statusCode, depth in redirects:
         redirectedTo = None
@@ -496,7 +502,6 @@ def ManageRedirects(redirects):
 
             page.linksTo = [redirectedTo.id]
 
-            # preveri če je v bazo vstavljeno kot (no idea ka sm tu hoto)
             page.html_content = None
             page.page_type_code = "REDIRECT"
             page.http_status_code = statusCode
@@ -508,6 +513,12 @@ def ManageRedirects(redirects):
             pageBusinessCtrl.Update(page)
 
             pageCtrl.ReplacePageInImagesAndPageDataBecauseOfRedirect(page, redirectedTo)
+
+            for i in range(len(frontier)):
+                if page.id in frontier[i][0].linksFrom:
+                    frontier[i][0].linksFrom = [redirectedTo.id]
+
+    return frontier
 
 if __name__ == "__main__":
     main()
