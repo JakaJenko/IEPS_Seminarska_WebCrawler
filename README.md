@@ -23,6 +23,7 @@ DELETE FROM crawldb.page;
 DELETE FROM crawldb.site;
 
 ### Add following data in to database.
+
 INSERT INTO crawldb.page_type(code)
 VALUES ('REDIRECT');
 
