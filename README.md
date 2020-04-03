@@ -23,19 +23,10 @@ DELETE FROM crawldb.page;
 DELETE FROM crawldb.site;  
 
 - Add following data in to database.
-INSERT INTO crawldb.page_type(code)
-VALUES ('REDIRECT');
-
-INSERT INTO crawldb.data_type(code)
-VALUES ('UNKNOWN');
-
-INSERT INTO crawldb.data_type(code)
-VALUES ('XLS');
-
-INSERT INTO crawldb.data_type(code)
-VALUES ('XLSX');
-
-INSERT INTO crawldb.data_type(code)
-VALUES ('ZIP');
+INSERT INTO crawldb.page_type(code) VALUES ('REDIRECT');
+INSERT INTO crawldb.data_type(code) VALUES ('UNKNOWN');
+INSERT INTO crawldb.data_type(code) VALUES ('XLS');
+INSERT INTO crawldb.data_type(code) VALUES ('XLSX');
+INSERT INTO crawldb.data_type(code) VALUES ('ZIP');
 
 - And then run this (WebCrawlerController) file
