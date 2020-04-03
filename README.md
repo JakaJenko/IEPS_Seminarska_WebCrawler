@@ -12,7 +12,7 @@ https://we.tl/t-MCusMMwhOq
 ### In WebCrawlerController set the parameters THREADS, TIMEOUT and MAX_DEPTH.
 
 ### Comment one of the following lines (probably this is already set so that FreshStart is uncomented, while Continue is comented)
-sites, frontier, history = startCtrl.FreshStart()
+sites, frontier, history = startCtrl.FreshStart()  
 sites, frontier, history = startCtrl.Continue()
 
 ### Clear the database with following comands.
@@ -23,7 +23,6 @@ DELETE FROM crawldb.page;
 DELETE FROM crawldb.site;
 
 ### Add following data in to database.
-
 INSERT INTO crawldb.page_type(code)
 VALUES ('REDIRECT');
 
