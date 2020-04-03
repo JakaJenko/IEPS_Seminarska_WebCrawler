@@ -16,11 +16,11 @@ sites, frontier, history = startCtrl.FreshStart()
 sites, frontier, history = startCtrl.Continue()
 
 ### Clear the database with following comands.
-DELETE FROM crawldb.image;
-DELETE FROM crawldb.link;
-DELETE FROM crawldb.page_data;
-DELETE FROM crawldb.page;
-DELETE FROM crawldb.site;
+DELETE FROM crawldb.image;  
+DELETE FROM crawldb.link;  
+DELETE FROM crawldb.page_data;  
+DELETE FROM crawldb.page;  
+DELETE FROM crawldb.site;  
 
 ### Add following data in to database.
 INSERT INTO crawldb.page_type(code)
