@@ -1,15 +1,10 @@
-import urllib.robotparser
 from urllib.parse import urlparse
 import requests as req
-import requests
-import tika
-from tika import parser, detector
+from tika import detector
 from robotexclusionrulesparser import RobotExclusionRulesParser
 
 class RobotController:
     def InitRobotForSite(self, url):
-        rp = urllib.robotparser.RobotFileParser()
-
         parsed_uri = urlparse(url)
         robots_url = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri) + 'robots.txt'
 
@@ -17,7 +12,6 @@ class RobotController:
         rpe.fetch(robots_url)
 
         return rpe
-
 
     def CheckIfSiteRobotsAllow(self, site, url):
         try:
@@ -55,7 +49,7 @@ class RobotController:
     def GetContentTypeFromRequest(self, r):
         contentType = r.headers['Content-Type']
         if contentType.startswith("text/html"):
-            return ("HTML", 0)
+            return ("HTML", "NULL")
         elif contentType.startswith("application/vnd.openxmlformats-officedocument.wordprocessingml.document"):
             return ("BINARY", "DOCX")
         elif contentType.startswith("application/msword"):

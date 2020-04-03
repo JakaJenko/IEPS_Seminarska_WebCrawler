@@ -160,6 +160,7 @@ def main():
                     print('Stop!')
                     sys.exit()
 
+
             # WAIT
             #concurrent.futures.wait(future, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
@@ -213,7 +214,6 @@ def GetPageData(driver, page, depth):
 
         pdInfo = PageDataInfo(page.id, start_data_type)
         pageDataBusinessCtrl.Insert(pdInfo)
-
     # Če je že v history pomeni da je do tega prišlo po kakem drugem redirectu
     elif cleanedFinalUrl not in history:
         lastVisitedPages.append(page)
@@ -237,7 +237,7 @@ def GetPageData(driver, page, depth):
 
             # Get links
             links = linkCtrl.GetAllLinks(driver)
-
+            #TODO
             for link in links:
                 newPage = siteCtrl.CreateNewPage(link)
 
@@ -264,7 +264,7 @@ def GetPageData(driver, page, depth):
         finalVisitedPage.AddLinksFrom([page.id])
 
         page.linksTo = [finalVisitedPage.id]
-        page.html_content = "R1"
+        page.html_content = "NULL"
         page.page_type_code = "REDIRECT"
         page.http_status_code = requestOriginal.status_code
 
