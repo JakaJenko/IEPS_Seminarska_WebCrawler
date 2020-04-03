@@ -1,5 +1,6 @@
 # IEPS_Seminarska_WebCrawler
 IEPS Iskanje in ekstrakcija podatkov s spleta - Seminarska 1 - Web Crawler
+Avtorja: Jaka Jenko, Julijan Jug
 
 ## Database
 https://we.tl/t-KHuQvPZgdA
