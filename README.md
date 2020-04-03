@@ -1,6 +1,9 @@
 # IEPS_Seminarska_WebCrawler
 IEPS Iskanje in ekstrakcija podatkov s spleta - Seminarska 1 - Web Crawler
 
+## Podatkovna baza
+https://we.tl/t-MCusMMwhOq
+
 # Instructions for running
 In AbstractDatabaseBusinessController set database connection data (host name, user, password).
 
