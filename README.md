@@ -2,7 +2,7 @@
 IEPS Iskanje in ekstrakcija podatkov s spleta - Seminarska 1 - Web Crawler
 
 ## Database
-https://we.tl/t-MCusMMwhOq
+https://we.tl/t-KHuQvPZgdA
 
 # Instructions for running
 - In AbstractDatabaseBusinessController set database connection data (host name, user, password).
