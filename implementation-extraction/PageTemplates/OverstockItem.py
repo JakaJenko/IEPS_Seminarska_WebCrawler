@@ -1,10 +1,10 @@
 
-class OverstockItem:
+class OverstockItem():
 
-    def __init__(self, Title, Price, ListPrice, Content, Sarving, SavingPercent):
+    def __init__(self, Title, Price, ListPrice, Content, Saving, SavingPercent):
         self.Title = Title
         self.Price = Price
         self.ListPrice = ListPrice
         self.Content = Content
-        self.Saving = Sarving
+        self.Saving = Saving
         self.SavingPercent = SavingPercent

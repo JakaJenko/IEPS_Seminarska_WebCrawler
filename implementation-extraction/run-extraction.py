@@ -1,5 +1,5 @@
 import sys
-import requests
+import json
 from RegexExtraction import RegexExtraction
 from XPathExtraction import XPathExtraction
 from RoadRunnerExtraction import RoadRunnerExtraction
@@ -23,6 +23,9 @@ if __name__ == "__main__":
     mode = 'A' #sys.argv[1]
 
     if mode == 'A':  # regular expressions
+        rtvslo_items = regexExtractor.RtvsloExtraction()
+        overstock_items = regexExtractor.OverstockExtraction()
+        print(json.dumps([item.__dict__ for item in rtvslo_items]))
         pass
     elif mode == 'B':  # XPath
         pass

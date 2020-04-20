@@ -1,5 +1,5 @@
 
-class RtvsloItem:
+class RtvsloItem():
 
     def __init__(self, Author, Title, PublishedTime, SubTitle, Lead, Content):
         self.Author = Author
