@@ -46,7 +46,7 @@ class RegexExtraction():
     def OverstockExtraction(self):
         page_items = []
         for page in self.rtvslo_pages:
-            pageContent = codecs.open(self.overstock_pages[1], 'r', encoding='utf-8', errors='ignore').read()
+            pageContent = codecs.open(page, 'r', encoding='utf-8', errors='ignore').read()
             items = []
 
             regex = r"<td valign=\"top\">\s*<a.*>\s*<b>(.*)<\/b>[\s\S|.]*?<td align=\"left\" nowrap=\"nowrap\">\s*<s>(.*)<\/s>\s*<\/td>[\s\S|.]*?<span class=\"bigred\">\s*<b>(.*)<\/b>[\s\S|.]*?<span class=\"littleorange\">([$€]\s*[0-9\.,]+) \((.*)\)<\/span>[\s\S|.]*?<span class=\"normal\">([\s\S|.]*?)<br>"
