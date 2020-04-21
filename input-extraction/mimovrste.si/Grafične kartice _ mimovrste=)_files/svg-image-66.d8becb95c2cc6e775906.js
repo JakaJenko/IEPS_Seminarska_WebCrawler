@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[269],{627:function(w,o){w.exports='<svg width="18" height="17" viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M17.97 5.07C17.707 2.131 15.66 0 13.1 0c-1.707 0-3.27.933-4.149 2.428C8.08.914 6.58 0 4.901 0 2.34 0 .292 2.131.03 5.069c-.02.13-.106.813.153 1.926.373 1.606 1.235 3.068 2.492 4.224L8.946 17l6.379-5.78c1.257-1.157 2.119-2.618 2.492-4.225.259-1.113.174-1.796.153-1.926z" fill="#3D4951" fill-rule="nonzero"/></svg>'}}]);
+//# sourceMappingURL=svg-image-66.d8becb95c2cc6e775906.js.map

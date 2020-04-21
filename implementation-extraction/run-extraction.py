@@ -10,14 +10,14 @@ rtvslo_paths = [
 overstock_paths = [
     '../input-extraction/overstock.com/jewelry01.html',
     '../input-extraction/overstock.com/jewelry02.html']
-mimovrste_paths = []
+mimovrste_paths = [
+    '../input-extraction/mimovrste.si/Grafične kartice _ mimovrste=).htm',
+    '../input-extraction/mimovrste.si/Procesorji _ mimovrste=).htm'
+]
 
 regexExtractor = RegexExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 xpathExtractor = XPathExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 roadrunnerExtractor = RoadRunnerExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
-
-regexExtractor.RtvsloExtraction()
-
 
 if __name__ == "__main__":
     mode = 'A' #sys.argv[1]
@@ -25,8 +25,9 @@ if __name__ == "__main__":
     if mode == 'A':  # regular expressions
         rtvslo_items = regexExtractor.RtvsloExtraction()
         overstock_items = regexExtractor.OverstockExtraction()
+        mimovrste_items = regexExtractor.MimovrsteExtraction()
+
         print(json.dumps([item.__dict__ for item in rtvslo_items]))
-        pass
     elif mode == 'B':  # XPath
         pass
     elif mode == 'C':  # RoadRunner-like implementation

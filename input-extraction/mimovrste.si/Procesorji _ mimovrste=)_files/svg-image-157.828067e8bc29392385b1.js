@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[193],{521:function(w,s){w.exports='<svg class="svg-icon" width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M17.56 15.432l-3.91-3.91c-.022-.02-.046-.035-.068-.055a7.4 7.4 0 10-2.115 2.115c.02.022.034.046.055.067l3.91 3.91a1.504 1.504 0 002.127-2.127zM7.4 12.235a4.835 4.835 0 110-9.67 4.835 4.835 0 010 9.67z"/></svg>'}}]);
+//# sourceMappingURL=svg-image-157.828067e8bc29392385b1.js.map

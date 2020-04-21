@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[290],{645:function(w,v){w.exports='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><path d="M17 0H1C.5 0 0 .5 0 1v16c0 .5.4 1 1 1h8.6v-7H7.3V8.3h2.3v-2c0-2.3 1.4-3.6 3.5-3.6 1 0 1.8.1 2.1.1v2.4h-1.4c-1.1 0-1.3.5-1.3 1.3v1.7h2.7l-.4 2.8h-2.3v7H17c.5 0 1-.4 1-1V1c0-.5-.4-1-1-1z"/></svg>'}}]);
+//# sourceMappingURL=svg-image-85.1ce3787a77e2f4e72297.js.map

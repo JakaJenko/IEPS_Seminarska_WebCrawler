@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[284],{512:function(s,w){s.exports='<svg class="svg-icon" width="12" height="7" xmlns="http://www.w3.org/2000/svg"><path d="M5.532 6.268L.943 1.679A.811.811 0 012.09.532l4.016 4.015L10.12.532a.811.811 0 111.147 1.147L6.679 6.268a.811.811 0 01-1.147 0z" fill-rule="evenodd"/></svg>'}}]);
+//# sourceMappingURL=svg-image-8.5a0c4e37d4cb862f624a.js.map
