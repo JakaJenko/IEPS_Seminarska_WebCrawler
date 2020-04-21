@@ -2,6 +2,7 @@ import re
 import codecs
 from PageTemplates.OverstockItem import OverstockItem
 from PageTemplates.RtvsloItem import RtvsloItem
+from PageTemplates.MimovrsteItem import MimovrsteItem
 
 class RegexExtraction():
 
@@ -45,7 +46,7 @@ class RegexExtraction():
 
     def OverstockExtraction(self):
         page_items = []
-        for page in self.rtvslo_pages:
+        for page in self.overstock_pages:
             pageContent = codecs.open(page, 'r', encoding='utf-8', errors='ignore').read()
             items = []
 
@@ -58,6 +59,7 @@ class RegexExtraction():
                 saving = match.group(4)
                 savingPercent = match.group(5)
                 content = match.group(6)
+
                 new_item = OverstockItem(title, price, listPrice, content, saving, savingPercent)
                 items.append(new_item)
             page_items.append(items)
@@ -65,4 +67,21 @@ class RegexExtraction():
         return page_items
 
     def MimovrsteExtraction(self):
-        return
+        page_items = []
+        for page in self.mimovrste_pages:
+            pageContent = codecs.open(page, 'r', encoding='utf-8', errors='ignore').read()
+            items = []
+
+            regex = r"class=\"lay-block con-no-decoration\">(.*)</a>[\s\S|.]*?<(del|span) class=\"lst-product-item-price--retail\">(.*)<\/(del|span)>[\s\S|.]*?<span class=\"lst-product-item-price-value\">[\s\S]*?\t\t\t\t\t\t    (.*)\s*<\/span>[\s\S|.]*?<p class=\"lst-product-item-availability con-text--availability text-collapse\">(.*?) – [\s\S|.]*?<div class=\"lst-product-item-description \"><p>(.*?)<\/p>"
+            matches = re.finditer(regex, str(pageContent))
+            for match in matches:
+                title = match.group(1)
+                listPrice = match.group(3)
+                price = match.group(5)
+                availability = match.group(6)
+                description = match.group(7)
+                new_item = MimovrsteItem(title, price, listPrice, description, availability)
+                items.append(new_item)
+            page_items.append(items)
+
+        return page_items
