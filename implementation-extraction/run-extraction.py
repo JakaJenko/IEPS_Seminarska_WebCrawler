@@ -20,7 +20,7 @@ xpathExtractor = XPathExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 roadrunnerExtractor = RoadRunnerExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 
 if __name__ == "__main__":
-    mode = 'A' #sys.argv[1]
+    mode = 'C' #sys.argv[1]
 
     if mode == 'A':  # regular expressions
         rtvslo_items = regexExtractor.RtvsloExtraction()
@@ -30,4 +30,4 @@ if __name__ == "__main__":
     elif mode == 'B':  # XPath
         pass
     elif mode == 'C':  # RoadRunner-like implementation
-        pass
+        wrappers = roadrunnerExtractor.ExtractWrappers()
