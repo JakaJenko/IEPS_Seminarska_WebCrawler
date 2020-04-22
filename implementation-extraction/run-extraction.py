@@ -26,7 +26,6 @@ if __name__ == "__main__":
         rtvslo_items = regexExtractor.RtvsloExtraction()
         overstock_items = regexExtractor.OverstockExtraction()
         mimovrste_items = regexExtractor.MimovrsteExtraction()
-
         # print(json.dumps([item.__dict__ for item in rtvslo_items]))
     elif mode == 'B':  # XPath
         pass

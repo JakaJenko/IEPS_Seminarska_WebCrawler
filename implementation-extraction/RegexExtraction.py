@@ -1,8 +1,8 @@
 import re
 import codecs
-from PageTemplates.OverstockItem import OverstockItem
+from PageTemplates.OverstockItem import OverstockItems
 from PageTemplates.RtvsloItem import RtvsloItem
-from PageTemplates.MimovrsteItem import MimovrsteItem
+from PageTemplates.MimovrsteItem import MimovrsteItems
 
 class RegexExtraction():
 
@@ -45,10 +45,10 @@ class RegexExtraction():
         return items
 
     def OverstockExtraction(self):
-        page_items = []
+        pages = []
         for page in self.overstock_pages:
             pageContent = codecs.open(page, 'r', encoding='utf-8', errors='ignore').read()
-            items = []
+            overstock_items = []
 
             regex = r"<td valign=\"top\">\s*<a.*>\s*<b>(.*)<\/b>[\s\S|.]*?<td align=\"left\" nowrap=\"nowrap\">\s*<s>(.*)<\/s>\s*<\/td>[\s\S|.]*?<span class=\"bigred\">\s*<b>(.*)<\/b>[\s\S|.]*?<span class=\"littleorange\">([$€]\s*[0-9\.,]+) \((.*)\)<\/span>[\s\S|.]*?<span class=\"normal\">([\s\S|.]*?)<br>"
             matches = re.finditer(regex, str(pageContent))
@@ -60,17 +60,18 @@ class RegexExtraction():
                 savingPercent = match.group(5)
                 content = match.group(6)
 
-                new_item = OverstockItem(title, price, listPrice, content, saving, savingPercent)
-                items.append(new_item)
-            page_items.append(items)
+                new_item = OverstockItems.OverstockItem(title, price, listPrice, content, saving, savingPercent)
+                overstock_items.append(new_item)
 
-        return page_items
+            pages.append(OverstockItems(overstock_items))
+
+        return pages
 
     def MimovrsteExtraction(self):
-        page_items = []
+        pages = []
         for page in self.mimovrste_pages:
             pageContent = codecs.open(page, 'r', encoding='utf-8', errors='ignore').read()
-            items = []
+            mimovrste_items = []
 
             regex = r"class=\"lay-block con-no-decoration\">(.*)</a>[\s\S|.]*?<(del|span) class=\"lst-product-item-price--retail\">(.*)<\/(del|span)>[\s\S|.]*?<span class=\"lst-product-item-price-value\">[\s\S]*?\t\t\t\t\t\t    (.*)\s*<\/span>[\s\S|.]*?<p class=\"lst-product-item-availability con-text--availability text-collapse\">(.*?) – [\s\S|.]*?<div class=\"lst-product-item-description \"><p>(.*?)<\/p>"
             matches = re.finditer(regex, str(pageContent))
@@ -80,8 +81,8 @@ class RegexExtraction():
                 price = match.group(5)
                 availability = match.group(6)
                 description = match.group(7)
-                new_item = MimovrsteItem(title, price, listPrice, description, availability)
-                items.append(new_item)
-            page_items.append(items)
+                new_item = MimovrsteItems.MimovrsteItem(title, price, listPrice, description, availability)
+                mimovrste_items.append(new_item)
+            pages.append(MimovrsteItems(mimovrste_items))
 
-        return page_items
+        return pages
