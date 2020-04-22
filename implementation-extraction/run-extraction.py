@@ -23,11 +23,12 @@ if __name__ == "__main__":
     mode = 'C' #sys.argv[1]
 
     if mode == 'A':  # regular expressions
-        rtvslo_items = regexExtractor.RtvsloExtraction()
+        rtvslo_items    = regexExtractor.RtvsloExtraction()
         overstock_items = regexExtractor.OverstockExtraction()
         mimovrste_items = regexExtractor.MimovrsteExtraction()
-        # print(json.dumps([item.__dict__ for item in rtvslo_items]))
     elif mode == 'B':  # XPath
-        pass
+        rtvslo_items    = xpathExtractor.RtvsloExtraction()
+        overstock_items = xpathExtractor.OverstockExtraction()
+        mimovrste_items = xpathExtractor.MimovrsteExtraction()
     elif mode == 'C':  # RoadRunner-like implementation
         wrappers = roadrunnerExtractor.ExtractWrappers()
