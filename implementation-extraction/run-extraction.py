@@ -20,15 +20,27 @@ xpathExtractor = XPathExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 roadrunnerExtractor = RoadRunnerExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 
 if __name__ == "__main__":
-    mode = 'C' #sys.argv[1]
+    mode = 'B' #sys.argv[1]
 
     if mode == 'A':  # regular expressions
         rtvslo_items    = regexExtractor.RtvsloExtraction()
         overstock_items = regexExtractor.OverstockExtraction()
         mimovrste_items = regexExtractor.MimovrsteExtraction()
+
+
     elif mode == 'B':  # XPath
         rtvslo_items    = xpathExtractor.RtvsloExtraction()
         overstock_items = xpathExtractor.OverstockExtraction()
         mimovrste_items = xpathExtractor.MimovrsteExtraction()
+
+        for rtvslo_item in rtvslo_items:
+            print("RTV SLO:\n%s" % json.dumps(rtvslo_item.__dict__, indent=4))
+
+        for overstock_item in overstock_items:
+            print("Overstock:\n%s" % json.dumps(overstock_item.__dict__, indent=4))
+
+        for mimovrste_item in mimovrste_items:
+            print("Mimovrste:\n%s" % json.dumps(mimovrste_item.__dict__, indent=4))
+
     elif mode == 'C':  # RoadRunner-like implementation
         wrappers = roadrunnerExtractor.ExtractWrappers()
