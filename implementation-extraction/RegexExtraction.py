@@ -1,4 +1,5 @@
 import re
+import regex
 import codecs
 from PageTemplates.OverstockItem import OverstockItems
 from PageTemplates.RtvsloItem import RtvsloItem
@@ -36,13 +37,14 @@ class RegexExtraction():
             match = re.compile(publishedTime_re).search(pageContent)
             publishedTime = match.group(1)
 
-            # content_re = r"<article class=\"article\">[\s\S|.]*<p[\s\S|.]*?>(.*?)\s*?<\/p>[\s\S|.]*?<\/article>"
-            content_re = r"TU PIŠI SVOJ REGEX"
-            matches = re.finditer(content_re, str(pageContent))
-            content = ""
-            for match in matches:
-                content += match.group(1)
 
+
+            content_matches = regex.finditer(r'(?<=<article class=\"article\">).*?((<p.*?>)(.*?)(<\/p.*?>).*?)*(?=<\/article>)', str(pageContent), regex.DOTALL)
+            content = ""
+            for match in content_matches:
+                for capture in match.captures(3):
+                    content += capture
+                    
             item = RtvsloItem(author, title, publishedTime, subtitle, lead, content)
             items.append(item)
         return items
