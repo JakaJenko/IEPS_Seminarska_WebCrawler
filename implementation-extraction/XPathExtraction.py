@@ -17,6 +17,8 @@ class XPathExtraction():
         items = []
         for page in self.rtvslo_pages:
             pageContent = codecs.open(page, 'r', encoding='utf-8', errors='ignore').read()
+            print(pageContent)
+            break
             tree = html.fromstring(pageContent)
 
             author = str(tree.xpath('//*[@id="main-container"]/div[3]/div/div[1]/div[1]/div/text()')[0])
@@ -94,7 +96,7 @@ class XPathExtraction():
             #print(titles)
 
             listPrices = tree.xpath('/html/body/div[3]/div/div[2]/main/section/section/div/article/div/div/div[2]/del/text()')
-            #print(listPrices)
+            print(listPrices)
 
             prices = tree.xpath('/html/body/div[3]/div/div[2]/main/section/section/div/article/div/div/div[2]/span/text()')
             #print(prices)
