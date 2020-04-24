@@ -20,13 +20,21 @@ xpathExtractor = XPathExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 roadrunnerExtractor = RoadRunnerExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 
 if __name__ == "__main__":
-    mode = 'B' #sys.argv[1]
+    mode = 'A' #sys.argv[1]
 
     if mode == 'A':  # regular expressions
         rtvslo_items    = regexExtractor.RtvsloExtraction()
         overstock_items = regexExtractor.OverstockExtraction()
         mimovrste_items = regexExtractor.MimovrsteExtraction()
 
+        for rtvslo_item in rtvslo_items:
+            print("RTV SLO:\n%s" % json.dumps(rtvslo_item.__dict__, indent=4, ensure_ascii=False))
+
+        for overstock_item in overstock_items:
+            print("Overstock:\n%s" % json.dumps(overstock_item.__dict__, indent=4, ensure_ascii=False))
+
+        for mimovrste_item in mimovrste_items:
+            print("Mimovrste:\n%s" % json.dumps(mimovrste_item.__dict__, indent=4, ensure_ascii=False))
 
     elif mode == 'B':  # XPath
         rtvslo_items    = xpathExtractor.RtvsloExtraction()
@@ -34,13 +42,13 @@ if __name__ == "__main__":
         mimovrste_items = xpathExtractor.MimovrsteExtraction()
 
         for rtvslo_item in rtvslo_items:
-            print("RTV SLO:\n%s" % json.dumps(rtvslo_item.__dict__, indent=4))
+            print("RTV SLO:\n%s" % json.dumps(rtvslo_item.__dict__, indent=4, ensure_ascii=False))
 
         for overstock_item in overstock_items:
-            print("Overstock:\n%s" % json.dumps(overstock_item.__dict__, indent=4))
+            print("Overstock:\n%s" % json.dumps(overstock_item.__dict__, indent=4, ensure_ascii=False))
 
         for mimovrste_item in mimovrste_items:
-            print("Mimovrste:\n%s" % json.dumps(mimovrste_item.__dict__, indent=4))
+            print("Mimovrste:\n%s" % json.dumps(mimovrste_item.__dict__, indent=4, ensure_ascii=False))
 
     elif mode == 'C':  # RoadRunner-like implementation
         wrappers = roadrunnerExtractor.ExtractWrappers()

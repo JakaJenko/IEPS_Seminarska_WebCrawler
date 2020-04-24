@@ -60,7 +60,7 @@ class RegexExtraction():
                 savingPercent = match.group(5)
                 content = match.group(6)
 
-                new_item = OverstockItems.OverstockItem(title, price, listPrice, content, saving, savingPercent)
+                new_item = OverstockItems.OverstockItem(title, price, listPrice, content, saving, savingPercent).__dict__
                 overstock_items.append(new_item)
 
             pages.append(OverstockItems(overstock_items))
@@ -81,7 +81,7 @@ class RegexExtraction():
                 price = match.group(5)
                 availability = match.group(6)
                 description = match.group(7)
-                new_item = MimovrsteItems.MimovrsteItem(title, price, listPrice, description, availability)
+                new_item = MimovrsteItems.MimovrsteItem(title, price, listPrice, description, availability).__dict__
                 mimovrste_items.append(new_item)
             pages.append(MimovrsteItems(mimovrste_items))
 
