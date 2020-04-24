@@ -36,22 +36,14 @@ class RegexExtraction():
             match = re.compile(publishedTime_re).search(pageContent)
             publishedTime = match.group(1)
 
-            content_re = '<article class=\"article\">.*? (<p.*?>(.*?)<\/p.*?>.*?)* .*?<\/article>'
-            #matches = re.compile(content_re).search(pageContent)
-
-            matches = re.finditer('<article class=\"article\">.*? (<p.*?>(.*?)<\/p.*?>.*?)* .*?<\/article>', pageContent)
-            matches = [match for match in matches]
-            print(matches)
-
-            print(matches[0].group[0])
-
-
+            # content_re = r"<article class=\"article\">[\s\S|.]*<p[\s\S|.]*?>(.*?)\s*?<\/p>[\s\S|.]*?<\/article>"
+            content_re = r"TU PIŠI SVOJ REGEX"
+            matches = re.finditer(content_re, str(pageContent))
+            content = ""
             for match in matches:
-                print(match)
+                content += match.group(1)
 
-            #content = match.group(1)
-
-            item = RtvsloItem(author, title, publishedTime, subtitle, lead, "content")
+            item = RtvsloItem(author, title, publishedTime, subtitle, lead, content)
             items.append(item)
         return items
 
