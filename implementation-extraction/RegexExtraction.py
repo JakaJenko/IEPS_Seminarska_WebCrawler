@@ -1,10 +1,9 @@
 import re
+import regex
 import codecs
 from PageTemplates.OverstockItem import OverstockItems
 from PageTemplates.RtvsloItem import RtvsloItem
 from PageTemplates.MimovrsteItem import MimovrsteItems
-from regex import regex
-
 
 class RegexExtraction():
 
@@ -38,19 +37,14 @@ class RegexExtraction():
             match = re.compile(publishedTime_re).search(pageContent)
             publishedTime = match.group(1)
 
-            # content_re = r"<article class=\"article\">[\s\S|.]*<p[\s\S|.]*?>(.*?)\s*?<\/p>[\s\S|.]*?<\/article>"
-            content_re = '(?<=<article class=\"article\">).*?((<p.*?>)(.*?)(<\/p.*?>).*?)*(?=<\/article>)'
 
 
-            matches = regex.finditer('(?<=<article class=\"article\">).*?(((<p.*?>)(.*?)(<\/p.*?>).*?)*)(?=<\/article>)', pageContent, regex.DOTALL)
-            #matches = [match for match in matches]
+            content_matches = regex.finditer(r'(?<=<article class=\"article\">).*?((<p.*?>)(.*?)(<\/p.*?>).*?)*(?=<\/article>)', str(pageContent), regex.DOTALL)
             content = ""
-
-            for match in matches:
-                print("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||w||||||||||||||||||||||||||||||||||w||||||||||||||||||||||||||||||||||w||||||||||||||||||||||||||||||||||w||||||||||||||||||||||||||||||||||w")
-                print("Match:", match.group(4))
-                #content += match.group(1)
-
+            for match in content_matches:
+                for capture in match.captures(3):
+                    content += capture
+                    
             item = RtvsloItem(author, title, publishedTime, subtitle, lead, content)
             items.append(item)
         return items
@@ -71,7 +65,7 @@ class RegexExtraction():
                 savingPercent = match.group(5)
                 content = match.group(6)
 
-                new_item = OverstockItems.OverstockItem(title, price, listPrice, content, saving, savingPercent)
+                new_item = OverstockItems.OverstockItem(title, price, listPrice, content, saving, savingPercent).__dict__
                 overstock_items.append(new_item)
 
             pages.append(OverstockItems(overstock_items))
@@ -92,7 +86,7 @@ class RegexExtraction():
                 price = match.group(5)
                 availability = match.group(6)
                 description = match.group(7)
-                new_item = MimovrsteItems.MimovrsteItem(title, price, listPrice, description, availability)
+                new_item = MimovrsteItems.MimovrsteItem(title, price, listPrice, description, availability).__dict__
                 mimovrste_items.append(new_item)
             pages.append(MimovrsteItems(mimovrste_items))
 
