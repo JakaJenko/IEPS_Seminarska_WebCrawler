@@ -3,6 +3,8 @@ import codecs
 from PageTemplates.OverstockItem import OverstockItems
 from PageTemplates.RtvsloItem import RtvsloItem
 from PageTemplates.MimovrsteItem import MimovrsteItems
+from regex import regex
+
 
 class RegexExtraction():
 
@@ -37,11 +39,17 @@ class RegexExtraction():
             publishedTime = match.group(1)
 
             # content_re = r"<article class=\"article\">[\s\S|.]*<p[\s\S|.]*?>(.*?)\s*?<\/p>[\s\S|.]*?<\/article>"
-            content_re = r"TU PIŠI SVOJ REGEX"
-            matches = re.finditer(content_re, str(pageContent))
+            content_re = '(?<=<article class=\"article\">).*?((<p.*?>)(.*?)(<\/p.*?>).*?)*(?=<\/article>)'
+
+
+            matches = regex.finditer('(?<=<article class=\"article\">).*?(((<p.*?>)(.*?)(<\/p.*?>).*?)*)(?=<\/article>)', pageContent, regex.DOTALL)
+            #matches = [match for match in matches]
             content = ""
+
             for match in matches:
-                content += match.group(1)
+                print("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||w||||||||||||||||||||||||||||||||||w||||||||||||||||||||||||||||||||||w||||||||||||||||||||||||||||||||||w||||||||||||||||||||||||||||||||||w")
+                print("Match:", match.group(4))
+                #content += match.group(1)
 
             item = RtvsloItem(author, title, publishedTime, subtitle, lead, content)
             items.append(item)
