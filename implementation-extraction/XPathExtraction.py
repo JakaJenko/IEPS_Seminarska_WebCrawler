@@ -5,6 +5,8 @@ from lxml import html
 from PageTemplates.OverstockItem import OverstockItems
 from PageTemplates.RtvsloItem import RtvsloItem
 from PageTemplates.MimovrsteItem import MimovrsteItems
+from regex import regex
+
 
 class XPathExtraction():
 
@@ -17,8 +19,6 @@ class XPathExtraction():
         items = []
         for page in self.rtvslo_pages:
             pageContent = codecs.open(page, 'r', encoding='utf-8', errors='ignore').read()
-            print(pageContent)
-            break
             tree = html.fromstring(pageContent)
 
             author = str(tree.xpath('//*[@id="main-container"]/div[3]/div/div[1]/div[1]/div/text()')[0])
@@ -28,8 +28,7 @@ class XPathExtraction():
             #print(title)
 
             publishedTime = str(tree.xpath('//*[@id="main-container"]/div[3]/div/div[1]/div[2]/text()[1]')[0])
-            publishedTime = publishedTime.replace("ob", " ")
-            publishedTime = re.sub(r"\s", "", publishedTime)
+            publishedTime = re.sub(r"[^\S ]", "", publishedTime)
             #print(publishedTime)
 
             subtitle = str(tree.xpath('//*[@id="main-container"]/div[3]/div/header/div[2]/text()')[0])
@@ -38,9 +37,7 @@ class XPathExtraction():
             lead = str(tree.xpath('//*[@id="main-container"]/div[3]/div/header/p//text()')[0])
             #print(lead)
 
-            content = str(tree.xpath('//*[@id="main-container"]/div[3]/div/div[2]/text()')[0])
-            #print(content)
-
+            content = tree.xpath('//*[@id="main-container"]/div[3]/div/div[2]/article/p/text()')
 
             item = RtvsloItem(author, title, publishedTime, subtitle, lead, content)
             items.append(item)
@@ -95,8 +92,8 @@ class XPathExtraction():
             titles = tree.xpath('/html/body/div[3]/div/div[2]/main/section/section/div/article/div/div/div[1]/h3/a/text()')
             #print(titles)
 
-            listPrices = tree.xpath('/html/body/div[3]/div/div[2]/main/section/section/div/article/div/div/div[2]/del/text()')
-            print(listPrices)
+            xpath = '/html/body/div[3]/div/div[2]/main/section/section/div/article/@id'
+            articleIds = tree.xpath(xpath)
 
             prices = tree.xpath('/html/body/div[3]/div/div[2]/main/section/section/div/article/div/div/div[2]/span/text()')
             #print(prices)
@@ -107,7 +104,19 @@ class XPathExtraction():
             descriptions = tree.xpath('/html/body/div[3]/div/div[2]/main/section/section/div/article/div/div/div[6]/div[1]/p//text()')
             #print(descriptions)
 
-            for title, listPrice, price, availability, description in zip(titles, listPrices, prices, availabilitys, descriptions):
+            for title, articleId, price, availability, description in zip(titles, articleIds, prices, availabilitys, descriptions):
+                xpath = '//*[@id="' + articleId + '"]/div/div/div[2]/del/text()'
+                listPrice = tree.xpath('''concat(
+                                substring(''' + xpath + ''', 1, number(not(not(''' + xpath + '''))) * 100),
+                                substring('None', 1, number(not(''' + xpath + ''')) * 4)
+                                )''')
+
+
+                priceMatches = regex.finditer('(\\t)\s*(\d*(.\d)*,*\d* €)', str(price))
+                priceMatches = [priceMatch for priceMatch in priceMatches]
+
+                price = priceMatches[0].captures(2)[0]
+
                 matches = re.finditer("(.*?)( –)", str(availability))
 
                 if '–' in availability:
