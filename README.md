@@ -3,7 +3,7 @@ IEPS Iskanje in ekstrakcija podatkov s spleta - Seminarska 2 - Extraction
 Avtorja: Jaka Jenko, Julijan Jug
 
 ## Instructions for running
-Requred libraries:
+Required libraries:
 - codecs
 - regex (which is different then library "re")
 - json
