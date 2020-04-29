@@ -10,6 +10,8 @@ Required libraries:
 - bs4
 - lxml  
 
-
 Install them with the use of "pip install" or "conda install".  
-Run run-extraction.py with the appropriate argument (A, B, C).
+Run run-extraction.py with the appropriate argument (A, B, C), like:  
+```
+python run-extraction.py A
+```
