@@ -1,7 +1,6 @@
 import difflib
 import codecs
 import re
-import pylcs
 from bs4 import BeautifulSoup
 
 
@@ -40,9 +39,11 @@ def IsOK(line):
 
     return True
 
-def diffScore(s1, s2):
-    lcs = pylcs.lcs(s1, s2)
-    return (len(s1)+len(s2)-2*lcs) / (len(s1)+len(s2))
+def mainScore(s1, s2, blocks):
+    #returns mainscore FOR S1!
+    sim = Similar(s1, s2)
+    diffs1 = 1-sim
+    return (diffs1*len(s1)) / blocks
 
 class RoadRunnerExtraction():
 
