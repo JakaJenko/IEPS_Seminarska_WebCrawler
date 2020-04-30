@@ -14,13 +14,17 @@ mimovrste_paths = [
     '../input-extraction/mimovrste.si/Grafične kartice _ mimovrste=).htm',
     '../input-extraction/mimovrste.si/Procesorji _ mimovrste=).htm'
 ]
+test_rtvslo_paths = [
+'../input-extraction/test_rtvslo.si/page1.txt',
+'../input-extraction/test_rtvslo.si/page2.txt'
+]
 
 regexExtractor = RegexExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 xpathExtractor = XPathExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 roadrunnerExtractor = RoadRunnerExtraction(rtvslo_paths, overstock_paths, mimovrste_paths)
 
 if __name__ == "__main__":
-    mode = 'B' #sys.argv[1]
+    mode = 'C' #sys.argv[1]
 
     if mode == 'A':  # regular expressions
         rtvslo_items    = regexExtractor.RtvsloExtraction()

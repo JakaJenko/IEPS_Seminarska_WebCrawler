@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div class="news-container blue article-old article-type-1">
+	<div class="row">
+		<header class="article-header">
+			<div class="section-heading blue">
+	<h3 class="section-title animated-circles-onhover">
+		<svg version="1.1" class="heading-circles" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 88 20" style="enable-background:new 0 0 88 20;" xml:space="preserve">
+			<g class="gray">
+				<circle cx="2.63" cy="10" r="1.6"></circle>
+				<circle cx="15.9" cy="10" r="3.49"></circle>
+				<circle cx="31.9" cy="10" r="5.44"></circle>
+				<circle cx="53.9" cy="10" r="7.63"></circle>
+			</g>
+			<g class="color-overlay">
+				<circle cx="2.63" cy="10" r="1.6"></circle>
+				<circle cx="15.9" cy="10" r="3.49"></circle>
+				<circle cx="31.9" cy="10" r="5.44"></circle>
+				<circle cx="53.9" cy="10" r="7.63"></circle>
+			</g>
+			<circle class="color" cx="77.51" cy="10" r="9.46"></circle>
+			<circle class="gray-overlay" cx="77.51" cy="10" r="9.46"></circle>
+		</svg>
+
+			<a href="https://www.rtvslo.si/zabava/avtomobilnost/testi/">Testi</a>
+			</h3>
+
+    <a class="comments-icon ml-auto" data-comments-number="13" href="https://www.rtvslo.si/zabava/avtomobilnost/testi/audi-a6-50-tdi-quattro-nemir-v-premijskem-razredu/475392#article-comments-anchor"></a>
+
+</div>
+
+
+			<h1>Audi A6 50 TDI quattro: nemir v premijskem razredu</h1>
+
+			<div class="subtitle">Test nove generacije</div>
+
+			<div class="article-meta-mobile">
+	<div class="author-timestamp">
+
+			<strong>Miha Merljak</strong>| 28. december 2018 ob 08:51
+	</div>
+	<div class="place-source">
+		Ljubljana		 - 		MMC RTV SLO			</div>
+</div>
+
+
+<div class="swiper-container swiper-header-gallery mobile-show-only swiper-container-horizontal swiper-container-wp8-horizontal">
+	<div class="swiper-wrapper" style="transition-duration: 0ms;">
+
+				<figure class="photoswipe swiper-slide mobile-show-only" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+					<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552431_fp-xl.jpg" data-size="1200x800">
+						<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552431_fp-xl.jpg" class="lazy loaded" alt="" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552431_fp-xl.jpg">
+					</a>
+					<figcaption itemprop="caption description"><span class="icon-photo"></span>Audi A6 je avtomobil za direktorje, ki se mu na avtocesti spoštljivo umikajo, kot bi šlo za Pahorjev ali Šarčev avtomobil. Foto: David Šavli</figcaption>
+				</figure>
+						</div>
+	<div class="swiper-pagination swiper-pagination-bullets"></div>
+</div>
+
+
+			<p class="lead">To je novi audi A6. V razred najdražjih in najbolj premijskih žrebcev je vnesel nemir, še preden je sploh zapeljal na parkirni prostor, rezerviran za izvršnega direktorja. </p>
+		</header>
+
+
+			<div class="article-meta">
+
+	<div class="author">
+
+			<div class="author-name">Miha Merljak</div>
+			</div>
+		<div class="publish-meta">
+		28. december 2018 ob 08:51<br>
+				Ljubljana		 - 		MMC RTV SLO			</div>
+
+	<div class="share">
+		<!--<div class="share-icon bookmark">
+			<span class="bottom-tooltip">Shranjeno!</span>
+		</div>-->
+		<div class="share-icon facebook" onclick="javascript:window.open(&#39;https://www.facebook.com/sharer/sharer.php?u=https://www.rtvslo.si%2Fzabava%2Favtomobilnost%2Ftesti%2Faudi-a6-50-tdi-quattro-nemir-v-premijskem-razredu%2F475392&#39;, &#39;&#39;, &#39;menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=600&#39;);return false;"></div>
+		<div class="share-icon twitter" onclick="javascript:window.open(&#39;https://twitter.com/share?url=%2Fzabava%2Favtomobilnost%2Ftesti%2Faudi-a6-50-tdi-quattro-nemir-v-premijskem-razredu%2F475392&amp;text=Audi+A6+50+TDI+quattro%3A+nemir+v+premijskem+razredu https://www.rtvslo.si%2Fzabava%2Favtomobilnost%2Ftesti%2Faudi-a6-50-tdi-quattro-nemir-v-premijskem-razredu%2F475392&#39;,&#39;&#39;,&#39;menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600&#39;);return false;"></div>
+		<div class="share-icon email" onclick="javascript:location.href=&#39;mailto:?subject=Audi A6 50 TDI quattro: nemir v premijskem razredu&amp;body=To je novi audi A6. V razred najdražjih in najbolj premijskih žrebcev je vnesel nemir, še preden je sploh zapeljal na parkirni prostor, rezerviran za izvršnega direktorja.  https://www.rtvslo.si%2Fzabava%2Favtomobilnost%2Ftesti%2Faudi-a6-50-tdi-quattro-nemir-v-premijskem-razredu%2F475392&#39;"></div>
+		<a class="comments-icon" data-comments-number="13" href="https://www.rtvslo.si/zabava/avtomobilnost/testi/audi-a6-50-tdi-quattro-nemir-v-premijskem-razredu/475392#article-comments-anchor"></a>
+		<!--<div class="share-icon google-plus"></div>
+		<div class="share-icon whatsapp"></div>
+		<div class="share-icon linkedin"></div>
+		<div class="share-icon viber"></div>
+		<div class="share-icon plus"></div>-->
+	</div>
+
+
+	<figure class="c-figure-emphasis">
+		<h5 class="figure-title">Poudarki</h5>
+		<ul class="emphasis-list">
+							<li>Zaradi videza se mu na avtocesti spoštljivo umikajo</li>
+							<li>Cesto in promet skenira s kopico radarjev, kamer in tipal</li>
+							<li>50 TDI označuje trilitrski turbodizel, podkrepljen z elektromotorjem</li>
+					</ul>
+	</figure>
+	</div>
+
+
+		<div class="article-body">
+
+
+
+<div class="article-header-media">
+	<figure class="photoswipe desk-show-only" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+		<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552431_fp-xl.jpg" class="image-link image-heading image-container container-16-9" itemprop="contentUrl" data-size="1200x800" data-large="https://img.rtvslo.si/_up/upload/2018/12/21/65552431_fp-xl.jpg" title="" data-id="0">
+
+		<img class="image-original loaded" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552431_fp-xl.jpg"></a>
+
+			<figcaption itemprop="caption description">
+				<span class="icon-photo"></span>Audi A6 je avtomobil za direktorje, ki se mu na avtocesti spoštljivo umikajo, kot bi šlo za Pahorjev ali Šarčev avtomobil. Foto: David Šavli			</figcaption>
+			</figure>
+</div>
+
+
+			<article class="article">
+
+
+<figure class="c-figure-right">
+	<div class="advert-title size-300">Oglas</div>
+
+
+	<div class="iAdserver dynamic-advert-article-inside adloaded" data-iadserver-zone="32" id="ec9e9eec232958a90f3de826aadc83ce" style="text-align: center;">
+	<script>_ipromNS('zone',32); console.log("zone=32");</script>
+<script type="text/javascript">iprom_ad_id='247200';
+iprom_FlashVersion=0;
+var _ipromNum = _ipromNum || 0;
+var _ipromZoneID = _ipromZoneID || 0;
+_ipromNum++;
+var _ipromNumAd = _ipromNumAd || [];
+_ipromNumAd[_ipromNum] = iprom_ad_id+"-"+_ipromZoneID;
+var iprom_AD_custom_settings=null;
+(function () {var s = document.createElement('script');s.src = "//adserver.iprom.net/adserver7/iLogger?z=32;t=js;sid=ziv_slog;ssid=avtomobilnost;m=rtvslo;cb="+(new Date().getTime())+";adid=247200;iact=ad_served;icat=;resx="+escape(screen.width)+";resy="+escape(screen.height);document.head.appendChild(s);})();(function () {var imga = document.createElement('img');imga.src = "//core.iprom.net/log/event/?time="+(new Date().getTime())+"&m=rtvslo&sid=ziv_slog&ssid=avtomobilnost&oadid=247200&z=32&ch=&kw=&sct=&resx="+escape(screen.width)+"&resy="+escape(screen.height)+"&iid=&e=ad_served&v=&c=&rdr=";imga.width=1;imga.height=1;imga.style.display="none";document.body.appendChild(imga);})();try {if (typeof(top._i_fbarray)=='undefined'){top._i_fbarray=[];}if (typeof(top._i_fbarray['z32'])=='undefined'){top._i_fbarray['z32']=[];}top._i_fbarray['z32'].push(247200);}catch(err) {if (typeof(_i_fbarray)=='undefined'){_i_fbarray=[];}if (typeof(_i_fbarray['z32'])=='undefined'){_i_fbarray['z32']=[];}_i_fbarray['z32'].push(247200);}_i_fbparam = {"sid":"ziv_slog","lid":"247200","m":"rtvslo","ssid":"avtomobilnost","z":"32"};
+document.write('<div class="ipromAP" rel="iAL1" data-zone="32" data-ad="247200">');
+    if (typeof(LazyLoader)!='undefined') {
+            var tmpAdArr = unescape("%3C!--%20(c)%202000-2019%20Gemius%20SA%20version%202.0%3A%20%2Frtvslo.si%2F300x250%2C%202019%20-%20KRKA%20-%20OUDR%20--%3E%0A%3Cscript%20language%3D%22javascript1.2%22%20type%3D%22text%2Fjavascript%22%3E%0A%2F%2F%3C!%5BCDATA%5B%0Adocument.write('%3Cscr'%2B'ipt%20src%3D%22%2F%2Fsigde.adocean.pl%2F_'%2B(new%20Date()).getTime()%2B'%2Fad.js%3Fid%3DJB9Log0XmBptKujCnlzKWEzAwJBm5yL0O8fz.TKdlpX.17%2Fnc%3D0%2Fgdpr%3D0%2Fgdpr_consent%3D%2Fredir%3D%22%20language%3D%22javascript%22%3E%3C%2Fscr'%2B'ipt%3E')%3B%0A%2F%2F%5D%5D%3E%0A%3C%2Fscript%3E").split('\n');
+
+            for (var _i=0; _i<tmpAdArr.length; _i++) {
+                if (_i>0&&tmpAdArr[_i].match(/<.script>/i)) {
+                    if (tmpAdArr[_i-1].match(/^\/\//i)) {
+                        document.write("\n"+tmpAdArr[_i]);
+                    } else {
+                        document.write(tmpAdArr[_i]);
+                    }
+                } else {
+                    if (_i==0) {
+                        document.write(tmpAdArr[_i]);
+                    } else {
+                        document.write("\n"+tmpAdArr[_i]);
+                    }
+                }
+            }
+} else {document.write(unescape("%3C!--%20(c)%202000-2019%20Gemius%20SA%20version%202.0%3A%20%2Frtvslo.si%2F300x250%2C%202019%20-%20KRKA%20-%20OUDR%20--%3E%0A%3Cscript%20language%3D%22javascript1.2%22%20type%3D%22text%2Fjavascript%22%3E%0A%2F%2F%3C!%5BCDATA%5B%0Adocument.write('%3Cscr'%2B'ipt%20src%3D%22%2F%2Fsigde.adocean.pl%2F_'%2B(new%20Date()).getTime()%2B'%2Fad.js%3Fid%3DJB9Log0XmBptKujCnlzKWEzAwJBm5yL0O8fz.TKdlpX.17%2Fnc%3D0%2Fgdpr%3D0%2Fgdpr_consent%3D%2Fredir%3D%22%20language%3D%22javascript%22%3E%3C%2Fscr'%2B'ipt%3E')%3B%0A%2F%2F%5D%5D%3E%0A%3C%2Fscript%3E"));
+}document.write("</div>");
+function iPromInsertScript(c,b){var d=document.createElement;HTMLDocument.prototype.createElement&&(document.createElement=HTMLDocument.prototype.createElement);var a=document.createElement("script");a.setAttribute("data-cfasync","false");a.defer=!0;a.async=!0;a.src=c;"function"==typeof b&&(a.onload=b);document.getElementsByTagName("head")[0].appendChild(a);document.createElement=d};
+iPromInsertScript("//a.ipromcloud.com/js/external.js?cb=38857",function(){ipromExternal(247200,32,1);});
+document.write('<div style="position:absolute; left: -1000px; top: -1000px;"><img src="https://adserver.iprom.net/adserver7/LogImpression?z=32;ad=247200;m=rtvslo;sid=ziv_slog;ssid=avtomobilnost;kw=;tm=1554297937;lcl=0" width=1 height=1></div>');function _iprom_logInView(e){var t=e.getAttribute("data-iadlogimp")||"";if(t){var n=document.createElement("img");n.src=unescape(t);n.width=1;n.height=1;n.style.opacity=0;if(document.body!=null){document.body.appendChild(n)}e.className+=" inView"}}function _iprom_isInView(e){var t=_iprom_scrollTop();var n=_iprom_clientHeight();var r=50;var i=e.offsetHeight;var s=Math.round(i*r/100);var o=0;var u=e;while(u!=null){o+=u.offsetTop;u=u.offsetParent}var a=o+s;if(a<t){return false}var f=t+n;if(a>f){return false}return true}function _iprom_clientHeight(){return _iprom_filterResults(window.innerHeight?window.innerHeight:0,document.documentElement?document.documentElement.clientHeight:0,document.body?document.body.clientHeight:0)}function _iprom_scrollTop(){return _iprom_filterResults(window.pageYOffset?window.pageYOffset:0,document.documentElement?document.documentElement.scrollTop:0,document.body?document.body.scrollTop:0)}function _iprom_filterResults(e,t,n){var r=e?e:0;if(t&&(!r||r>t))r=t;return n&&(!r||r>n)?n:r}if(!document.getElementsByClassName){document.getElementsByClassName=function(e){var t=[];var n=document.getElementsByTagName("*");var r=new RegExp("(^|\s)"+e+"(\s|1001 1001");for(var i=0;i<n.length;i++){if(r.test(n[i].className)){t.push(n[i])}}return t}}var iprom_inView_check=iprom_inView_check||function(){try{var e=document.getElementsByClassName("iprom_ad");for(var t=0;t<e.length;t++){if(e[t].className&&e[t].className.indexOf("inView")<0){var n=e[t].getAttribute("data-iadid")||0;if(n&&_iprom_isInView(e[t])){var r=e[t].getAttribute("data-inview-threshold")||0;if(r>0){var i=e[t];var s=function(){if(_iprom_isInView(i)&&i.className&&i.className.indexOf("inView")<0){_iprom_logInView(i)}};setTimeout(s,r*1e3,e[t])}else{e[t].className+=" inView";_iprom_logInView(e[t])}}}}}catch(o){}};if(typeof iprom_inView_init=="undefined"){iprom_inView_init=true;if(window.addEventListener){window.addEventListener("scroll",iprom_inView_check,false)}else if(window.attachEvent){window.attachEvent("onscroll",iprom_inView_check)}else{window["onscroll"]=iprom_inView_check}setTimeout("iprom_inView_check()",100);}
+</script><div class="ipromAP" rel="iAL1" data-zone="32" style="text-align: center;"><!-- (c) 2000-2019 Gemius SA version 2.0: /rtvslo.si/300x250, 2019 - KRKA - OUDR -->
+<script language="javascript1.2" type="text/javascript">
+//<![CDATA[
+document.write('<scr'+'ipt src="//sigde.adocean.pl/_'+(new Date()).getTime()+'/ad.js?id=JB9Log0XmBptKujCnlzKWEzAwJBm5yL0O8fz.TKdlpX.17/nc=0/gdpr=0/gdpr_consent=/redir=" language="javascript"></scr'+'ipt>');
+//]]>
+</script><script src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/ad.js" language="javascript"></script><script type="text/javascript" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/xgde.js"> </script><a target="_blank" href="https://si.hit.gemius.pl/lshitredir/id=zIE65jxep7g5Ys46AW8HG7e_Xfa8DC9A8AOKKI7SFEr.u7/fastid=cfngmhbnctpcdmftgrrpzlfvwnlc/stparam=kgdmmlphrw/roc=0/url=https://www.oduhljadorepa.com/?utm_source=rtvslo&amp;utm_medium=banner&amp;utm_campaign=oudr"><img src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/Banner-300x250_3.jpg" width="300" height="250" border="0"></a>
+</div><div style="position:absolute; left: -1000px; top: -1000px;"><img src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/LogImpression" width="1" height="1"></div></div>
+</figure>
+
+
+
+
+
+
+
+
+<p class="Body"></p><p class="Body">Samo poglejte njegovo masko – to ogromno satovje z radarji na takem položaju, da se ti na avtocesti tudi pri 120 km/h vsi spoštljivo umikajo, saj so prepričani, da gre za Pahorjev ali Šarčev avto. Seveda, novi A6 lahko cesto in promet skenira s kar petimi radarji, petimi kamerami, infrardečo kamero za nočni vid, dvanajstimi ultrazvočnimi senzorji in laserskim čitalnikom – lidarjem. V glavnem vojaška tehnologija v službi varnosti za fante, ki smo radi gledali Top Gun, Bonda in druge možakarja s finimi igračami.</p><p class="Body"><strong>Novo poglavje<br></strong>Vozniški delovni prostor je novo poglavje digitalne dobe, z dvema ogromnima zaslonoma, ki tako kot naprednejši telefoni dregnejo blazinice vaših prstov, kot se sprehajate po steklu. A še bolj se nam zdi pomembno, da so osnovna stikala tam, kjer jih pričakujete. Najprej so torej zagotovili enostavno osnovo, tisti bolj "advanced" vozniki pa si lahko nato vse skupaj še veliko bolj prilagodijo. Velik korak naprej pri kabinskem udobju zaznavajo tudi na zadnji klopi, tam je prostora v vseh smereh precej več.</p><p class="Body">Če vam pogled na Audijev spisek dodatne opreme ne odvzame volje do življenja, potem vsekakor toplo priporočamo nakup zračnega vzmetenja, saj dobi z njim A6 več različnih in vozniško zelo uporabnih karakterjev.</p><p class="Body">Enako velja za seksi luči z inteligentno matrično osvetlitvijo, pa za športno podvozje in vsekakor za štirikolesno krmiljenje. S tem postane A6 med ovinki v občutku na volanu še veliko krajši in bolj agilen. Vse našteto smo preskušali v družbi agregata 50 TDI, ki je v resnici klasični trilitrski dizel, podkrepljen z elektromotorjem. Ja, ta audi je mehki hibrid z izjemnim navorom in dovolj moči kadar koli in kjer koli. Si pa mislimo, da bo največji del trga zadovoljil že učinkovit dvolitrski mehki hibrid z močjo 150 kilovatov.</p><p><iframe src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/LCypVFeHy_c.html" width="100%" height="350" frameborder="0" allowfullscreen="" border="0"></iframe></p><p><strong>Ključni tehnični podatki:</strong></p><p>- na testu Audi A6 50 TDI quattro tiptronic</p><p><strong>Mere:</strong><br>- dolžina: 4,9 m<br>- medosna razdalja: 2,9 m<br>- obračalni krog: 12,1 m<br>- prtljažnik: 530 l<br>- masa: 1.900 kg</p><p><strong>Pogon:</strong><br>- trilitrski šestvaljni dizelski motor<br>- moč: 210 kW<br>- navor: 620 Nm<br>- 8-stopenjski samodejni menjalnik<br>- pogon na vsa štiri kolesa<br>- pnevmatike: 225/60 R17<br>- poraba: 6,6 l/100 km = 8,9 EUR/100 km<br>- posoda za gorivo: 73 l<br>- doseg: 1.106 km<br>- izpusti CO<sub>2</sub>: 147 g/km</p><p><strong>Stroški pri 15.000 km in 5-letni uporabi:</strong><br>- nakupna cena: 69.080 EUR<br>- stroški finančnega lizinga: 4.463 EUR/5 let<br>- stroški registracije: 10.829 EUR/5 let<br>- stroški vzdrževanja: 1.926 EUR/5 let<br>- stroški goriva: 6.702 EUR/75.000 km<br>- strošek 1 kompleta pnevmatik: 716 EUR<br>- vrednosti po 5 letih po Eurotaxu: 33.964 EUR</p><p>- stroški skupaj: 1.001 EUR/mesec</p>
+
+
+
+
+
+
+
+
+
+
+<p></p>
+
+
+
+
+
+
+
+
+
+
+
+	<div class="gallery">
+		<div class="swiper-container swiper-footer-gallery swiper-container-horizontal swiper-container-wp8-horizontal">
+			<div class="swiper-wrapper" style="transform: translate3d(-10896px, 0px, 0px); transition-duration: 0ms;">
+
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552433.jpg" data-size="1200x800" data-id="1">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552433.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552432.jpg" data-size="1200x800" data-id="2">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552432.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552435.jpg" data-size="1200x800" data-id="3">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552435.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552436.jpg" data-size="1200x800" data-id="4">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552436.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552438.jpg" data-size="1200x800" data-id="5">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552438.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552437.jpg" data-size="1200x800" data-id="6">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552437.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552441.jpg" data-size="1200x800" data-id="7">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552441.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">V notranjosti kraljujejo zasloni, prek katerih je mogoče upravljati praktično vse funkcije avtomobila. Foto: David Šavli</figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552442.jpg" data-size="1200x800" data-id="8">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552442.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552445.jpg" data-size="1200x800" data-id="9">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552445.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552446.jpg" data-size="1200x800" data-id="10">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552446.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552447.jpg" data-size="1200x800" data-id="11">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552447.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552449.jpg" data-size="1200x800" data-id="12">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552449.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552448.jpg" data-size="1200x800" data-id="13">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552448.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">Med doplačili priporočamo zračno vzmetenje in štirikolesno krmiljenje. Foto: David Šavli</figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552450.jpg" data-size="1200x800" data-id="14">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552450.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552443.jpg" data-size="1200x800" data-id="15">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552443.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide swiper-slide-prev" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552444.jpg" data-size="1200x800" data-id="16">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552444.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide swiper-slide-active" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552451.jpg" data-size="1200x800" data-id="17">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552451.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide swiper-slide-next" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552453.jpg" data-size="1200x800" data-id="18">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552453.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+
+
+
+						<figure class="photoswipe swiper-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject" style="width: 680px; margin-right: 1px;">
+							<a href="https://img.rtvslo.si/_up/upload/2018/12/21/65552452.jpg" data-size="1200x800" data-id="19">
+								<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552452.jpg" class="lazy" alt="">
+							</a>
+							<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+						</figure>
+												</div>
+			<div class="swiper-button-next swiper-button-white"></div>
+			<div class="swiper-button-prev swiper-button-white"></div>
+		</div>
+		<div class="gallery-bottom-thumbs">
+
+
+					<figure class="photoswipe gallery-bottom-thumb" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+						<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552432.jpg" data-size="1200x800" data-id="20">
+							<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552432.jpg" class="lazy loaded" alt="" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552432.jpg">
+						</a>
+						<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+					</figure>
+
+
+					<figure class="photoswipe gallery-bottom-thumb" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+						<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552435.jpg" data-size="1200x800" data-id="21">
+							<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552435.jpg" class="lazy loaded" alt="" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552435.jpg">
+						</a>
+						<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+					</figure>
+
+
+					<figure class="photoswipe gallery-bottom-thumb" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+						<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552436.jpg" data-size="1200x800" data-id="22">
+							<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552436.jpg" class="lazy loaded" alt="" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552436.jpg">
+						</a>
+						<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+					</figure>
+
+
+					<figure class="photoswipe gallery-bottom-thumb more-photos" data-photo-count="15" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+						<a href="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552438.jpg" data-size="1200x800" data-id="23">
+							<img data-src="https://img.rtvslo.si/_up/upload/2018/12/21/65552438.jpg" class="lazy loaded" alt="" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65552438.jpg">
+						</a>
+						<figcaption itemprop="caption description">MMC RTV SLO </figcaption>
+					</figure>
+																																																																																	</div>
+	</div>
+
+			</article>
+		</div>
+
+		<div class="article-column">
+	<div class="sticky-block">
+
+
+		<div class="rightColumnAd">
+
+
+			<div class="iAdserver dynamic-advert-article-inside adloaded" data-iadserver-zone="31" id="d087f5bca7919359658d33ed1ffd9357" style="text-align: center;">
+	<script>_ipromNS('zone',31); console.log("zone=31");</script>
+<script type="text/javascript">if(typeof  window.log9request != "undefined" ){log9request({m : 'rtvslo',sid : 'ziv_slog',ssid : 'avtomobilnost',z : '31'});}</script></div>
+		</div>
+
+
+	<div class="right-block similar-articles">
+		<h4 class="block-title blue">Zadnje iz sekcije</h4>
+					<div class="article-container">
+				<div class="row">
+					<div class="col-md-5 image">
+						<a href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/ford-kuga-je-z-zamenjavo-generacije-postala-tudi-prikljucni-hibrid/484414" class="image-link container-16-9" title="Ford kuga je z zamenjavo generacije postala tudi priključni hibrid" data-large="https://img.rtvslo.si/_up/upload/2019/04/03/65575724.jpg">
+							<img class="img-fluid lazy loaded" alt="Ford kuga je z zamenjavo generacije postala tudi priključni hibrid" data-src="https://img.rtvslo.si/_up/upload/2019/04/03/65575724_fp-sm.jpg" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65575724_fp-sm.jpg">
+						</a>
+					</div>
+					<div class="col-md-7 title">
+						<a class="list-title" href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/ford-kuga-je-z-zamenjavo-generacije-postala-tudi-prikljucni-hibrid/484414" title="Ford kuga je z zamenjavo generacije postala tudi priključni hibrid">Ford kuga je z zamenjavo generacije postala tudi priključni hibrid</a>
+					</div>
+				</div>
+			</div>
+					<div class="article-container">
+				<div class="row">
+					<div class="col-md-5 image">
+						<a href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/zenske-so-poskodbam-v-prometnih-nesrecah-izpostavljene-bolj-kot-moski/484354" class="image-link container-16-9" title="Ženske so poškodbam v prometnih nesrečah izpostavljene bolj kot moški" data-large="https://img.rtvslo.si/_up/upload/2019/04/02/65575509.jpg">
+							<img class="img-fluid lazy loaded" alt="Ženske so poškodbam v prometnih nesrečah izpostavljene bolj kot moški" data-src="https://img.rtvslo.si/_up/upload/2019/04/02/65575509_fp-sm.jpg" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65575509_fp-sm.jpg">
+						</a>
+					</div>
+					<div class="col-md-7 title">
+						<a class="list-title" href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/zenske-so-poskodbam-v-prometnih-nesrecah-izpostavljene-bolj-kot-moski/484354" title="Ženske so poškodbam v prometnih nesrečah izpostavljene bolj kot moški">Ženske so poškodbam v prometnih nesrečah izpostavljene bolj kot moški</a>
+					</div>
+				</div>
+			</div>
+					<div class="article-container">
+				<div class="row">
+					<div class="col-md-5 image">
+						<a href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/pripravite-se-na-ofenzivo-prikljucnih-hibridov/482915" class="image-link container-16-9" title="Pripravite se na ofenzivo priključnih hibridov" data-large="https://img.rtvslo.si/_up/upload/2019/03/17/65571936.jpg">
+							<img class="img-fluid lazy loaded" alt="Pripravite se na ofenzivo priključnih hibridov" data-src="https://img.rtvslo.si/_up/upload/2019/03/17/65571936_fp-sm.jpg" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65571936_fp-sm.jpg">
+						</a>
+					</div>
+					<div class="col-md-7 title">
+						<a class="list-title" href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/pripravite-se-na-ofenzivo-prikljucnih-hibridov/482915" title="Pripravite se na ofenzivo priključnih hibridov">Pripravite se na ofenzivo priključnih hibridov</a>
+					</div>
+				</div>
+			</div>
+					<div class="article-container">
+				<div class="row">
+					<div class="col-md-5 image">
+						<a href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/bentley-se-je-ob-stoletnici-spomnil-blowerja-enega-najbolj-ikonskih-avtomobilov-iz-dirkaske-preteklosti/484130" class="image-link container-16-9" title="Bentley se je ob stoletnici spomnil blowerja, enega najbolj ikonskih avtomobilov iz dirkaške preteklosti" data-large="https://img.rtvslo.si/_up/upload/2019/03/30/65575007.jpg">
+							<img class="img-fluid lazy loaded" alt="Bentley se je ob stoletnici spomnil blowerja, enega najbolj ikonskih avtomobilov iz dirkaške preteklosti" data-src="https://img.rtvslo.si/_up/upload/2019/03/30/65575007_fp-sm.jpg" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65575007_fp-sm.jpg">
+						</a>
+					</div>
+					<div class="col-md-7 title">
+						<a class="list-title" href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/bentley-se-je-ob-stoletnici-spomnil-blowerja-enega-najbolj-ikonskih-avtomobilov-iz-dirkaske-preteklosti/484130" title="Bentley se je ob stoletnici spomnil blowerja, enega najbolj ikonskih avtomobilov iz dirkaške preteklosti">Bentley se je ob stoletnici spomnil blowerja, enega najbolj ikonskih avtomobilov iz dirkaške preteklosti</a>
+					</div>
+				</div>
+			</div>
+					<div class="article-container">
+				<div class="row">
+					<div class="col-md-5 image">
+						<a href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/rekorderska-steza-na-slani-ravnici-bonneville-potrebuje-resitev/484063" class="image-link container-16-9" title="Rekorderska steza na slani ravnici Bonneville potrebuje rešitev" data-large="https://img.rtvslo.si/_up/upload/2019/03/30/65574834.jpg">
+							<img class="img-fluid lazy loaded" alt="Rekorderska steza na slani ravnici Bonneville potrebuje rešitev" data-src="https://img.rtvslo.si/_up/upload/2019/03/30/65574834_fp-sm.jpg" src="./Audi A6 50 TDI quattro_ nemir v premijskem razredu - RTVSLO.si_files/65574834_fp-sm.jpg">
+						</a>
+					</div>
+					<div class="col-md-7 title">
+						<a class="list-title" href="https://www.rtvslo.si/zivljenjski-slog/avtomobilnost/rekorderska-steza-na-slani-ravnici-bonneville-potrebuje-resitev/484063" title="Rekorderska steza na slani ravnici Bonneville potrebuje rešitev">Rekorderska steza na slani ravnici Bonneville potrebuje rešitev</a>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+</div>
+
+
+		<div class="article-footer">
+
+
+		<div class="article-tags">
+							<a class="tag tag-red-dark" href="https://www.rtvslo.si/kljucne-besede?q=audi">Audi</a>
+							<a class="tag tag-red-dark" href="https://www.rtvslo.si/kljucne-besede?q=a6">A6</a>
+							<a class="tag tag-red-dark" href="https://www.rtvslo.si/kljucne-besede?q=liumuzina">liumuzina</a>
+							<a class="tag tag-red-dark" href="https://www.rtvslo.si/kljucne-besede?q=test">test</a>
+							<a class="tag tag-red-dark" href="https://www.rtvslo.si/kljucne-besede?q=tdi">TDI</a>
+					</div>
+
+	<div class="share">
+		<a class="error-report" href="https://www.rtvslo.si/prijava-napake?id=10&amp;news_id=475392">Prijavi napako</a>
+		<div class="share-icon facebook" onclick="javascript:window.open(&#39;https://www.facebook.com/sharer/sharer.php?u=https://www.rtvslo.si/zabava/avtomobilnost/testi/audi-a6-50-tdi-quattro-nemir-v-premijskem-razredu/475392&#39;, &#39;&#39;, &#39;menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600&#39;);return false;"></div>
+		<div class="share-icon twitter" onclick="javascript:window.open(&#39;https://twitter.com/share?url=/zabava/avtomobilnost/testi/audi-a6-50-tdi-quattro-nemir-v-premijskem-razredu/475392&amp;text=Audi A6 50 TDI quattro: nemir v premijskem razredu, www.rtvslo.si/zabava/avtomobilnost/testi/audi-a6-50-tdi-quattro-nemir-v-premijskem-razredu/475392&#39;, &#39;&#39;, &#39;menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600&#39;);return false;"></div>
+		<div class="share-icon email" onclick="javascript:window.open(&#39;mailto:?subject=Audi A6 50 TDI quattro: nemir v premijskem razredu&amp;body=To je novi audi A6. V razred najdražjih in najbolj premijskih žrebcev je vnesel nemir, še preden je sploh zapeljal na parkirni prostor, rezerviran za izvršnega direktorja.  https://www.rtvslo.si/zabava/avtomobilnost/testi/audi-a6-50-tdi-quattro-nemir-v-premijskem-razredu/475392&#39;,&#39;_self&#39;)"></div>
+		<!--<a href="#"><div class="share-icon google-plus"></div></a>
+		<a href="#"><div class="share-icon whatsapp"></div></a>
+		<a href="#"><div class="share-icon linkedin"></div></a>
+		<a href="#"><div class="share-icon viber"></div></a>
+		<a href="#"><div class="share-icon email"></div></a>-->
+	</div>
+
+	<figure class="c-figure-aside d-none bottom-left-advert">
+		<div class="advert-title">Oglas</div>
+
+
+		<div class="iAdserver dynamic-advert-article-inside adloaded" data-iadserver-zone="90" id="de926d01f9ab73136252eb9bcbc38879" style="text-align: center;">
+	<script>_ipromNS('zone',90); console.log("zone=90");</script>
+<script type="text/javascript">if(typeof  window.log9request != "undefined" ){log9request({m : 'rtvslo',sid : 'ziv_slog',ssid : 'avtomobilnost',z : '90'});}</script></div>
+	</figure>
+</div>
+
+	</div>
+</div>
+</body>
+</html>
