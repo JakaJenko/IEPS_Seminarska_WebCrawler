@@ -44,7 +44,7 @@ class RegexExtraction():
             for match in content_matches:
                 for capture in match.captures(3):
                     content += capture
-                    
+
             item = RtvsloItem(author, title, publishedTime, subtitle, lead, content)
             items.append(item)
         return items

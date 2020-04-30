@@ -1,7 +1,7 @@
 import difflib
 import codecs
 import re
-
+import pylcs
 from bs4 import BeautifulSoup
 
 
@@ -39,6 +39,10 @@ def IsOK(line):
         return False
 
     return True
+
+def diffScore(s1, s2):
+    lcs = pylcs.lcs(s1, s2)
+    return (len(s1)+len(s2)-2*lcs) / (len(s1)+len(s2))
 
 class RoadRunnerExtraction():
 
