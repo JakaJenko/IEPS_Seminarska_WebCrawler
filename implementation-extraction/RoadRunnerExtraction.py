@@ -1,7 +1,6 @@
 import difflib
 import codecs
 import re
-
 from bs4 import BeautifulSoup
 
 
@@ -39,6 +38,12 @@ def IsOK(line):
         return False
 
     return True
+
+def mainScore(s1, s2, blocks):
+    #returns mainscore FOR S1!
+    sim = Similar(s1, s2)
+    diffs1 = 1-sim
+    return (diffs1*len(s1)) / blocks
 
 class RoadRunnerExtraction():
 
