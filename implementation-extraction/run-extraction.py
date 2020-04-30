@@ -56,3 +56,6 @@ if __name__ == "__main__":
 
     elif mode == 'C':  # RoadRunner-like implementation
         wrappers = roadrunnerExtractor.ExtractWrappers()
+
+        for wrapper in wrappers:
+            print("Wrappers:\n%s" % json.dumps(wrapper, indent=4, ensure_ascii=False))
