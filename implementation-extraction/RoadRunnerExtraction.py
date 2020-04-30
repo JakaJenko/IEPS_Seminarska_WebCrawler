@@ -50,8 +50,6 @@ class RoadRunnerExtraction():
     def ExtractWrappers(self):
         wrappers = []
         for p1, p2 in [self.mimovrste_pages]:#, self.mimovrste_pages, self.overstock_pages]:
-            print("as")
-
             page1 = codecs.open(p1, 'r', encoding='utf-8', errors='ignore').read()
             page2 = codecs.open(p2, 'r', encoding='utf-8', errors='ignore').read()
 
@@ -88,9 +86,14 @@ class RoadRunnerExtraction():
             inPage2 = []
             tmp = None
 
+            articles = []
+
             for l in diff:
-                #if "article" in l:
-                #    print("ARTICE")
+
+                if "/article" in l:
+                    articles.append("E - " + str(len(blocks)))
+                elif "article" in l:
+                    articles.append("S - " + str(len(blocks)))
 
                 #print("TAG")
                 newTag = GetTagStart(find, l)
@@ -146,9 +149,39 @@ class RoadRunnerExtraction():
 
             #print("|||||||||||||||||||||||||||||||||||||||||||||")
 
-            for inPage1, inPage2 in blocks:
+            last = ("", "")
+
+            '''
+            articlesCleaned = []
+
+            for article in articles:
+                article = article.split(" - ")
+
+                if last[0] == "S" and article[0] == "E" and last[1] != article[1]:
+                    articlesCleaned.extend([last, article])
+
+                last = article
+            '''
+
+            for i, (inPage1, inPage2) in enumerate(blocks):
+                '''
+                for type, row in articlesCleaned:
+                    if type == "S" and int(row) == i:
+                        print("<article>")
+                        break
+                '''
+
                 print("<" + inPage1[0] + ">")
                 print(inPage1[1].replace("-", "\t"))
                 print(inPage2[1].replace("+", "\t"))
                 print("</" + inPage1[0] + ">")
+
+                '''
+                for type, row in articlesCleaned:
+                    if type == "E" and int(row)-1 == i:
+                        print("</article>")
+                        break
+                '''
+
                 print()
+
