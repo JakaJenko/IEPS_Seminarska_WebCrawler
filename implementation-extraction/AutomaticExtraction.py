@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import difflib
 import codecs
 import re
@@ -5,7 +6,7 @@ from bs4 import BeautifulSoup, Comment
 from lxml import etree
 import lxml
 import xml.etree.ElementTree as parser
-from PageTemplates.RoadRunnerItem import RoadRunnerItems
+from PageTemplates.AutomaticItem import AutomaticItems
 
 def GetTagStart(find, line):
     if '<' in line:
@@ -45,6 +46,7 @@ def IsOK(line):
 
 def mainScore(s1, s2, blocks):
     #returns mainscore FOR S1!
+    #blocks is the number of blocks in page1
     sim = Similar(s1, s2)
     diffs1 = 1-sim
     return (diffs1*len(s1)) / blocks
@@ -117,7 +119,7 @@ def findMatchingXPath(line, path_txt):
     return None
 
 
-class RoadRunnerExtraction():
+class AutomaticExtraction():
 
     def __init__(self, rtvslo_pages=[], overstock_pages=[], mimovrste_pages=[]):
         self.rtvslo_pages = rtvslo_pages
@@ -313,12 +315,12 @@ class RoadRunnerExtraction():
             #header.extend(results)
             #results = header
 
-            roadRunnerItems = []
+            automaticItems = []
 
             for result in results:
-                new_item = RoadRunnerItems.RoadRunnerItem(result[0], result[1], result[2], result[3], result[4]).__dict__
-                roadRunnerItems.append(new_item)
+                new_item = AutomaticItems.AutomaticItem(result[0], result[1], result[2], result[3], result[4]).__dict__
+                automaticItems.append(new_item)
 
-            wrappers.append(roadRunnerItems)
+            wrappers.append(automaticItems)
 
         return wrappers

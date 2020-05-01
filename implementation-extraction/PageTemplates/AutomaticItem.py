@@ -1,9 +1,9 @@
-class RoadRunnerItems():
-    # RoadRunnerItems is list of RoadRunnerItem
-    def __init__(self, RoadRunnerItems):
-        self.RoadRunnerItems = RoadRunnerItems
+class AutomaticItems():
+    # AutomaticItems is list of RoadRunnerItem
+    def __init__(self, AutomaticItems):
+        self.AutomaticItems = AutomaticItems
 
-    class RoadRunnerItem():
+    class AutomaticItem():
         def __init__(self, scoreDiff, scoreMain, blockFeature, file1, file2):
             self.ScoreDiff = scoreDiff
             self.ScoreMain = scoreMain
