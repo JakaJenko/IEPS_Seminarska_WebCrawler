@@ -307,11 +307,11 @@ class RoadRunnerExtraction():
 
                 #print()
 
-            header = [("scoreDiff", "scoreMain", "blockFeature", "file1", "file2")]
+            #header = [("scoreDiff", "scoreMain", "blockFeature", "file1", "file2")]
             results = list(set(tuple(result) for result in results))
 
-            header.extend(results)
-            results = header
+            #header.extend(results)
+            #results = header
 
             roadRunnerItems = []
 
@@ -322,10 +322,3 @@ class RoadRunnerExtraction():
             wrappers.append(roadRunnerItems)
 
         return wrappers
-        '''
-        for i, d in enumerate(results):
-            line = '|'.join(str(x).ljust(20) for x in d)
-            print(line)
-            if i == 0:
-                print('-' * len(line))
-        '''
