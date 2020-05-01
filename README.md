@@ -12,7 +12,7 @@ Required libraries:
 - json
 - lxml
 - re
-- regex (which is different then library "re")
+- regex (which is different from library "re")
 - xml
 
 Install them with the use of "pip install" or "conda install".  
