@@ -47,6 +47,8 @@ stop_words_slovene = set(stopwords.words("slovene")).union(set(
 
 conn = psycopg2.connect(host="localhost", user="postgres", password="root")
 conn.autocommit = True
+path = '../PA3-data/'
+pages = ['e-prostor.gov.si']  # , 'e-uprava.gov.si', 'evem.gov.si', 'podatki.gov.si']
 
 class Posting():
     def __init__(self, word, document, indexes=[]):
@@ -75,10 +77,7 @@ def Insert_IndexWord(word):
     cur.close()
     return True
 
-def create_index():
-    path = '../PA3-data/'
-    pages = ['e-prostor.gov.si']#, 'e-uprava.gov.si', 'evem.gov.si', 'podatki.gov.si']
-
+def create_index(path, pages):
     for page in pages:
         directory = path+page
         for filename in os.listdir(directory):
@@ -112,7 +111,7 @@ def create_index():
 
 
 #-------MAIN---------
-create_index()
+create_index(path, pages)
 
 
 
