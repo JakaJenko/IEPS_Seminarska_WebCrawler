@@ -53,7 +53,7 @@ def search_database(query):
 
     cur = conn.cursor()
     cur.execute(
-        """SELECT p.documentname, sum(p.frequency) as frequency, string_agg(p.indexes, ', ') AS indexes
+        """SELECT p.documentname, sum(p.frequency) as frequency, string_agg(p.indexes, ',') AS indexes
             FROM ieps3.indexword  w INNER JOIN ieps3.posting p ON w.word = p.word
             WHERE w.word IN %s
             group by p.documentname
