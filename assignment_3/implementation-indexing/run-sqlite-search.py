@@ -69,7 +69,7 @@ def search_database(query):
 if __name__ == "__main__":
     arguments = sys.argv[1:]
     arguments = " ".join(arguments).replace('"', '')
-    arguments = "Slovenije in uprava" #only for testing
+    arguments = "social services" #only for testing
 
     tokens = word_tokenize(arguments)
     clean_tokens = []

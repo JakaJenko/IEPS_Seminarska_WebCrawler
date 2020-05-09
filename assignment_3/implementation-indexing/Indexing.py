@@ -48,7 +48,7 @@ stop_words_slovene = set(stopwords.words("slovene")).union(set(
 conn = psycopg2.connect(host="localhost", user="postgres", password="root")
 conn.autocommit = True
 path = '../PA3-data/'
-pages = ['e-prostor.gov.si']  # , 'e-uprava.gov.si', 'evem.gov.si', 'podatki.gov.si']
+pages = ['e-prostor.gov.si', 'e-uprava.gov.si', 'evem.gov.si', 'podatki.gov.si']
 
 class Posting():
     def __init__(self, word, document, indexes=[]):
@@ -81,33 +81,32 @@ def create_index(path, pages):
     for page in pages:
         directory = path+page
         for filename in os.listdir(directory):
-            file = codecs.open(path+page+'/'+filename, 'r', encoding='utf-8', errors='ignore')
-            contents = file.read()
-            cleanedContents = BeautifulSoup(contents, 'html.parser')
-            for script in cleanedContents.find_all(['script', 'iframe', 'style']):
-                script.decompose()
-            text = cleanedContents.get_text()
+            if filename.endswith(".html"):
+                file = codecs.open(path+page+'/'+filename, 'r', encoding='utf-8', errors='ignore')
+                contents = file.read()
+                cleanedContents = BeautifulSoup(contents, 'html.parser')
+                for script in cleanedContents.find_all(['script', 'iframe', 'style']):
+                    script.decompose()
+                text = cleanedContents.get_text()
 
-            #tokenize, normalize and remove stop words
-            tokens = word_tokenize(text)
-            tokens_dict = dict() #dict of words where key is word and value list of indexes
+                #tokenize, normalize and remove stop words
+                tokens = word_tokenize(text)
+                tokens_dict = dict() #dict of words where key is word and value list of indexes
 
-            for i in range(len(tokens)):
-                token = tokens[i].lower()
-                token = token.replace("\x00", "")
-                if token not in stop_words_slovene:
-                    if token in tokens_dict:
-                        tokens_dict[token].append(i)
-                    else:
-                        tokens_dict[token] = [i] #token and index
+                for i in range(len(tokens)):
+                    token = tokens[i].lower()
+                    token = token.replace("\x00", "")
+                    if token not in stop_words_slovene:
+                        if token in tokens_dict:
+                            tokens_dict[token].append(i)
+                        else:
+                            tokens_dict[token] = [i] #token and index
 
-            print(tokens_dict)
-
-            for token, indexes in tokens_dict.items():
-                posting = Posting(token, filename, indexes)
-                print(token)
-                Insert_IndexWord(token)
-                Insert_Posting(posting)
+                for token, indexes in tokens_dict.items():
+                    posting = Posting(token, filename, indexes)
+                    print(token)
+                    Insert_IndexWord(token)
+                    Insert_Posting(posting)
 
 
 #-------MAIN---------
