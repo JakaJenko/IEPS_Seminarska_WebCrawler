@@ -78,7 +78,6 @@ if __name__ == "__main__":
         if token not in stop_words_slovene:
             clean_tokens.append(token)
 
-    print(clean_tokens)
     t0 = time.time()
     results = search_database(clean_tokens)
     t1 = time.time()
