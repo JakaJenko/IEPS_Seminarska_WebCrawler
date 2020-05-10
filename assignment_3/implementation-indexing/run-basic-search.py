@@ -4,6 +4,10 @@ import psycopg2
 from nltk.corpus import stopwords
 from nltk import word_tokenize
 import time
+import os
+import codecs
+from bs4 import BeautifulSoup
+
 
 stop_words_slovene = set(stopwords.words("slovene")).union(set(
         ["ter","nov","novo", "nova","zato","še", "zaradi", "a", "ali", "april", "avgust", "b", "bi", "bil", "bila", "bile", "bili", "bilo", "biti",
@@ -44,9 +48,38 @@ stop_words_slovene = set(stopwords.words("slovene")).union(set(
          "svoj", "jesti", "imeti","\u0161e", "iti", "kak", "www", "km", "eur", "pač", "del", "kljub", "šele", "prek",
          "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej", '.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '']))
 
+path = '../PA3-data/'
+pages = ['e-prostor.gov.si', 'e-uprava.gov.si', 'evem.gov.si', 'podatki.gov.si']
+
 def search_files(query):
-    results = []
-    #TODO
+    results = dict()
+
+    for page in pages:
+        directory = path+page
+        for filename in os.listdir(directory):
+            if filename.endswith(".html"):
+                print(filename)
+                file = codecs.open(path + page + '/' + filename, 'r', encoding='utf-8', errors='ignore')
+                contents = file.read()
+                cleanedContents = BeautifulSoup(contents, 'html.parser')
+                for script in cleanedContents.find_all(['script', 'iframe', 'style']):
+                    script.decompose()
+                text = cleanedContents.get_text()
+
+                # tokenize, normalize and remove stop words
+                tokens = word_tokenize(text)
+
+                #find occurances of qery words in file
+                indexes = []
+                for i in range(len(tokens)):
+                    token = tokens[i].lower()
+                    token = token.replace("\x00", "")
+                    if token not in stop_words_slovene:
+                        if token in query:
+                            indexes.append(i)
+
+                results[filename] = indexes
+
     return results
 
 if __name__ == "__main__":
@@ -70,6 +103,7 @@ if __name__ == "__main__":
     print("  Results found in {:.2f}ms\n".format(execution_time))
     print("  Frequencies Document                   Snippet")
     print("  ----------- -------------------------- -----------------------------------------------------------------------")
-    for result in results:
-        print("  {:11s} {:26s} {}".format(str(result[1]), result[0], result[2]))
+    sorted_dict = sorted(results, key=lambda k: len(results[k]))
+    for key, item in results.items():
+        print("  {:11s} {:26s} {}".format(str(len(item)), str(key), ','.join(item)))
 
