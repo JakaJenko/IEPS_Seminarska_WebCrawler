@@ -69,7 +69,7 @@ def search_files(query):
                 # tokenize, normalize and remove stop words
                 tokens = word_tokenize(text)
 
-                #find occurances of qery words in file
+                #find occurances of query words in file
                 indexes = []
                 for i in range(len(tokens)):
                     token = tokens[i].lower()
@@ -105,5 +105,6 @@ if __name__ == "__main__":
     print("  ----------- -------------------------- -----------------------------------------------------------------------")
     sorted_dict = sorted(results, key=lambda k: len(results[k]))
     for key, item in results.items():
-        print("  {:11s} {:26s} {}".format(str(len(item)), str(key), ','.join(item)))
+        if len(item) > 0:
+            print("  {:11s} {:26s} {}".format(str(len(item)), str(key), ','.join([str(i) for i in item])))
 
