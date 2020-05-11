@@ -4,9 +4,12 @@ import psycopg2
 from nltk.corpus import stopwords
 from nltk import word_tokenize
 import time
+import codecs
+from bs4 import BeautifulSoup
 
 conn = psycopg2.connect(host="localhost", user="postgres", password="root")
 conn.autocommit = True
+path = "../PA3-data/"
 
 stop_words_slovene = set(stopwords.words("slovene")).union(set(
         ["ter","nov","novo", "nova","zato","še", "zaradi", "a", "ali", "april", "avgust", "b", "bi", "bil", "bila", "bile", "bili", "bilo", "biti",
@@ -45,7 +48,44 @@ stop_words_slovene = set(stopwords.words("slovene")).union(set(
          "zadnji", "zakaj", "zaprta", "zaprti", "zaprto", "zdaj", "zelo", "zunaj", "č", "če", "često", "četrta",
          "četrtek", "četrti", "četrto", "čez", "čigav", "š", "šest", "šesta", "šesti", "šesto", "štiri", "ž", "že",
          "svoj", "jesti", "imeti","\u0161e", "iti", "kak", "www", "km", "eur", "pač", "del", "kljub", "šele", "prek",
-         "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej", '.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '']))
+         "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej", '.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '', '(', ')']))
+
+def get_snippet(filepath, indexes):
+    result = ""
+    file = codecs.open(path + filepath, 'r', encoding='utf-8', errors='ignore')
+    contents = file.read()
+    cleanedContents = BeautifulSoup(contents, 'html.parser')
+    for script in cleanedContents.find_all(['script', 'iframe', 'style']):
+        script.decompose()
+    text = cleanedContents.get_text()
+    tokens = word_tokenize(text)
+    locila = {',', '.', '?', "!", '(', ')', '+', '-', ';', ':'}
+    for i in indexes:
+        i = int(i)
+        forward = ""
+        range_j = 3
+        j = 0
+        while j < range_j:
+            word = tokens[i+j+1]
+            if word not in locila:
+                forward += " " + word
+            else:
+                range_j += 1
+            j += 1
+
+        backward = ""
+        range_j = 3
+        j = 0
+        while j < range_j:
+            word = tokens[i-j-1]
+            if word not in locila:
+                backward = word + " " + backward
+            else:
+                range_j += 1
+            j += 1
+
+        result += " ... "+backward+tokens[i]+forward
+    return result
 
 def search_database(query):
     results = []
@@ -69,7 +109,7 @@ def search_database(query):
 if __name__ == "__main__":
     arguments = sys.argv[1:]
     arguments = " ".join(arguments).replace('"', '')
-    arguments = "predelovalne dejavnosti" #only for testing
+    arguments = "social services" #only for testing
 
     tokens = word_tokenize(arguments)
     clean_tokens = []
@@ -85,8 +125,9 @@ if __name__ == "__main__":
     execution_time = (t1-t0)*100
     print('Results for a query: "{}"\n'.format(arguments))
     print("  Results found in {:.2f}ms\n".format(execution_time))
-    print("  Frequencies Document                   Snippet")
-    print("  ----------- -------------------------- -----------------------------------------------------------------------")
+    print("  Frequencies Document                                 Snippet")
+    print("  ----------- ---------------------------------------- -----------------------------------------------------------------------")
     for result in results:
-        print("  {:11s} {:26s} {}".format(str(result[1]), result[0], result[2]))
+        snippet = get_snippet(result[0], result[2].split(","))
+        print("  {:11s} {:40s} {}".format(str(result[1]), result[0], snippet+" ..."))
 

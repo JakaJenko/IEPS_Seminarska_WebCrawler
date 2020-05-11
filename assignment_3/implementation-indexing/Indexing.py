@@ -103,7 +103,7 @@ def create_index(path, pages):
                             tokens_dict[token] = [i] #token and index
 
                 for token, indexes in tokens_dict.items():
-                    posting = Posting(token, filename, indexes)
+                    posting = Posting(token, page+"/"+filename, indexes)
                     print(token)
                     Insert_IndexWord(token)
                     Insert_Posting(posting)

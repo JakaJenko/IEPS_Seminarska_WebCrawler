@@ -51,6 +51,43 @@ stop_words_slovene = set(stopwords.words("slovene")).union(set(
 path = '../PA3-data/'
 pages = ['e-prostor.gov.si', 'e-uprava.gov.si', 'evem.gov.si', 'podatki.gov.si']
 
+def get_snippet(filepath, indexes):
+    result = ""
+    file = codecs.open(path + filepath, 'r', encoding='utf-8', errors='ignore')
+    contents = file.read()
+    cleanedContents = BeautifulSoup(contents, 'html.parser')
+    for script in cleanedContents.find_all(['script', 'iframe', 'style']):
+        script.decompose()
+    text = cleanedContents.get_text()
+    tokens = word_tokenize(text)
+    locila = {',', '.', '?', "!", '(', ')', '+', '-', ';', ':'}
+    for i in indexes:
+        i = int(i)
+        forward = ""
+        range_j = 3
+        j = 0
+        while j < range_j:
+            word = tokens[i+j+1]
+            if word not in locila:
+                forward += " " + word
+            else:
+                range_j += 1
+            j += 1
+
+        backward = ""
+        range_j = 3
+        j = 0
+        while j < range_j:
+            word = tokens[i-j-1]
+            if word not in locila:
+                backward = word + " " + backward
+            else:
+                range_j += 1
+            j += 1
+
+        result += " ... "+backward+tokens[i]+forward
+    return result
+
 def search_files(query):
     results = dict()
 
@@ -78,7 +115,7 @@ def search_files(query):
                         if token in query:
                             indexes.append(i)
 
-                results[filename] = indexes
+                results[page+"/"+filename] = indexes
 
     return results
 
@@ -101,10 +138,11 @@ if __name__ == "__main__":
     execution_time = (t1-t0)*100
     print('Results for a query: "{}"\n'.format(arguments))
     print("  Results found in {:.2f}ms\n".format(execution_time))
-    print("  Frequencies Document                   Snippet")
-    print("  ----------- -------------------------- -----------------------------------------------------------------------")
+    print("  Frequencies Document                                 Snippet")
+    print("  ----------- ---------------------------------------- -----------------------------------------------------------------------")
     sorted_dict = sorted(results, key=lambda k: len(results[k]))
     for key, item in results.items():
         if len(item) > 0:
-            print("  {:11s} {:26s} {}".format(str(len(item)), str(key), ','.join([str(i) for i in item])))
+            snippet = get_snippet(str(key), item)
+            print("  {:11s} {:40s} {}".format(str(len(item)), str(key), snippet+" ..."))
 
