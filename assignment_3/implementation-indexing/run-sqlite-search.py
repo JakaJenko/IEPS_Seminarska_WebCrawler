@@ -109,7 +109,7 @@ def search_database(query):
 if __name__ == "__main__":
     arguments = sys.argv[1:]
     arguments = " ".join(arguments).replace('"', '')
-    arguments = "social services" #only for testing
+    arguments = "sistem POST" #only for testing
 
     tokens = word_tokenize(arguments)
     clean_tokens = []
@@ -125,9 +125,9 @@ if __name__ == "__main__":
     execution_time = (t1-t0)*100
     print('Results for a query: "{}"\n'.format(arguments))
     print("  Results found in {:.2f}ms\n".format(execution_time))
-    print("  Frequencies Document                                 Snippet")
-    print("  ----------- ---------------------------------------- -----------------------------------------------------------------------")
+    print("  Frequencies Document                                       Snippet")
+    print("  ----------- ---------------------------------------------- -----------------------------------------------------------------------")
     for result in results:
         snippet = get_snippet(result[0], result[2].split(","))
-        print("  {:11s} {:40s} {}".format(str(result[1]), result[0], snippet+" ..."))
+        print("  {:11s} {:45s} {}".format(str(result[1]), result[0], snippet+" ..."))
 

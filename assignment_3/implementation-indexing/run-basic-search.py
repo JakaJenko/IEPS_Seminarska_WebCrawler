@@ -138,11 +138,11 @@ if __name__ == "__main__":
     execution_time = (t1-t0)*100
     print('Results for a query: "{}"\n'.format(arguments))
     print("  Results found in {:.2f}ms\n".format(execution_time))
-    print("  Frequencies Document                                 Snippet")
-    print("  ----------- ---------------------------------------- -----------------------------------------------------------------------")
+    print("  Frequencies Document                                      Snippet")
+    print("  ----------- --------------------------------------------- -----------------------------------------------------------------------")
     sorted_dict = sorted(results, key=lambda k: len(results[k]))
     for key, item in results.items():
         if len(item) > 0:
             snippet = get_snippet(str(key), item)
-            print("  {:11s} {:40s} {}".format(str(len(item)), str(key), snippet+" ..."))
+            print("  {:11s} {:45s} {}".format(str(len(item)), str(key), snippet+" ..."))
 
