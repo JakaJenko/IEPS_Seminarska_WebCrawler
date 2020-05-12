@@ -1,5 +1,5 @@
-# IEPS Seminarska: Extraction
-IEPS Iskanje in ekstrakcija podatkov s spleta - Seminarska 2 - Extraction  
+# IEPS Seminarska: Data indexing and retrieval
+IEPS Iskanje in ekstrakcija podatkov s spleta - Seminarska 3  
 Avtorja: Jaka Jenko, Julijan Jug
 
 ## Instructions for running
