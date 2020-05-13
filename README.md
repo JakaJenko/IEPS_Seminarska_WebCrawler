@@ -8,15 +8,21 @@ Python 3
 Required libraries:
 - bs4
 - codecs
-- difflib
-- json
-- lxml
-- re
-- regex (which is different from library "re")
-- xml
+- nltk
+- psycopg2
 
 Install them with the use of "pip install" or "conda install".  
-Run run-extraction.py with the appropriate argument (A, B, C), like:  
+
+First create a database and tables using sql script database_creation.sql.
+Then fill the indexing tables by running indexing.py like:
 ```
-python run-extraction.py A
+python Indexing.py
+```
+To search for a desired query using inverted index run:
+```
+python run-sqlite-search.py your query
+```
+Or for basic search run:
+```
+python run-basic-search.py your query
 ```
