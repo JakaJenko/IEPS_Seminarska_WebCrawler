@@ -3,7 +3,7 @@ IEPS Iskanje in ekstrakcija podatkov s spleta - Seminarska 3
 Avtorja: Jaka Jenko, Julijan Jug
 
 ## Instructions for running
-Python 3 is required.
+Python 3 and sqlite is required.
 
 Required libraries:
 - bs4
@@ -13,7 +13,7 @@ Required libraries:
 
 Install them with the use of "pip install" or "conda install".  
 
-First create a database and tables using sql script database_creation.sql.
+First create a database and tables using sql script database_creation.sql.  
 Then fill the indexing tables by running indexing.py like:
 ```
 python Indexing.py
