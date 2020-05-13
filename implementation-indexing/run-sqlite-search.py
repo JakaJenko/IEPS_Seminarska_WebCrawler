@@ -48,7 +48,7 @@ stop_words_slovene = set(stopwords.words("slovene")).union(set(
          "zadnji", "zakaj", "zaprta", "zaprti", "zaprto", "zdaj", "zelo", "zunaj", "č", "če", "često", "četrta",
          "četrtek", "četrti", "četrto", "čez", "čigav", "š", "šest", "šesta", "šesti", "šesto", "štiri", "ž", "že",
          "svoj", "jesti", "imeti","\u0161e", "iti", "kak", "www", "km", "eur", "pač", "del", "kljub", "šele", "prek",
-         "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej", '.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '', '(', ')']))
+         "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej", '.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '', ')', '(', '...', '"', '<', '>']))
 
 def get_snippet(filepath, indexes):
     result = ""
@@ -59,7 +59,7 @@ def get_snippet(filepath, indexes):
         script.decompose()
     text = cleanedContents.get_text()
     tokens = word_tokenize(text)
-    locila = {',', '.', '?', "!", '(', ')', '+', '-', ';', ':'}
+    locila = {'.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '', ')', '(', '...', '"', '<', '>'}
     for i in indexes:
         i = int(i)
         forward = ""
@@ -85,6 +85,9 @@ def get_snippet(filepath, indexes):
             j += 1
 
         result += " ... "+backward+tokens[i]+forward
+
+    if len(result) > 250:
+        result = result[:250]
     return result
 
 def search_database(query):
@@ -109,7 +112,7 @@ def search_database(query):
 if __name__ == "__main__":
     arguments = sys.argv[1:]
     arguments = " ".join(arguments).replace('"', '')
-    arguments = "sistem POST" #only for testing
+    # arguments = "republika slovenija" #only for testing
 
     tokens = word_tokenize(arguments)
     clean_tokens = []
@@ -122,12 +125,12 @@ if __name__ == "__main__":
     results = search_database(clean_tokens)
     t1 = time.time()
 
-    execution_time = (t1-t0)*100
+    execution_time = (t1-t0)*1000
     print('Results for a query: "{}"\n'.format(arguments))
     print("  Results found in {:.2f}ms\n".format(execution_time))
-    print("  Frequencies Document                                       Snippet")
-    print("  ----------- ---------------------------------------------- -----------------------------------------------------------------------")
+    print("  Frequencies Document                                  Snippet")
+    print("  ----------- ----------------------------------------- ----------------------------------------------------")
     for result in results:
         snippet = get_snippet(result[0], result[2].split(","))
-        print("  {:11s} {:45s} {}".format(str(result[1]), result[0], snippet+" ..."))
+        print("  {:11s} {:40s} {}".format(str(result[1]), result[0], snippet+" ..."))
 

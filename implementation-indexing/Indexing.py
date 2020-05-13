@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 from bs4 import BeautifulSoup
 # import nltk
@@ -43,7 +45,7 @@ stop_words_slovene = set(stopwords.words("slovene")).union(set(
          "zadnji", "zakaj", "zaprta", "zaprti", "zaprto", "zdaj", "zelo", "zunaj", "č", "če", "često", "četrta",
          "četrtek", "četrti", "četrto", "čez", "čigav", "š", "šest", "šesta", "šesti", "šesto", "štiri", "ž", "že",
          "svoj", "jesti", "imeti","\u0161e", "iti", "kak", "www", "km", "eur", "pač", "del", "kljub", "šele", "prek",
-         "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej", '.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '']))
+         "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej", '.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '', ')', '(', '...', '"', '<', '>']))
 
 conn = psycopg2.connect(host="localhost", user="postgres", password="root")
 conn.autocommit = True

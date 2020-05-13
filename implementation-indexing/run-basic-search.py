@@ -46,7 +46,7 @@ stop_words_slovene = set(stopwords.words("slovene")).union(set(
          "zadnji", "zakaj", "zaprta", "zaprti", "zaprto", "zdaj", "zelo", "zunaj", "č", "če", "često", "četrta",
          "četrtek", "četrti", "četrto", "čez", "čigav", "š", "šest", "šesta", "šesti", "šesto", "štiri", "ž", "že",
          "svoj", "jesti", "imeti","\u0161e", "iti", "kak", "www", "km", "eur", "pač", "del", "kljub", "šele", "prek",
-         "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej", '.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '']))
+         "preko", "znova", "morda","kateri","katero","katera", "ampak", "lahek", "lahka", "lahko", "morati", "torej",'.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '', ')', '(', '...', '"', '<', '>']))
 
 path = '../PA3-data/'
 pages = ['e-prostor.gov.si', 'e-uprava.gov.si', 'evem.gov.si', 'podatki.gov.si']
@@ -60,7 +60,7 @@ def get_snippet(filepath, indexes):
         script.decompose()
     text = cleanedContents.get_text()
     tokens = word_tokenize(text)
-    locila = {',', '.', '?', "!", '(', ')', '+', '-', ';', ':'}
+    locila = {'.', ',', '?', '!', "+", '-', '=', ':', ';', '*', '/', '', ')', '(', '...', '"', '<', '>'}
     for i in indexes:
         i = int(i)
         forward = ""
@@ -86,6 +86,8 @@ def get_snippet(filepath, indexes):
             j += 1
 
         result += " ... "+backward+tokens[i]+forward
+    if len(result) > 250:
+        result = result[:250]
     return result
 
 def search_files(query):
@@ -95,7 +97,7 @@ def search_files(query):
         directory = path+page
         for filename in os.listdir(directory):
             if filename.endswith(".html"):
-                print(filename)
+                # print(filename)
                 file = codecs.open(path + page + '/' + filename, 'r', encoding='utf-8', errors='ignore')
                 contents = file.read()
                 cleanedContents = BeautifulSoup(contents, 'html.parser')
@@ -122,7 +124,7 @@ def search_files(query):
 if __name__ == "__main__":
     arguments = sys.argv[1:]
     arguments = " ".join(arguments).replace('"', '')
-    arguments = "social services" #only for testing
+    # arguments = "republika slovenija" #only for testing
 
     tokens = word_tokenize(arguments)
     clean_tokens = []
@@ -135,14 +137,15 @@ if __name__ == "__main__":
     results = search_files(clean_tokens)
     t1 = time.time()
 
-    execution_time = (t1-t0)*100
+    execution_time = (t1-t0)*1000
     print('Results for a query: "{}"\n'.format(arguments))
     print("  Results found in {:.2f}ms\n".format(execution_time))
-    print("  Frequencies Document                                      Snippet")
-    print("  ----------- --------------------------------------------- -----------------------------------------------------------------------")
-    sorted_dict = sorted(results, key=lambda k: len(results[k]))
-    for key, item in results.items():
+    print("  Frequencies Document                                  Snippet")
+    print("  ----------- ----------------------------------------- ----------------------------------------------------")
+    sorted_dict = sorted(results, key=lambda k: len(results[k]), reverse=True)
+    for key in sorted_dict:
+        item = results[key]
         if len(item) > 0:
             snippet = get_snippet(str(key), item)
-            print("  {:11s} {:45s} {}".format(str(len(item)), str(key), snippet+" ..."))
+            print("  {:11s} {:40s} {}".format(str(len(item)), str(key), snippet+" ..."))
 
