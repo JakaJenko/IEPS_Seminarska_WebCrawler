@@ -3,7 +3,7 @@ IEPS Iskanje in ekstrakcija podatkov s spleta - Seminarska 3
 Avtorja: Jaka Jenko, Julijan Jug
 
 ## Instructions for running
-Python 3
+Python 3 is required.
 
 Required libraries:
 - bs4
